@@ -20,7 +20,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { AppBar } from './components/AppBar';
 import { DrawerHeader, drawerWidth } from './layout.consts';
 import { useCurrentPath } from './hooks/useCurrentPath';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -60,7 +60,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function AppMainLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const pathname = useCurrentPath();
@@ -95,7 +95,6 @@ export default function MiniDrawer() {
           </Typography>
         </Toolbar>
       </AppBar>
-
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -104,7 +103,8 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Tasks'].map((text, index) => (
+            <Link to={text.toLowerCase()}>
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -125,6 +125,7 @@ export default function MiniDrawer() {
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
+            </Link>
           ))}
         </List>
         <Divider />
