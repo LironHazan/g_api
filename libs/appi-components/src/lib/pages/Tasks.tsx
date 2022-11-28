@@ -3,43 +3,23 @@ import { useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { tokens } from '../theme';
 import DataTable from '../components/common/DataTable';
-
-const columns = [
-  { field: 'id', headerName: 'User ID', width: 150 },
-  { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'username', headerName: 'Username', width: 150 },
-  { field: 'email', headerName: 'E-mail', width: 200 },
-];
+import { GridEventListener } from '@mui/x-data-grid';
 
 const userTableStyles = {
   height: '650px',
 };
 
-export default function Tasks() {
+export function Tasks(){
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [users, setUsers] = useState([]);
 
-  async function repoDataURL() {
-    await fetch("https://api.github.com/users/LiveDetermined/repos")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(36, result);
-          const list = result.map((item: any) => (
-            <div className="text-center">
-              <a target="_blank" href={item.svn_url}>
-                {item.name}
-              </a>
-            </div>
-          ));
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
+  const handleRowClick: GridEventListener<'rowClick'> = (params) => {
+    console.log(`-- "${params.row.name}" clicked`);
+    // trigget drawer
+  };
+
 
     useEffect(() => {
     fetch('https://api.github.com/users/lironhazan/repos')
@@ -76,7 +56,8 @@ export default function Tasks() {
     {
       field: 'open_issues',
       headerName: 'Issues',
-      flex: 1
+      flex: 1,
+      width: 150
     },
     {
       field: "visibility",
@@ -105,6 +86,7 @@ export default function Tasks() {
             columns={columns}
             loading={!users.length}
             sx={userTableStyles}
+            onRowClick={handleRowClick}
           />
         </Box>
       </Box>

@@ -5,13 +5,10 @@ const DataTable = ({
                      rows,
                      columns,
                      loading,
-                     sx
+                     sx,
+                     onRowClick
                    }: any) => {
   const [pageSize, setPageSize] = useState(10);
-
-  // const handleRowClick: GridEventListener<'rowClick'> = (params) => {
-  //   setMessage(`Movie "${params.row.title}" clicked`);
-  // };
 
   return (
     <DataGrid
@@ -24,7 +21,7 @@ const DataTable = ({
       pageSize={pageSize}
       onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
       rowsPerPageOptions={[10, 15, 25]}
-      // onRowClick={handleRowClick} {...data}
+      onRowClick={onRowClick}
     />
   );
 };

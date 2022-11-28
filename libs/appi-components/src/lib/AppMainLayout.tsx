@@ -17,7 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { AppBar } from './components/AppBar';
+import { AppBar } from './components';
 import { DrawerHeader, drawerWidth } from './layout.consts';
 import { useCurrentPath } from './hooks/useCurrentPath';
 import { Link, Outlet } from 'react-router-dom';
@@ -60,7 +60,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function AppMainLayout() {
+export function AppMainLayout() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const pathname = useCurrentPath();
