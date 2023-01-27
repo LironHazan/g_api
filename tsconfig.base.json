@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@react-stack-2022/appi-components": ["libs/appi-components/src/index.ts"]
+      "@g_api/appi-components": ["libs/appi-components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

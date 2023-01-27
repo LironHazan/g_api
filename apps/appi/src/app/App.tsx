@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { AppiComponents, Tasks, AppMainLayout } from '@react-stack-2022/appi-components';
+import { AppiComponents, Tasks, AppMainLayout } from '@g_api/appi-components';
 
 
 export function App() {
