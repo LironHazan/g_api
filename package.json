@@ -1,11 +1,9 @@
 {
-  "name": "react-stack-2022",
+  "name": "g_api",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test"
+    "start:gapi": "nx run appi:serve"
   },
   "private": true,
   "dependencies": {

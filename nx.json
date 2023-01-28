@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "react-stack-2022",
+  "npmScope": "g_api",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
