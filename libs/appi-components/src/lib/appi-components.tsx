@@ -1,6 +1,6 @@
 export function AppiComponents() {
   return (
-      <h2>My first Apollo app 🚀</h2>
+      <h2>Appi 🚀</h2>
   );
 }
 
