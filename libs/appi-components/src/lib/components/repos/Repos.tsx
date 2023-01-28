@@ -1,49 +1,37 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { tokens } from '../theme';
-import DataTable from '../components/common/DataTable';
+import { tokens } from '../../theme';
+import DataTable from '../common/DataTable';
 import { GridEventListener } from '@mui/x-data-grid';
+import { ApolloError } from '@apollo/client/errors';
 
 const userTableStyles = {
   height: '650px',
 };
 
-export function Tasks(){
+interface ReposType {
+  loading: boolean,
+  error: ApolloError | undefined,
+  repos: { id: string, name: string, url: string, description: string }[]
+}
+
+export function Repos({ repos }: ReposType) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  const [users, setUsers] = useState([]);
 
   const handleRowClick: GridEventListener<'rowClick'> = (params) => {
     console.log(`-- "${params.row.name}" clicked`);
     // trigget drawer
   };
 
-
-    useEffect(() => {
-    fetch('https://api.github.com/users/lironhazan/repos')
-      .then((response) => response.json())
-      .then((json) => {
-        json = json.map((item: any) =>  {
-          item.owner = item.owner.login;
-          return item;
-        } )
-        return setUsers(json)
-      })
-      .catch(() => void 0)
-  }, []);
-
-
   const columns = [
-    { field: 'id', headerName: 'ID' },
     {
       field: 'name',
       headerName: 'Name',
       flex: 1,
       cellClassName: 'name-column--cell'
     },    {
-      field: 'html_url',
+      field: 'url',
       headerName: 'Link',
       flex: 1,
       cellClassName: 'link-column--cell'
@@ -82,9 +70,9 @@ export function Tasks(){
           }}
         >
           <DataTable
-            rows={users}
+            rows={repos}
             columns={columns}
-            loading={!users.length}
+            loading={!repos.length}
             sx={userTableStyles}
             onRowClick={handleRowClick}
           />

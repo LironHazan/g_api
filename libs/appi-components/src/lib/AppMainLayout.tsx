@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -62,7 +62,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export function AppMainLayout() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const pathname = useCurrentPath();
 
   const handleDrawerOpen = () => {
@@ -103,9 +103,9 @@ export function AppMainLayout() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Tasks'].map((text, index) => (
-            <Link to={text.toLowerCase()}>
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {[{title:'Repos'}, {title:'Appi'}].map((r, index) => (
+            <Link key={r.title} to={r.title.toLowerCase()}>
+            <ListItem key={r.title} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -122,7 +122,7 @@ export function AppMainLayout() {
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={r.title} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
             </Link>
