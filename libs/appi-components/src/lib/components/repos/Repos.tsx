@@ -1,41 +1,23 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
-import { useMemo } from 'react';
-import { tokens } from '../theme';
-import DataTable from '../components/common/DataTable';
+import { tokens } from '../../theme';
+import DataTable from '../common/DataTable';
 import { GridEventListener } from '@mui/x-data-grid';
-import { useQuery, gql } from '@apollo/client';
+import { ApolloError } from '@apollo/client/errors';
 
 const userTableStyles = {
   height: '650px',
 };
 
-const GET_REPOS = gql`
-query {
-  user(login: "lironhazan") {
-    repositories(first: 100) {
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-      nodes {
-        name
-        url
-        description
-      }
-    }
-  }
+interface ReposType {
+  loading: boolean,
+  error: ApolloError | undefined,
+  repos: { id: string, name: string, url: string, description: string }[]
 }
-`;
 
-export function Repos(){
+export function Repos({ repos }: ReposType) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { loading, error, data } = useQuery(GET_REPOS);
-
-  const repos = useMemo(() => data?.user.repositories.nodes.map((n: any) => {
-    return {...n, id: n.name};
-  } ), [data]) || []
 
   const handleRowClick: GridEventListener<'rowClick'> = (params) => {
     console.log(`-- "${params.row.name}" clicked`);
@@ -43,7 +25,6 @@ export function Repos(){
   };
 
   const columns = [
-    // { field: 'id', headerName: 'ID' },
     {
       field: 'name',
       headerName: 'Name',
@@ -91,7 +72,7 @@ export function Repos(){
           <DataTable
             rows={repos}
             columns={columns}
-            loading={(!repos as any).length}
+            loading={!repos.length}
             sx={userTableStyles}
             onRowClick={handleRowClick}
           />
