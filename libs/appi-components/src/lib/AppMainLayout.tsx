@@ -103,7 +103,7 @@ export function AppMainLayout() {
         </DrawerHeader>
         <Divider />
         <List>
-          {[{title:'Repos'}].map((r, index) => (
+          {[{title:'Repos'}, {title:'Appi'}].map((r, index) => (
             <Link key={r.title} to={r.title.toLowerCase()}>
             <ListItem key={r.title} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
