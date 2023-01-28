@@ -1,49 +1,56 @@
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { tokens } from '../theme';
 import DataTable from '../components/common/DataTable';
 import { GridEventListener } from '@mui/x-data-grid';
+import { useQuery, gql } from '@apollo/client';
 
 const userTableStyles = {
   height: '650px',
 };
 
-export function Tasks(){
+const GET_REPOS = gql`
+query {
+  user(login: "lironhazan") {
+    repositories(first: 100) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      nodes {
+        name
+        url
+        description
+      }
+    }
+  }
+}
+`;
+
+export function Repos(){
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { loading, error, data } = useQuery(GET_REPOS);
 
-  const [users, setUsers] = useState([]);
+  const repos = useMemo(() => data?.user.repositories.nodes.map((n: any) => {
+    return {...n, id: n.name};
+  } ), [data]) || []
 
   const handleRowClick: GridEventListener<'rowClick'> = (params) => {
     console.log(`-- "${params.row.name}" clicked`);
     // trigget drawer
   };
 
-
-    useEffect(() => {
-    fetch('https://api.github.com/users/lironhazan/repos')
-      .then((response) => response.json())
-      .then((json) => {
-        json = json.map((item: any) =>  {
-          item.owner = item.owner.login;
-          return item;
-        } )
-        return setUsers(json)
-      })
-      .catch(() => void 0)
-  }, []);
-
-
   const columns = [
-    { field: 'id', headerName: 'ID' },
+    // { field: 'id', headerName: 'ID' },
     {
       field: 'name',
       headerName: 'Name',
       flex: 1,
       cellClassName: 'name-column--cell'
     },    {
-      field: 'html_url',
+      field: 'url',
       headerName: 'Link',
       flex: 1,
       cellClassName: 'link-column--cell'
@@ -82,9 +89,9 @@ export function Tasks(){
           }}
         >
           <DataTable
-            rows={users}
+            rows={repos}
             columns={columns}
-            loading={!users.length}
+            loading={(!repos as any).length}
             sx={userTableStyles}
             onRowClick={handleRowClick}
           />
