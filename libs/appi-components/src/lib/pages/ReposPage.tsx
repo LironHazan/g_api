@@ -1,10 +1,15 @@
-import { Repos } from '../components/repos/Repos';
-import { useRepos } from '../hooks/useRepos';
+import { UserReposTable } from '../components/repos/ReposTable';
+import { SetStateAction, useState } from 'react';
+import { SearchField } from '../components/SearchField';
 
 export function ReposPage() {
-  const { loading, error, repos } = useRepos("lironhazan")
+  const [uname, setUserName] = useState('');
 
-  return (
-    <Repos error={error} loading={loading} repos={repos}/>
-  );
+  const handleChange = (uname: SetStateAction<string>) => {
+    setUserName(uname);
+  }
+  return <>
+    <SearchField liftUserName={handleChange}/>
+    <UserReposTable username={uname}/>
+  </>
 }
