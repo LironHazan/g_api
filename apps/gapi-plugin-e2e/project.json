@@ -12,6 +12,6 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["scope:gapi-plugin", "type:test-app"],
   "implicitDependencies": ["gapi-plugin"]
 }

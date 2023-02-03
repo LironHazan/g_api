@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/appi-components/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope:gapi", "type:features"],
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",

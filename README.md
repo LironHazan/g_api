@@ -1,4 +1,4 @@
-###G-API 
+### G-API 
 
 ---
 This is just another research project...
@@ -25,9 +25,17 @@ You'll need to setup your own GITHUB_TOKEN in order to work with the Github API 
 Development server:
 `nx run appi:serve` (TBD)
 
+#### boundaries / scopes / tags / types
+
+See the `enforce-module-boundaries` rule in main eslintrc.json
+
+[enforce-project-boundaries docs](https://nx.dev/core-features/enforce-project-boundaries) 
+
+[tag-multiple-dimensions docs](https://nx.dev/recipes/other/tag-multiple-dimensions) 
+
 #### Common commands:
 
-Generate a **publishable** npm lib run:
+Generate a **publishable** npm lib run with default plugin:
 
 ``nx g lib test-lib --publishable --importPath=@my-scope/test-lib``
 
@@ -42,3 +50,8 @@ Generate a local plugin lib
 Generate the plugin generator 
 
 `nx generate @nrwl/nx-plugin:generator my-generator --project= <my-plugin-name>`
+
+** When importing code from another library use alias imports.
+
+** When accessing a file from self lib should not use alias imports, instead use relative paths.
+
