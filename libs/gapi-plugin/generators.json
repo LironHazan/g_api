@@ -7,6 +7,11 @@
       "factory": "./src/generators/lirons-ts-lib-gen/generator",
       "schema": "./src/generators/lirons-ts-lib-gen/schema.json",
       "description": "lirons-ts-lib-gen generator"
+    },
+    "max-nx-go": {
+      "factory": "./src/generators/max-nx-go/generator",
+      "schema": "./src/generators/max-nx-go/schema.json",
+      "description": "max-nx-go generator"
     }
   }
 }

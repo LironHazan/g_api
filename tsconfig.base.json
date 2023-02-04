@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@g_api/appi-components": ["libs/gapi/features/gapi-components/src/index.ts"],
+      "@g_api/appi-components": [
+        "libs/gapi/features/gapi-components/src/index.ts"
+      ],
       "@g_api/gapi-plugin": ["libs/gapi-plugin/src/index.ts"]
     }
   },
