@@ -25,36 +25,6 @@ function ReposTable({ repos }: ReposType) {
     // trigget drawer
   };
 
-  const columns = [
-    {
-      field: 'name',
-      headerName: 'Name',
-      flex: 1,
-      cellClassName: 'name-column--cell'
-    },    {
-      field: 'url',
-      headerName: 'Link',
-      flex: 1,
-      cellClassName: 'link-column--cell'
-    },
-    {
-      field: 'description',
-      headerName: 'Description',
-      flex: 1
-    },
-    {
-      field: 'open_issues',
-      headerName: 'Issues',
-      flex: 1,
-      width: 150
-    },
-    {
-      field: "visibility",
-      headerName: "Visibility",
-      flex: 1,
-    },
-  ];
-
   return (
     <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       { !repos ? <div> Search for a github user </div> :
@@ -73,7 +43,6 @@ function ReposTable({ repos }: ReposType) {
           >
             <DataTable
               rows={repos}
-              columns={columns}
               // loading={!repos?.length}
               sx={userTableStyles}
               onRowClick={handleRowClick}
