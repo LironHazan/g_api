@@ -47,6 +47,9 @@ Generate a **publishable** npm lib run with default plugin:
 ``nx g lib test-lib --publishable --importPath=@my-scope/test-lib``
 
 It will prompt you with a list of choices to choose from (react lib, nodejs lib etc)
+** When importing code from another library use alias imports.
+
+** When accessing a file from self lib should not use alias imports, instead use relative paths.
 
 
 Generate a local plugin lib
@@ -58,7 +61,11 @@ Generate the plugin generator
 
 `nx generate @nrwl/nx-plugin:generator my-generator --project= <my-plugin-name>`
 
-** When importing code from another library use alias imports.
+Customize the generator as you want.
 
-** When accessing a file from self lib should not use alias imports, instead use relative paths.
+Use the local generator:
 
+`nx g @g_api/gapi-plugin:my-generator mylib
+`
+
+[Extend community plugins](https://nx.dev/community#plugin-directory) 
