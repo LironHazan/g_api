@@ -51,21 +51,24 @@ It will prompt you with a list of choices to choose from (react lib, nodejs lib 
 
 ** When accessing a file from self lib should not use alias imports, instead use relative paths.
 
+#### Local plugins / generators
 
 Generate a local plugin lib
 
-`nx g @nrwl/nx-plugin:plugin <my-plugin-name>
+e.g. `nx g @nrwl/nx-plugin:plugin gapi-plugin
 `
 
-Generate the plugin generator 
+Generate a new generator as part of the plugin 
 
-`nx generate @nrwl/nx-plugin:generator my-generator --project= <my-plugin-name>`
+e.g. `nx g @nrwl/nx-plugin:generator lirons-ts-lib-gen --project=gapi-plugin`
 
 Customize the generator as you want.
 
 Use the local generator:
 
-`nx g @g_api/gapi-plugin:my-generator mylib
+e.g. `nx g @g_api/gapi-plugin:lirons-ts-lib-gen mylib
 `
+
+e.g. `nx g @g_api/gapi-plugin:lirons-ts-lib-gen foo`
 
 [Extend community plugins](https://nx.dev/community#plugin-directory) 
