@@ -54,7 +54,7 @@
       }
     }
   },
-  "defaultProject": "appi",
+  "defaultProject": "gapi",
   "implicitDependencies": {
     "go.mod": "*"
   }

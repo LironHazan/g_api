@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink } from '@apollo/client';
 import App from './app/App';
-// @ts-ignore
 import {GITHUB_TOKEN } from '../../../private';
 
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';

@@ -50,7 +50,7 @@ Simple React app, uses MUI and apoloClient,
 You'll need to setup your own GITHUB_TOKEN in order to work with the Github API directly. 
 
 Development server:
-`nx run appi:serve` (TBD)
+`nx run gapi:serve` (TBD)
 
 #### boundaries / scopes / tags / types
 
