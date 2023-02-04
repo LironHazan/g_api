@@ -60,9 +60,9 @@ See the `enforce-module-boundaries` rule in main eslintrc.json
 
 [tag-multiple-dimensions docs](https://nx.dev/recipes/other/tag-multiple-dimensions) 
 
-### Common commands:
+#### Common commands:
 
-Generate a **publishable** npm lib run with default plugin:
+Generate a **publishable** typescript lib run with default plugin:
 
 ``nx g lib test-lib --publishable --importPath=@my-scope/test-lib``
 
@@ -71,24 +71,26 @@ It will prompt you with a list of choices to choose from (react lib, nodejs lib 
 
 ** When accessing a file from self lib should not use alias imports, instead use relative paths.
 
-#### Local plugins / generators
+##### Local plugins / generators
 
 Generate a local plugin lib
 
-e.g. `nx g @nrwl/nx-plugin:plugin gapi-plugin
+`nx g @nrwl/nx-plugin:plugin gapi-plugin
 `
+
+In case you'll want to skip cache add the `--skip-nx-cache` flag to the task command
 
 Generate a new generator as part of the plugin 
 
-e.g. `nx g @nrwl/nx-plugin:generator lirons-ts-lib-gen --project=gapi-plugin`
+`nx g @nrwl/nx-plugin:generator lirons-ts-lib-gen --project=gapi-plugin`
 
 Customize the generator as you want.
 
 Use the local generator:
 
-e.g. `nx g @g_api/gapi-plugin:lirons-ts-lib-gen mylib
+`nx g @g_api/gapi-plugin:lirons-ts-lib-gen mylib
 `
 
-e.g. `nx g @g_api/gapi-plugin:lirons-ts-lib-gen foo`
+`nx g @g_api/gapi-plugin:lirons-ts-lib-gen foo`
 
 [Extend community plugins](https://nx.dev/community#plugin-directory) 
