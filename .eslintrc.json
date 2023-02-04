@@ -18,7 +18,11 @@
               },
               {
                 "sourceTag": "scope:gapi",
-                "onlyDependOnLibsWithTags": ["scope:gapi"]
+                "onlyDependOnLibsWithTags": ["scope:gapi", "scope:shared", "type:features"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
               },
               {
                 "sourceTag": "type:test-app",
@@ -27,6 +31,10 @@
               {
                 "sourceTag": "type:plugin",
                 "onlyDependOnLibsWithTags": ["type:plugin"]
+              },
+              {
+                "sourceTag": "type:features",
+                "onlyDependOnLibsWithTags": ["type:features"]
               },
               {
                 "sourceTag": "type:util",

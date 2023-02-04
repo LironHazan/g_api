@@ -33,6 +33,13 @@ See the `enforce-module-boundaries` rule in main eslintrc.json
 
 [tag-multiple-dimensions docs](https://nx.dev/recipes/other/tag-multiple-dimensions) 
 
+ToDo: Break the app-components to following structure: 
+
+- gapi-libs as a directory
+- inside gapi-libs create 2 libs: features, shared
+- tag those libs to include proper scope+types of "scope:shared" and "type:features"
+  
+ 
 #### Common commands:
 
 Generate a **publishable** npm lib run with default plugin:
