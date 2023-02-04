@@ -3,15 +3,10 @@
   "name": "gapi-plugin",
   "version": "0.0.1",
   "generators": {
-    "gapi-plugin": {
-      "factory": "./src/generators/gapi-plugin/generator",
-      "schema": "./src/generators/gapi-plugin/schema.json",
-      "description": "gapi-plugin generator"
-    },
-    "my-generator": {
-      "factory": "./src/generators/my-generator/generator",
-      "schema": "./src/generators/my-generator/schema.json",
-      "description": "my-generator generator"
+    "lirons-ts-lib-gen": {
+      "factory": "./src/generators/lirons-ts-lib-gen/generator",
+      "schema": "./src/generators/lirons-ts-lib-gen/schema.json",
+      "description": "lirons-ts-lib-gen generator"
     }
   }
 }

@@ -13,8 +13,32 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "scope:gapi-plugin",
+                "onlyDependOnLibsWithTags": ["scope:gapi-plugin"]
+              },
+              {
+                "sourceTag": "scope:gapi",
+                "onlyDependOnLibsWithTags": ["scope:gapi", "scope:shared", "type:features"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "type:test-app",
+                "onlyDependOnLibsWithTags": ["type:plugin"]
+              },
+              {
+                "sourceTag": "type:plugin",
+                "onlyDependOnLibsWithTags": ["type:plugin"]
+              },
+              {
+                "sourceTag": "type:features",
+                "onlyDependOnLibsWithTags": ["type:features"]
+              },
+              {
+                "sourceTag": "type:util",
+                "onlyDependOnLibsWithTags": ["type:util"]
               }
             ]
           }
