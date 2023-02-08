@@ -94,3 +94,15 @@ Use the local generator:
 `nx g @g_api/gapi-plugin:lirons-ts-lib-gen foo`
 
 [Extend community plugins](https://nx.dev/community#plugin-directory) 
+
+---
+
+To have postgresql pull the image and run:
+
+`docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+`
+
+Run workspace generator:
+
+`nx workspace-generator <generator-name> --name=liron
+`
