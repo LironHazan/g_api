@@ -93,7 +93,7 @@ func main() {
 	result2 := <-asyncHashUserEmail(4)
 	result3 := <-asyncHashUserEmail(3)
 
-	matchHash(result3)
-	matchHash(result2)
 	matchHash(result)
+	matchHash(result2)
+	matchHash(result3)
 }
