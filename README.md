@@ -6,14 +6,14 @@ I use the NX tooling a lot in production but with single stack, let's make it in
 
 Exploring the Github gql API and NX go-lang / rust support in a polyglot monorepo.
 
-###### Goals
+###### Goals for POC
 
-- Test how affected / general caching works for golang / rust projects tasks.
-- How easy it is to generate standard libs in golang/rust using NX.
-- Containers integration for local development.
-- Lib generators in a non-nx opinionated structure (I don't like the concept of `src/lib`, should be just `/lib`)
-- Github workflows in polyglot NX project. 
-- State of vite/vitest in NX
+- [x] Test how affected / general caching works for golang/rust projects tasks.
+- [x] How easy it is to generate standard libs in golang/rust using NX.
+- [ ] Containers integration for local development.
+- [x] Lib generators in a non-nx opinionated structure (I don't like the concept of `src/lib`, should be just `/lib`)
+- [x] Github workflows in polyglot NX project. 
+- [ ] State of vite/vitest in NX
 
 ** Using Local plugin generators (not the workspace one)
 
@@ -42,6 +42,9 @@ The `internal` directory is the place to put your private packages
 At least when generating a lib we can add the proper layout, for app not sure we need the cmd as in nx its under apps anyway.
 
 Let's extend it:
+
+See local generator, test by running `nx g @g_api/gapi-plugin:max-nx-go go_gapi`
+
 
 ---
 

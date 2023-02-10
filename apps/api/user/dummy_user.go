@@ -1,4 +1,4 @@
-package main
+package user
 
 import (
 	"crypto/sha512"
@@ -56,7 +56,7 @@ func AsyncHashUserEmail(id int) chan interface{} {
 	return ch
 }
 
-func matchHash(result interface{}) {
+func MatchHash(result interface{}) {
 	switch v := result.(type) {
 	case string:
 		fmt.Println(v)
