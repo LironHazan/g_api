@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "start:api": "nx run api:serve",
     "start:gapi": "nx run gapi:serve",
     "build:gapi": "nx run gapi:build",
     "affected:build": "npx nx affected --target=build --parallel --base=origin/master",
