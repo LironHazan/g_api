@@ -10,10 +10,12 @@ Exploring the Github gql API and NX go-lang / rust support in a polyglot monorep
 
 - [x] Test how affected / general caching works for golang/rust projects tasks.
 - [x] How easy it is to generate standard libs in golang/rust using NX.
+- [ ] Dep graph with nx-go.
 - [ ] Containers integration for local development.
 - [x] Lib generators in a non-nx opinionated structure (I don't like the concept of `src/lib`, should be just `/lib`)
 - [x] Github workflows in polyglot NX project. 
 - [ ] State of vite/vitest in NX
+- [ ] Checkout ent 
 
 ** Using Local plugin generators (not the workspace one)
 
@@ -109,3 +111,5 @@ Run workspace generator:
 
 `nx workspace-generator <generator-name> --name=liron
 `
+
+Repair IDEA https://www.jetbrains.com/help/go/create-a-project-with-go-modules-integration.html#working-with-dependencies

@@ -1,0 +1,12 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "name": "go-api",
+  "projectType": "library",
+  "sourceRoot": "libs/api",
+  "targets": {
+    "test": {
+      "executor": "@nx-go/nx-go:test"
+    }
+  },
+  "tags": []
+}
