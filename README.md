@@ -49,6 +49,15 @@ See local generator, test by running `nx g @g_api/gapi-plugin:max-nx-go go_gapi`
 
 
 ---
+Main API:
+
+Little Fiber server API
+
+Start it by running 
+
+nx run gapi:serve
+
+---
 
 ### Main Frontend: gapi app
 Simple React app, uses MUI and apoloClient,
