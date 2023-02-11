@@ -1,4 +1,4 @@
-import { UserReposTable } from '../components/repos/ReposTable';
+import { UserReposTableContainer } from '../components/repos/ReposTableContainer';
 import { SetStateAction, useState } from 'react';
 import { SearchField } from '../components/SearchField';
 
@@ -10,6 +10,6 @@ export function ReposPage() {
   }
   return <>
     <SearchField liftUserName={handleChange}/>
-    <UserReposTable username={uname}/>
+    <UserReposTableContainer username={uname}/>
   </>
 }

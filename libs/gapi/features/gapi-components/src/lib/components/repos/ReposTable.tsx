@@ -1,10 +1,9 @@
-import Box from '@mui/material/Box';
+import { ApolloError } from '@apollo/client/errors';
 import { useTheme } from '@mui/material';
 import { tokens } from '../../theme';
-import DataTable from '../common/DataTable';
 import { GridEventListener } from '@mui/x-data-grid';
-import { ApolloError } from '@apollo/client/errors';
-import { useRepos } from '../../hooks/useRepos';
+import Box from '@mui/material/Box';
+import DataTable from '../common/DataTable';
 
 const userTableStyles = {
   height: '650px',
@@ -16,7 +15,7 @@ interface ReposType {
   repos: { id: string, name: string, url: string, description: string }[] | undefined
 }
 
-function ReposTable({ repos }: ReposType) {
+export function ReposTable({ repos }: ReposType) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -51,12 +50,5 @@ function ReposTable({ repos }: ReposType) {
         </Box>
       }
     </Box>
-  );
-}
-
-export function UserReposTable({ username }: { username: string }) {
-  const { loading, error, repos } = useRepos(username)
-  return (
-    <ReposTable error={error} loading={loading} repos={repos}/>
   );
 }

@@ -1,16 +1,19 @@
 package main
 
 import (
-	"fmt"
-	user "g_api/apps/api/user"
+	routes "g_api/libs/api/go-api/cmd"
+	"github.com/gofiber/fiber/v2"
 )
 
-func main() {
-	result := <-user.AsyncHashUserEmail(5)
-	fmt.Println("This will be printed before the hashing will end!")
-	result2 := <-user.AsyncHashUserEmail(4)
-	fmt.Println("Probably this one as well")
+func startServer() {
+	app := fiber.New()
+	routes.ResolveRoutes(app)
+	err := app.Listen(":3000")
+	if err != nil {
+		return
+	}
+}
 
-	user.MatchHash(result)
-	user.MatchHash(result2)
+func main() {
+	startServer()
 }
