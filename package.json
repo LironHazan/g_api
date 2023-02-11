@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start:api": "nx run api:serve",
-    "start:gapi": "nx run gapi:serve",
+    "start:gapi": "NX_GITHUB_TOKEN=$GITHUB_TOKEN nx run gapi:serve",
     "build:gapi": "nx run gapi:build",
     "affected:build": "npx nx affected --target=build --parallel --base=origin/master",
     "affected:test": "npx nx affected --target=test --all --parallel",

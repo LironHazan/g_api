@@ -3,9 +3,9 @@ import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink } from '@apollo/client';
 import App from './app/App';
-import {GITHUB_TOKEN } from '../../../private';
 
 const GITHUB_BASE_URL = 'https://api.github.com/graphql';
+const GITHUB_TOKEN = process.env['NX_GITHUB_TOKEN'];
 
 // https://www.apollographql.com/docs/resources/graphql-glossary/
 const client = new ApolloClient({

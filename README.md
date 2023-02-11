@@ -54,7 +54,12 @@ See local generator, test by running `nx g @g_api/gapi-plugin:max-nx-go go_gapi`
 Simple React app, uses MUI and apoloClient,
 You'll need to setup your own GITHUB_TOKEN in order to work with the Github API directly. 
 
-Development server:
+FE development server:
+
+First set your `$GITHUB_TOKEN` as an env var: 
+
+`export GITHUB_TOKEN=your-github-token`
+
 `nx run gapi:serve` (TBD)
 
 #### boundaries / scopes / tags / types
