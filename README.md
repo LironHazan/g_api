@@ -106,15 +106,39 @@ Use the local generator:
 [Extend community plugins](https://nx.dev/community#plugin-directory) 
 
 ---
+###Postgres dev container
 
-To have postgresql pull the image and run:
+To have postgresql pull the image:
 
-`docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-`
+``docker run --name some-postgres -e POSTGRES_PASSWORD=12345 -p 5432:5432 -d postgres``
 
+Interactively run:
+
+``docker exec -it some-postgres psql -U postgres``
+
+Create the DB:
+
+``CREATE DATABASE apidb;
+``
+
+Connect to the db:
+
+`docker exec -it some-postgres psql -U postgres -d apidb`
+
+From psql create the user and grant privileges:
+
+``CREATE USER liron WITH PASSWORD '12345';``
+
+``GRANT ALL PRIVILEGES ON DATABASE apidb TO liron;``
+
+** At containers/api_dev there's an image for that
+
+---
 Run workspace generator:
 
 `nx workspace-generator <generator-name> --name=liron
 `
+
+
 
 Repair IDEA https://www.jetbrains.com/help/go/create-a-project-with-go-modules-integration.html#working-with-dependencies
