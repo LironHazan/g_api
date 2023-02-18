@@ -2,15 +2,17 @@ package main
 
 import (
 	"fmt"
-	routes "g_api/libs/api/go-api/cmd"
 	"g_api/libs/common-db/db"
+	routes "g_api/libs/go-api"
+	"g_api/libs/go-api/pkg/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 )
 
-func startServer(dbCtx db.DbContext) {
+func startServer(db *gorm.DB) {
 	app := fiber.New()
-	routes.ResolveRoutes(app, dbCtx)
+	routes.ResolveRoutes(app, db)
 	err := app.Listen(":3000")
 	if err != nil {
 		return
@@ -37,10 +39,11 @@ func main() {
 	fmt.Println(config.Host)
 
 	if _db, err := db.Connection(config); err == nil {
-		dbCtx := db.DbContext{
-			DB: _db,
+		err := models.MigrateDummyUsers(_db)
+		if err != nil {
+			return
 		}
-		startServer(dbCtx)
+		startServer(_db)
 	}
 
 }

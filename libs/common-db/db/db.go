@@ -15,10 +15,6 @@ type Config struct {
 	SSLMode  string
 }
 
-type DbContext struct {
-	DB *gorm.DB
-}
-
 func Connection(config Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",

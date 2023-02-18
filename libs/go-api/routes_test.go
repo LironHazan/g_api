@@ -1,4 +1,4 @@
-package routes
+package go_api
 
 import (
 	"testing"
