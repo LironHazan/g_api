@@ -16,6 +16,7 @@ Exploring the Github gql API and NX go-lang / rust support in a polyglot monorep
 - [x] Github workflows in polyglot NX project. 
 - [ ] State of vite/vitest in NX
 - [ ] Checkout ent 
+- [ ] dogolangci-lint run
 
 ** Using Local plugin generators (not the workspace one)
 
