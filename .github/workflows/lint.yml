@@ -1,6 +1,15 @@
 name: Lint
 on: [ pull_request ]
 jobs:
+  setup:
+    name: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.10.0
+
   lint-affected:
     name: Lint affected
     needs: planning-job
