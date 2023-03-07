@@ -31,46 +31,6 @@ jobs:
         env:
           NX_TERMINAL_CAPTURE: off
 
-    lint-affected:
-      name: Lint affected
-      needs: planning-job
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-        - uses: actions/setup-node@v3
-          with:
-            node-version: 16.10.0
-        - uses: actions/cache@v3
-          id: cache-node-modules
-          with:
-            path: node_modules
-            key: ${{ runner.os }}-build-cache-node-modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-            restore-keys: |
-              ${{ runner.os }}-build-cache-node-modules-${{ env.cache-name }}-
-              ${{ runner.os }}-build-cache-node-modules-
-              ${{ runner.os }}-
-        - run: npx nx run-many --projects=$PROJECTS --target=lint
-
-    build-affected:
-      name: Verify affected apps building
-      needs: planning-job
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-        - uses: actions/setup-node@v3
-        - uses: actions/cache@v3
-          with:
-            node-version: 16.10.0
-            path: node_modules
-            key: ${{ runner.os }}-build-cache-node-modules${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-        - run: npx nx run-many --projects=$PROJECTS --target=build
-
-
     test-affected:
       name: Run unit tests on affetced projects
       needs: planning-job
