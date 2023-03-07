@@ -10,13 +10,15 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
-      - uses: actions/cache@v3
         with:
           node-version: 16.10.0
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
           path: node_modules
-          key: ${{ runner.os }}-build-cache-node-modules${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - run: npm run affected:lint
-
-
-
+          key: ${{ runner.os }}-build-cache-node-modules-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-cache-node-modules-${{ env.cache-name }}-
+            ${{ runner.os }}-build-cache-node-modules-
+            ${{ runner.os }}-
+      - run: npx nx run-many --projects=$PROJECTS --target=lint
