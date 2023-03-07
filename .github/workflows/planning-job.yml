@@ -5,6 +5,7 @@ on:
       - main
 jobs:
   planning-job:
+    name: Handle planning job setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
