@@ -1,0 +1,35 @@
+name: planning-job
+on:
+  push:
+    branches:
+      - main
+jobs:
+  planning-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.10.0
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Install Dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline
+       - name: Get affected projects
+         run: npx nx print-affected --target=master > affected-projects.json
+       - name: Store affected projects
+         run: node storeAffectedProjects.js
+           env:
+             NX_TERMINAL_CAPTURE: off
+
