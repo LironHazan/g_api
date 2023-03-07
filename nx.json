@@ -57,5 +57,8 @@
   "defaultProject": "gapi",
   "implicitDependencies": {
     "go.mod": "*"
+  },
+  "affected": {
+    "defaultBase": "origin/master"
   }
 }
