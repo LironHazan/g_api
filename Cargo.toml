@@ -1,0 +1,5 @@
+[workspace]
+members = [
+    "apps/dql-service",
+    "libs/parser"
+]

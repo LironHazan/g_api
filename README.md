@@ -17,6 +17,7 @@ Exploring the Github gql API and NX go-lang / rust support in a polyglot monorep
 - [ ] State of vite/vitest in NX
 - [ ] Checkout ent 
 - [ ] dogolangci-lint run
+- [x] checkout nxrs/cargo
 
 ** Using Local plugin generators (not the workspace one)
 
@@ -48,6 +49,15 @@ Let's extend it:
 
 See local generator, test by running `nx g @g_api/gapi-plugin:max-nx-go go_gapi`
 
+
+---
+Added @nxrs/cargo
+
+Created both apps and libs - seems to run properly. 
+
+Should test [this plugin](https://github.com/cammisuli/monodon/tree/main/packages/rust) it comes with napi.
+
+`nx generate @nxrs/cargo:app dql-service`
 
 ---
 
