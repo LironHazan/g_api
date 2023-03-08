@@ -1,0 +1,39 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "dql_service",
+  "projectType": "application",
+  "sourceRoot": "apps/dql-service/src",
+  "targets": {
+    "build": {
+      "executor": "@nxrs/cargo:build",
+      "options": {
+        "release": false
+      },
+      "configurations": {
+        "production": {
+          "release": true
+        }
+      }
+    },
+    "run": {
+      "executor": "@nxrs/cargo:build",
+      "options": {
+        "release": false,
+         "run": true
+      }
+    },
+    "test": {
+      "executor": "@nxrs/cargo:test",
+      "options": {}
+    },
+    "lint": {
+      "executor": "@nxrs/cargo:clippy",
+      "options": {
+        "fix": false,
+        "failOnWarnings": true,
+        "noDeps": true
+      }
+    }
+  },
+  "tags": []
+}
