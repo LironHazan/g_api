@@ -54,5 +54,6 @@
         "lintFilePatterns": ["apps/rspack-gapi/**/*.{ts,tsx,js,jsx}"]
       }
     }
-  }
+  },
+  "tags": ["scope:gapi", "type:app"]
 }
