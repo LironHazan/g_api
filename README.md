@@ -18,6 +18,7 @@ Exploring the Github gql API and NX go-lang / rust support in a polyglot monorep
 - [ ] Checkout ent 
 - [ ] dogolangci-lint run
 - [x] checkout nxrs/cargo
+- [x] [rspack](https://github.com/web-infra-dev/rspack) gapi app (Similar to Parcel the underline parser and transformers are based on SWC)
 
 ** Using Local plugin generators (not the workspace one)
 
