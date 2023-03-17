@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "bugfix-workaround": "nx run-many --target=serve --projects=repro-issue-15475-host,repro-issue-15475-remote,graph-api --parallel=3",
     "start:api": "nx run api:serve",
     "start:gapi": "NX_GITHUB_TOKEN=$GITHUB_TOKEN nx run gapi:serve",
     "build:gapi": "nx run gapi:build",
