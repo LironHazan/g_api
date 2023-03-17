@@ -22,7 +22,8 @@
         ],
         "styles": [],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "apps/repro-issue-15475-host/webpack.config.js",
+        "isolatedConfig": true
       },
       "configurations": {
         "development": {

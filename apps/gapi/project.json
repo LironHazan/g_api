@@ -19,7 +19,8 @@
         "assets": ["apps/gapi/src/favicon.ico", "apps/gapi/src/assets"],
         "styles": [],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "apps/gapi/webpack.config.js",
+        "isolatedConfig": true
       },
       "configurations": {
         "development": {
