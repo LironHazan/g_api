@@ -18,7 +18,13 @@
       "@g_api/appi-components": [
         "libs/gapi/features/gapi-components/src/index.ts"
       ],
-      "@g_api/gapi-plugin": ["libs/gapi-plugin/src/index.ts"]
+      "@g_api/gapi-plugin": ["libs/gapi-plugin/src/index.ts"],
+      "@g_api/repro-issue-15475-host": [
+        "libs/repro-issue-15475-host/src/index.ts"
+      ],
+      "@g_api/repro-issue-15475-remote": [
+        "libs/repro-issue-15475-remote/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

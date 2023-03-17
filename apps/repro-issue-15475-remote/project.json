@@ -1,0 +1,86 @@
+{
+  "name": "repro-issue-15475-remote",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/repro-issue-15475-remote/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/repro-issue-15475-remote",
+        "index": "apps/repro-issue-15475-remote/src/index.html",
+        "baseHref": "/",
+        "main": "apps/repro-issue-15475-remote/src/main.tsx",
+        "polyfills": "apps/repro-issue-15475-remote/src/polyfills.ts",
+        "tsConfig": "apps/repro-issue-15475-remote/tsconfig.app.json",
+        "assets": [
+          "apps/repro-issue-15475-remote/src/favicon.ico",
+          "apps/repro-issue-15475-remote/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/repro-issue-15475-remote/src/environments/environment.ts",
+              "with": "apps/repro-issue-15475-remote/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "repro-issue-15475-remote:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "repro-issue-15475-remote:build:development"
+        },
+        "production": {
+          "buildTarget": "repro-issue-15475-remote:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/repro-issue-15475-remote/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/repro-issue-15475-remote/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
