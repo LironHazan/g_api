@@ -18,7 +18,8 @@
       "@g_api/appi-components": [
         "libs/gapi/features/gapi-components/src/index.ts"
       ],
-      "@g_api/gapi-plugin": ["libs/gapi-plugin/src/index.ts"]
+      "@g_api/gapi-plugin": ["libs/gapi-plugin/src/index.ts"],
+      "@g_api/todo-lib": ["libs/todo-lib/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

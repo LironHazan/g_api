@@ -40,8 +40,9 @@
     "@nrwl/react": {
       "application": {
         "style": "@emotion/styled",
-        "unitTestRunner": "jest",
         "linter": "eslint",
+        "bundler": "vite",
+        "unitTestRunner": "jest",
         "babel": true
       },
       "component": {
@@ -49,8 +50,8 @@
       },
       "library": {
         "style": "@emotion/styled",
-        "unitTestRunner": "jest",
-        "linter": "eslint"
+        "linter": "eslint",
+        "unitTestRunner": "jest"
       }
     }
   },
