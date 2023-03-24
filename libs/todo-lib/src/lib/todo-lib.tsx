@@ -1,6 +1,8 @@
-import { useState, useEffect, Key } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useState, Key } from 'react';
 import { gql } from 'graphql-tag';
+import graphqlRequestClient from './graphqlRequestClient';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { Todo } from './gql/graphql';
 
 const GET_TODOS = gql`
   query findTodos {
@@ -27,32 +29,33 @@ const CREATE_TODO = gql`
   }
 `;
 
+interface TodosResponse {
+  todos: Todo[];
+}
+
 function TodoList() {
-  const [todos, setTodos] = useState<any>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const { data } = useQuery(GET_TODOS);
+  useQuery(['posts'], async () => {
+    const { todos }: TodosResponse = await graphqlRequestClient.request(GET_TODOS)
+    setTodos(todos)
+    return todos
+  })
 
-  useEffect(() => {
-    if (data) {
-      setTodos(data.todos);
-    }
-  }, [data]);
-
-  const [createTodo] = useMutation(CREATE_TODO, {
-    onCompleted: (data: any) => {
-      setTodos([...todos, data.createTodo]);
-    }
+  const { mutate }  = useMutation<any>({
+    mutationFn: () => graphqlRequestClient.request(CREATE_TODO),
+    onSuccess: ({ createTodo }) => { setTodos([...todos, createTodo]) },
   });
 
   const handleClick = () => {
-    createTodo();
+    mutate();
   };
 
   return (
     <div>
       <button onClick={handleClick}>Create Todo</button>
       <ul>
-        {todos.map((todo: any, index: Key | null | undefined) => (
+        {todos?.map((todo: Todo, index: Key | null | undefined) => (
           <li key={index}>
             {todo.text} - {todo.done ? 'Done' : 'Not Done'} ({todo.user.name})
           </li>
