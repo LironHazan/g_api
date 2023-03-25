@@ -2,12 +2,12 @@ package main
 
 import (
 	"g_api/apps/graph-api/graph"
-	"log"
-	"net/http"
+	"github.com/labstack/echo/v4"
 	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 const defaultPort = "8080"
@@ -20,21 +20,13 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", addCORSHeaders(srv))
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORS())
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
-}
+	e.GET("/", echo.WrapHandler(playground.Handler("GraphQL playground", "/query")))
+	e.POST("/query", echo.WrapHandler(srv))
 
-func addCORSHeaders(handler http.Handler) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, Authorization")
-		if r.Method == "OPTIONS" {
-			return
-		}
-		handler.ServeHTTP(w, r)
-	}
+	e.Logger.Fatal(e.Start(":" + port))
 }
