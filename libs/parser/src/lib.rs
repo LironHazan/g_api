@@ -1,3 +1,5 @@
+#![allow(clippy::type_complexity)]
+
 // reusing my parser from: https://github.com/LironHazan/dummy-ql-example/tree/master
 
 use nom::bytes::complete::{tag, escaped_transform};

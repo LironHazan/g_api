@@ -93,6 +93,10 @@ It will prompt you with a list of choices to choose from (react lib, nodejs lib 
 
 ** When accessing a file from self lib should not use alias imports, instead use relative paths.
 
+Remove project from workspace:
+
+`nx g @nrwl/workspace:remove todo-e2e`
+
 ##### Local plugins / generators
 
 Generate a local plugin lib

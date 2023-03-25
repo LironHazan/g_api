@@ -21,6 +21,10 @@
                 "onlyDependOnLibsWithTags": ["scope:gapi", "scope:shared", "type:features"]
               },
               {
+                "sourceTag": "scope:todo",
+                "onlyDependOnLibsWithTags": ["scope:todo", "scope:shared", "type:features"]
+              },
+              {
                 "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": ["scope:shared"]
               },
