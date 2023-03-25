@@ -19,6 +19,10 @@ Init a project
 `go run github.com/99designs/gqlgen init
 `
 
+Generate code:
+
+`go run github.com/99designs/gqlgen generate
+`
 Start graph API 
 
 `nx run graph-api:serve`
