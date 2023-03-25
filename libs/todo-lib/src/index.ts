@@ -1,1 +1,1 @@
-export * from './lib/todo-lib';
+export {TodoList} from './lib/todo-lib';

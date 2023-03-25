@@ -3,7 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/todo-lib/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["scope:todo","type:features"],
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",

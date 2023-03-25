@@ -33,7 +33,7 @@ interface TodosResponse {
   todos: Todo[];
 }
 
-function TodoList() {
+export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useQuery(['posts'], async () => {
@@ -64,5 +64,3 @@ function TodoList() {
     </div>
   );
 }
-
-export default TodoList;

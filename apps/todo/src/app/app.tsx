@@ -1,7 +1,5 @@
 import styled from '@emotion/styled';
-
-import NxWelcome from './nx-welcome';
-import TodoLib from '../../../../libs/todo-lib/src/lib/todo-lib';
+import { TodoList } from '@g_api/todo-lib';
 
 const StyledApp = styled.div`
   // Your style here
@@ -10,8 +8,7 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      <TodoLib/>
-      {/*<NxWelcome title="todo" />*/}
+      <TodoList/>
     </StyledApp>
   );
 }
