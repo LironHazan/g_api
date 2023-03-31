@@ -66,11 +66,11 @@ func PushForecast(producer *kafka.Producer, region string, forecast []byte) {
 	}
 }
 
-func CollectForecasts(producer *kafka.Producer, apiKey string) {
-	for r, _ := range RegionToTopic() {
-		forecast, err := queryForecast(r, apiKey)
+func PublishForecasts(producer *kafka.Producer, apiKey string) {
+	for region, _ := range RegionToTopic() {
+		forecast, err := queryForecast(region, apiKey)
 		if err != nil {
-			PushForecast(producer, r, forecast)
+			PushForecast(producer, region, forecast)
 		}
 	}
 }

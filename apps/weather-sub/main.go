@@ -17,5 +17,7 @@ func main() {
 		return
 	}
 	defer _consumer.Close()
-	weather_lib.SubscribeToForecastUpdates(_consumer)
+	weather_lib.SubscribeToForecastUpdates(_consumer, func(val []byte) {
+		// do nothing
+	})
 }
