@@ -7,3 +7,11 @@ Experimenting a "real world app" development
 5. Generate the code: `go generate ./ent`
 6. run tests cmd: `nx run weather-lib:test` 
 7. schema changes watch mode: `ent generate --target ./ent/schema --watch`
+
+
+Development:
+
+Todo - move following to containers/weather
+1. The service Dockerfile
+2. The docker-compose.yaml
+

@@ -12,8 +12,8 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
-	// Forcast is the client for interacting with the Forcast builders.
-	Forcast *ForcastClient
+	// Forecast is the client for interacting with the Forecast builders.
+	Forecast *ForecastClient
 	// Weather is the client for interacting with the Weather builders.
 	Weather *WeatherClient
 
@@ -147,7 +147,7 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
-	tx.Forcast = NewForcastClient(tx.config)
+	tx.Forecast = NewForecastClient(tx.config)
 	tx.Weather = NewWeatherClient(tx.config)
 }
 
@@ -158,7 +158,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Forcast.QueryXXX(), the query will be executed
+// applies a query, for example: Forecast.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

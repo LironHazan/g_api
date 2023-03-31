@@ -6,7 +6,7 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 	"g_api/libs/weather-lib/ent/weather"
 	"math"
@@ -16,52 +16,52 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ForcastQuery is the builder for querying Forcast entities.
-type ForcastQuery struct {
+// ForecastQuery is the builder for querying Forecast entities.
+type ForecastQuery struct {
 	config
 	ctx         *QueryContext
 	order       []OrderFunc
 	inters      []Interceptor
-	predicates  []predicate.Forcast
+	predicates  []predicate.Forecast
 	withWeather *WeatherQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the ForcastQuery builder.
-func (fq *ForcastQuery) Where(ps ...predicate.Forcast) *ForcastQuery {
+// Where adds a new predicate for the ForecastQuery builder.
+func (fq *ForecastQuery) Where(ps ...predicate.Forecast) *ForecastQuery {
 	fq.predicates = append(fq.predicates, ps...)
 	return fq
 }
 
 // Limit the number of records to be returned by this query.
-func (fq *ForcastQuery) Limit(limit int) *ForcastQuery {
+func (fq *ForecastQuery) Limit(limit int) *ForecastQuery {
 	fq.ctx.Limit = &limit
 	return fq
 }
 
 // Offset to start from.
-func (fq *ForcastQuery) Offset(offset int) *ForcastQuery {
+func (fq *ForecastQuery) Offset(offset int) *ForecastQuery {
 	fq.ctx.Offset = &offset
 	return fq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (fq *ForcastQuery) Unique(unique bool) *ForcastQuery {
+func (fq *ForecastQuery) Unique(unique bool) *ForecastQuery {
 	fq.ctx.Unique = &unique
 	return fq
 }
 
 // Order specifies how the records should be ordered.
-func (fq *ForcastQuery) Order(o ...OrderFunc) *ForcastQuery {
+func (fq *ForecastQuery) Order(o ...OrderFunc) *ForecastQuery {
 	fq.order = append(fq.order, o...)
 	return fq
 }
 
 // QueryWeather chains the current query on the "weather" edge.
-func (fq *ForcastQuery) QueryWeather() *WeatherQuery {
+func (fq *ForecastQuery) QueryWeather() *WeatherQuery {
 	query := (&WeatherClient{config: fq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := fq.prepareQuery(ctx); err != nil {
@@ -72,9 +72,9 @@ func (fq *ForcastQuery) QueryWeather() *WeatherQuery {
 			return nil, err
 		}
 		step := sqlgraph.NewStep(
-			sqlgraph.From(forcast.Table, forcast.FieldID, selector),
+			sqlgraph.From(forecast.Table, forecast.FieldID, selector),
 			sqlgraph.To(weather.Table, weather.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, forcast.WeatherTable, forcast.WeatherColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, forecast.WeatherTable, forecast.WeatherColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(fq.driver.Dialect(), step)
 		return fromU, nil
@@ -82,21 +82,21 @@ func (fq *ForcastQuery) QueryWeather() *WeatherQuery {
 	return query
 }
 
-// First returns the first Forcast entity from the query.
-// Returns a *NotFoundError when no Forcast was found.
-func (fq *ForcastQuery) First(ctx context.Context) (*Forcast, error) {
+// First returns the first Forecast entity from the query.
+// Returns a *NotFoundError when no Forecast was found.
+func (fq *ForecastQuery) First(ctx context.Context) (*Forecast, error) {
 	nodes, err := fq.Limit(1).All(setContextOp(ctx, fq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{forcast.Label}
+		return nil, &NotFoundError{forecast.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (fq *ForcastQuery) FirstX(ctx context.Context) *Forcast {
+func (fq *ForecastQuery) FirstX(ctx context.Context) *Forecast {
 	node, err := fq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -104,22 +104,22 @@ func (fq *ForcastQuery) FirstX(ctx context.Context) *Forcast {
 	return node
 }
 
-// FirstID returns the first Forcast ID from the query.
-// Returns a *NotFoundError when no Forcast ID was found.
-func (fq *ForcastQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first Forecast ID from the query.
+// Returns a *NotFoundError when no Forecast ID was found.
+func (fq *ForecastQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = fq.Limit(1).IDs(setContextOp(ctx, fq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{forcast.Label}
+		err = &NotFoundError{forecast.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (fq *ForcastQuery) FirstIDX(ctx context.Context) int {
+func (fq *ForecastQuery) FirstIDX(ctx context.Context) int {
 	id, err := fq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -127,10 +127,10 @@ func (fq *ForcastQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single Forcast entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one Forcast entity is found.
-// Returns a *NotFoundError when no Forcast entities are found.
-func (fq *ForcastQuery) Only(ctx context.Context) (*Forcast, error) {
+// Only returns a single Forecast entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one Forecast entity is found.
+// Returns a *NotFoundError when no Forecast entities are found.
+func (fq *ForecastQuery) Only(ctx context.Context) (*Forecast, error) {
 	nodes, err := fq.Limit(2).All(setContextOp(ctx, fq.ctx, "Only"))
 	if err != nil {
 		return nil, err
@@ -139,14 +139,14 @@ func (fq *ForcastQuery) Only(ctx context.Context) (*Forcast, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{forcast.Label}
+		return nil, &NotFoundError{forecast.Label}
 	default:
-		return nil, &NotSingularError{forcast.Label}
+		return nil, &NotSingularError{forecast.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (fq *ForcastQuery) OnlyX(ctx context.Context) *Forcast {
+func (fq *ForecastQuery) OnlyX(ctx context.Context) *Forecast {
 	node, err := fq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -154,10 +154,10 @@ func (fq *ForcastQuery) OnlyX(ctx context.Context) *Forcast {
 	return node
 }
 
-// OnlyID is like Only, but returns the only Forcast ID in the query.
-// Returns a *NotSingularError when more than one Forcast ID is found.
+// OnlyID is like Only, but returns the only Forecast ID in the query.
+// Returns a *NotSingularError when more than one Forecast ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (fq *ForcastQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (fq *ForecastQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = fq.Limit(2).IDs(setContextOp(ctx, fq.ctx, "OnlyID")); err != nil {
 		return
@@ -166,15 +166,15 @@ func (fq *ForcastQuery) OnlyID(ctx context.Context) (id int, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{forcast.Label}
+		err = &NotFoundError{forecast.Label}
 	default:
-		err = &NotSingularError{forcast.Label}
+		err = &NotSingularError{forecast.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (fq *ForcastQuery) OnlyIDX(ctx context.Context) int {
+func (fq *ForecastQuery) OnlyIDX(ctx context.Context) int {
 	id, err := fq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -182,18 +182,18 @@ func (fq *ForcastQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of Forcasts.
-func (fq *ForcastQuery) All(ctx context.Context) ([]*Forcast, error) {
+// All executes the query and returns a list of Forecasts.
+func (fq *ForecastQuery) All(ctx context.Context) ([]*Forecast, error) {
 	ctx = setContextOp(ctx, fq.ctx, "All")
 	if err := fq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	qr := querierAll[[]*Forcast, *ForcastQuery]()
-	return withInterceptors[[]*Forcast](ctx, fq, qr, fq.inters)
+	qr := querierAll[[]*Forecast, *ForecastQuery]()
+	return withInterceptors[[]*Forecast](ctx, fq, qr, fq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (fq *ForcastQuery) AllX(ctx context.Context) []*Forcast {
+func (fq *ForecastQuery) AllX(ctx context.Context) []*Forecast {
 	nodes, err := fq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -201,20 +201,20 @@ func (fq *ForcastQuery) AllX(ctx context.Context) []*Forcast {
 	return nodes
 }
 
-// IDs executes the query and returns a list of Forcast IDs.
-func (fq *ForcastQuery) IDs(ctx context.Context) (ids []int, err error) {
+// IDs executes the query and returns a list of Forecast IDs.
+func (fq *ForecastQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if fq.ctx.Unique == nil && fq.path != nil {
 		fq.Unique(true)
 	}
 	ctx = setContextOp(ctx, fq.ctx, "IDs")
-	if err = fq.Select(forcast.FieldID).Scan(ctx, &ids); err != nil {
+	if err = fq.Select(forecast.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (fq *ForcastQuery) IDsX(ctx context.Context) []int {
+func (fq *ForecastQuery) IDsX(ctx context.Context) []int {
 	ids, err := fq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -223,16 +223,16 @@ func (fq *ForcastQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (fq *ForcastQuery) Count(ctx context.Context) (int, error) {
+func (fq *ForecastQuery) Count(ctx context.Context) (int, error) {
 	ctx = setContextOp(ctx, fq.ctx, "Count")
 	if err := fq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return withInterceptors[int](ctx, fq, querierCount[*ForcastQuery](), fq.inters)
+	return withInterceptors[int](ctx, fq, querierCount[*ForecastQuery](), fq.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (fq *ForcastQuery) CountX(ctx context.Context) int {
+func (fq *ForecastQuery) CountX(ctx context.Context) int {
 	count, err := fq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -241,7 +241,7 @@ func (fq *ForcastQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (fq *ForcastQuery) Exist(ctx context.Context) (bool, error) {
+func (fq *ForecastQuery) Exist(ctx context.Context) (bool, error) {
 	ctx = setContextOp(ctx, fq.ctx, "Exist")
 	switch _, err := fq.FirstID(ctx); {
 	case IsNotFound(err):
@@ -254,7 +254,7 @@ func (fq *ForcastQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (fq *ForcastQuery) ExistX(ctx context.Context) bool {
+func (fq *ForecastQuery) ExistX(ctx context.Context) bool {
 	exist, err := fq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -262,18 +262,18 @@ func (fq *ForcastQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the ForcastQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the ForecastQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (fq *ForcastQuery) Clone() *ForcastQuery {
+func (fq *ForecastQuery) Clone() *ForecastQuery {
 	if fq == nil {
 		return nil
 	}
-	return &ForcastQuery{
+	return &ForecastQuery{
 		config:      fq.config,
 		ctx:         fq.ctx.Clone(),
 		order:       append([]OrderFunc{}, fq.order...),
 		inters:      append([]Interceptor{}, fq.inters...),
-		predicates:  append([]predicate.Forcast{}, fq.predicates...),
+		predicates:  append([]predicate.Forecast{}, fq.predicates...),
 		withWeather: fq.withWeather.Clone(),
 		// clone intermediate query.
 		sql:  fq.sql.Clone(),
@@ -283,7 +283,7 @@ func (fq *ForcastQuery) Clone() *ForcastQuery {
 
 // WithWeather tells the query-builder to eager-load the nodes that are connected to
 // the "weather" edge. The optional arguments are used to configure the query builder of the edge.
-func (fq *ForcastQuery) WithWeather(opts ...func(*WeatherQuery)) *ForcastQuery {
+func (fq *ForecastQuery) WithWeather(opts ...func(*WeatherQuery)) *ForecastQuery {
 	query := (&WeatherClient{config: fq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
@@ -302,15 +302,15 @@ func (fq *ForcastQuery) WithWeather(opts ...func(*WeatherQuery)) *ForcastQuery {
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.Forcast.Query().
-//		GroupBy(forcast.FieldCountry).
+//	client.Forecast.Query().
+//		GroupBy(forecast.FieldCountry).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
-func (fq *ForcastQuery) GroupBy(field string, fields ...string) *ForcastGroupBy {
+func (fq *ForecastQuery) GroupBy(field string, fields ...string) *ForecastGroupBy {
 	fq.ctx.Fields = append([]string{field}, fields...)
-	grbuild := &ForcastGroupBy{build: fq}
+	grbuild := &ForecastGroupBy{build: fq}
 	grbuild.flds = &fq.ctx.Fields
-	grbuild.label = forcast.Label
+	grbuild.label = forecast.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
 }
@@ -324,23 +324,23 @@ func (fq *ForcastQuery) GroupBy(field string, fields ...string) *ForcastGroupBy 
 //		Country string `json:"country,omitempty"`
 //	}
 //
-//	client.Forcast.Query().
-//		Select(forcast.FieldCountry).
+//	client.Forecast.Query().
+//		Select(forecast.FieldCountry).
 //		Scan(ctx, &v)
-func (fq *ForcastQuery) Select(fields ...string) *ForcastSelect {
+func (fq *ForecastQuery) Select(fields ...string) *ForecastSelect {
 	fq.ctx.Fields = append(fq.ctx.Fields, fields...)
-	sbuild := &ForcastSelect{ForcastQuery: fq}
-	sbuild.label = forcast.Label
+	sbuild := &ForecastSelect{ForecastQuery: fq}
+	sbuild.label = forecast.Label
 	sbuild.flds, sbuild.scan = &fq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
-// Aggregate returns a ForcastSelect configured with the given aggregations.
-func (fq *ForcastQuery) Aggregate(fns ...AggregateFunc) *ForcastSelect {
+// Aggregate returns a ForecastSelect configured with the given aggregations.
+func (fq *ForecastQuery) Aggregate(fns ...AggregateFunc) *ForecastSelect {
 	return fq.Select().Aggregate(fns...)
 }
 
-func (fq *ForcastQuery) prepareQuery(ctx context.Context) error {
+func (fq *ForecastQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range fq.inters {
 		if inter == nil {
 			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
@@ -352,7 +352,7 @@ func (fq *ForcastQuery) prepareQuery(ctx context.Context) error {
 		}
 	}
 	for _, f := range fq.ctx.Fields {
-		if !forcast.ValidColumn(f) {
+		if !forecast.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -366,19 +366,19 @@ func (fq *ForcastQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (fq *ForcastQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Forcast, error) {
+func (fq *ForecastQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Forecast, error) {
 	var (
-		nodes       = []*Forcast{}
+		nodes       = []*Forecast{}
 		_spec       = fq.querySpec()
 		loadedTypes = [1]bool{
 			fq.withWeather != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
-		return (*Forcast).scanValues(nil, columns)
+		return (*Forecast).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &Forcast{config: fq.config}
+		node := &Forecast{config: fq.config}
 		nodes = append(nodes, node)
 		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
@@ -394,17 +394,17 @@ func (fq *ForcastQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Forc
 	}
 	if query := fq.withWeather; query != nil {
 		if err := fq.loadWeather(ctx, query, nodes,
-			func(n *Forcast) { n.Edges.Weather = []*Weather{} },
-			func(n *Forcast, e *Weather) { n.Edges.Weather = append(n.Edges.Weather, e) }); err != nil {
+			func(n *Forecast) { n.Edges.Weather = []*Weather{} },
+			func(n *Forecast, e *Weather) { n.Edges.Weather = append(n.Edges.Weather, e) }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (fq *ForcastQuery) loadWeather(ctx context.Context, query *WeatherQuery, nodes []*Forcast, init func(*Forcast), assign func(*Forcast, *Weather)) error {
+func (fq *ForecastQuery) loadWeather(ctx context.Context, query *WeatherQuery, nodes []*Forecast, init func(*Forecast), assign func(*Forecast, *Weather)) error {
 	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*Forcast)
+	nodeids := make(map[int]*Forecast)
 	for i := range nodes {
 		fks = append(fks, nodes[i].ID)
 		nodeids[nodes[i].ID] = nodes[i]
@@ -414,27 +414,27 @@ func (fq *ForcastQuery) loadWeather(ctx context.Context, query *WeatherQuery, no
 	}
 	query.withFKs = true
 	query.Where(predicate.Weather(func(s *sql.Selector) {
-		s.Where(sql.InValues(forcast.WeatherColumn, fks...))
+		s.Where(sql.InValues(forecast.WeatherColumn, fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.forcast_weather
+		fk := n.forecast_weather
 		if fk == nil {
-			return fmt.Errorf(`foreign-key "forcast_weather" is nil for node %v`, n.ID)
+			return fmt.Errorf(`foreign-key "forecast_weather" is nil for node %v`, n.ID)
 		}
 		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "forcast_weather" returned %v for node %v`, *fk, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "forecast_weather" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}
 	return nil
 }
 
-func (fq *ForcastQuery) sqlCount(ctx context.Context) (int, error) {
+func (fq *ForecastQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := fq.querySpec()
 	_spec.Node.Columns = fq.ctx.Fields
 	if len(fq.ctx.Fields) > 0 {
@@ -443,8 +443,8 @@ func (fq *ForcastQuery) sqlCount(ctx context.Context) (int, error) {
 	return sqlgraph.CountNodes(ctx, fq.driver, _spec)
 }
 
-func (fq *ForcastQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(forcast.Table, forcast.Columns, sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt))
+func (fq *ForecastQuery) querySpec() *sqlgraph.QuerySpec {
+	_spec := sqlgraph.NewQuerySpec(forecast.Table, forecast.Columns, sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt))
 	_spec.From = fq.sql
 	if unique := fq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -453,9 +453,9 @@ func (fq *ForcastQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := fq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, forcast.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, forecast.FieldID)
 		for i := range fields {
-			if fields[i] != forcast.FieldID {
+			if fields[i] != forecast.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -483,12 +483,12 @@ func (fq *ForcastQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (fq *ForcastQuery) sqlQuery(ctx context.Context) *sql.Selector {
+func (fq *ForecastQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(fq.driver.Dialect())
-	t1 := builder.Table(forcast.Table)
+	t1 := builder.Table(forecast.Table)
 	columns := fq.ctx.Fields
 	if len(columns) == 0 {
-		columns = forcast.Columns
+		columns = forecast.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if fq.sql != nil {
@@ -515,28 +515,28 @@ func (fq *ForcastQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	return selector
 }
 
-// ForcastGroupBy is the group-by builder for Forcast entities.
-type ForcastGroupBy struct {
+// ForecastGroupBy is the group-by builder for Forecast entities.
+type ForecastGroupBy struct {
 	selector
-	build *ForcastQuery
+	build *ForecastQuery
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (fgb *ForcastGroupBy) Aggregate(fns ...AggregateFunc) *ForcastGroupBy {
+func (fgb *ForecastGroupBy) Aggregate(fns ...AggregateFunc) *ForecastGroupBy {
 	fgb.fns = append(fgb.fns, fns...)
 	return fgb
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (fgb *ForcastGroupBy) Scan(ctx context.Context, v any) error {
+func (fgb *ForecastGroupBy) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, fgb.build.ctx, "GroupBy")
 	if err := fgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*ForcastQuery, *ForcastGroupBy](ctx, fgb.build, fgb, fgb.build.inters, v)
+	return scanWithInterceptors[*ForecastQuery, *ForecastGroupBy](ctx, fgb.build, fgb, fgb.build.inters, v)
 }
 
-func (fgb *ForcastGroupBy) sqlScan(ctx context.Context, root *ForcastQuery, v any) error {
+func (fgb *ForecastGroupBy) sqlScan(ctx context.Context, root *ForecastQuery, v any) error {
 	selector := root.sqlQuery(ctx).Select()
 	aggregation := make([]string, 0, len(fgb.fns))
 	for _, fn := range fgb.fns {
@@ -563,28 +563,28 @@ func (fgb *ForcastGroupBy) sqlScan(ctx context.Context, root *ForcastQuery, v an
 	return sql.ScanSlice(rows, v)
 }
 
-// ForcastSelect is the builder for selecting fields of Forcast entities.
-type ForcastSelect struct {
-	*ForcastQuery
+// ForecastSelect is the builder for selecting fields of Forecast entities.
+type ForecastSelect struct {
+	*ForecastQuery
 	selector
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
-func (fs *ForcastSelect) Aggregate(fns ...AggregateFunc) *ForcastSelect {
+func (fs *ForecastSelect) Aggregate(fns ...AggregateFunc) *ForecastSelect {
 	fs.fns = append(fs.fns, fns...)
 	return fs
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (fs *ForcastSelect) Scan(ctx context.Context, v any) error {
+func (fs *ForecastSelect) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, fs.ctx, "Select")
 	if err := fs.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*ForcastQuery, *ForcastSelect](ctx, fs.ForcastQuery, fs, fs.inters, v)
+	return scanWithInterceptors[*ForecastQuery, *ForecastSelect](ctx, fs.ForecastQuery, fs, fs.inters, v)
 }
 
-func (fs *ForcastSelect) sqlScan(ctx context.Context, root *ForcastQuery, v any) error {
+func (fs *ForecastSelect) sqlScan(ctx context.Context, root *ForecastQuery, v any) error {
 	selector := root.sqlQuery(ctx)
 	aggregation := make([]string, 0, len(fs.fns))
 	for _, fn := range fs.fns {

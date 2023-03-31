@@ -8,16 +8,16 @@ import (
 	"g_api/libs/weather-lib/ent"
 )
 
-// The ForcastFunc type is an adapter to allow the use of ordinary
-// function as Forcast mutator.
-type ForcastFunc func(context.Context, *ent.ForcastMutation) (ent.Value, error)
+// The ForecastFunc type is an adapter to allow the use of ordinary
+// function as Forecast mutator.
+type ForecastFunc func(context.Context, *ent.ForecastMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f ForcastFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.ForcastMutation); ok {
+func (f ForecastFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ForecastMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ForcastMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ForecastMutation", m)
 }
 
 // The WeatherFunc type is an adapter to allow the use of ordinary

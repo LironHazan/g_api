@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/weather"
 	"reflect"
 
@@ -66,8 +66,8 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		forcast.Table: forcast.ValidColumn,
-		weather.Table: weather.ValidColumn,
+		forecast.Table: forecast.ValidColumn,
+		weather.Table:  weather.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

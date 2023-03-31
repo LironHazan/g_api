@@ -8,13 +8,13 @@ import (
 
 // daily_forecast{} --> [Weather{}, Weather{}, Weather{}]
 
-// Forcast holds the schema definition for the Forcast entity.
-type Forcast struct {
+// Forecast holds the schema definition for the Forecast entity.
+type Forecast struct {
 	ent.Schema
 }
 
-// Fields of the Forcast.
-func (Forcast) Fields() []ent.Field {
+// Fields of the Forecast.
+func (Forecast) Fields() []ent.Field {
 	return []ent.Field{
 		field.Text("country").
 			NotEmpty(),
@@ -33,8 +33,8 @@ func (Forcast) Fields() []ent.Field {
 	}
 }
 
-// Edges of the Forcast.
-func (Forcast) Edges() []ent.Edge {
+// Edges of the Forecast.
+func (Forecast) Edges() []ent.Edge {
 	return []ent.Edge{ //O2M
 		edge.To("weather", Weather.Type),
 	}

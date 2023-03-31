@@ -23,11 +23,11 @@ const (
 	Table = "weathers"
 	// ForcastTable is the table that holds the forcast relation/edge.
 	ForcastTable = "weathers"
-	// ForcastInverseTable is the table name for the Forcast entity.
-	// It exists in this package in order to avoid circular dependency with the "forcast" package.
-	ForcastInverseTable = "forcasts"
+	// ForcastInverseTable is the table name for the Forecast entity.
+	// It exists in this package in order to avoid circular dependency with the "forecast" package.
+	ForcastInverseTable = "forecasts"
 	// ForcastColumn is the table column denoting the forcast relation/edge.
-	ForcastColumn = "forcast_weather"
+	ForcastColumn = "forecast_weather"
 )
 
 // Columns holds all SQL columns for weather fields.
@@ -43,7 +43,7 @@ var Columns = []string{
 // ForeignKeys holds the SQL foreign-keys that are owned by the "weathers"
 // table and are not defined as standalone fields in the schema.
 var ForeignKeys = []string{
-	"forcast_weather",
+	"forecast_weather",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

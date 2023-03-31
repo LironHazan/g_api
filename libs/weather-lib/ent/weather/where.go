@@ -337,7 +337,7 @@ func HasForcast() predicate.Weather {
 }
 
 // HasForcastWith applies the HasEdge predicate on the "forcast" edge with a given conditions (other predicates).
-func HasForcastWith(preds ...predicate.Forcast) predicate.Weather {
+func HasForcastWith(preds ...predicate.Forecast) predicate.Weather {
 	return predicate.Weather(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),

@@ -4,7 +4,7 @@ package ent
 
 import (
 	"context"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 
 	"entgo.io/ent/dialect/sql"
@@ -12,26 +12,26 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ForcastDelete is the builder for deleting a Forcast entity.
-type ForcastDelete struct {
+// ForecastDelete is the builder for deleting a Forecast entity.
+type ForecastDelete struct {
 	config
 	hooks    []Hook
-	mutation *ForcastMutation
+	mutation *ForecastMutation
 }
 
-// Where appends a list predicates to the ForcastDelete builder.
-func (fd *ForcastDelete) Where(ps ...predicate.Forcast) *ForcastDelete {
+// Where appends a list predicates to the ForecastDelete builder.
+func (fd *ForecastDelete) Where(ps ...predicate.Forecast) *ForecastDelete {
 	fd.mutation.Where(ps...)
 	return fd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (fd *ForcastDelete) Exec(ctx context.Context) (int, error) {
-	return withHooks[int, ForcastMutation](ctx, fd.sqlExec, fd.mutation, fd.hooks)
+func (fd *ForecastDelete) Exec(ctx context.Context) (int, error) {
+	return withHooks[int, ForecastMutation](ctx, fd.sqlExec, fd.mutation, fd.hooks)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fd *ForcastDelete) ExecX(ctx context.Context) int {
+func (fd *ForecastDelete) ExecX(ctx context.Context) int {
 	n, err := fd.Exec(ctx)
 	if err != nil {
 		panic(err)
@@ -39,8 +39,8 @@ func (fd *ForcastDelete) ExecX(ctx context.Context) int {
 	return n
 }
 
-func (fd *ForcastDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(forcast.Table, sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt))
+func (fd *ForecastDelete) sqlExec(ctx context.Context) (int, error) {
+	_spec := sqlgraph.NewDeleteSpec(forecast.Table, sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt))
 	if ps := fd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -56,32 +56,32 @@ func (fd *ForcastDelete) sqlExec(ctx context.Context) (int, error) {
 	return affected, err
 }
 
-// ForcastDeleteOne is the builder for deleting a single Forcast entity.
-type ForcastDeleteOne struct {
-	fd *ForcastDelete
+// ForecastDeleteOne is the builder for deleting a single Forecast entity.
+type ForecastDeleteOne struct {
+	fd *ForecastDelete
 }
 
-// Where appends a list predicates to the ForcastDelete builder.
-func (fdo *ForcastDeleteOne) Where(ps ...predicate.Forcast) *ForcastDeleteOne {
+// Where appends a list predicates to the ForecastDelete builder.
+func (fdo *ForecastDeleteOne) Where(ps ...predicate.Forecast) *ForecastDeleteOne {
 	fdo.fd.mutation.Where(ps...)
 	return fdo
 }
 
 // Exec executes the deletion query.
-func (fdo *ForcastDeleteOne) Exec(ctx context.Context) error {
+func (fdo *ForecastDeleteOne) Exec(ctx context.Context) error {
 	n, err := fdo.fd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{forcast.Label}
+		return &NotFoundError{forecast.Label}
 	default:
 		return nil
 	}
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fdo *ForcastDeleteOne) ExecX(ctx context.Context) {
+func (fdo *ForecastDeleteOne) ExecX(ctx context.Context) {
 	if err := fdo.Exec(ctx); err != nil {
 		panic(err)
 	}

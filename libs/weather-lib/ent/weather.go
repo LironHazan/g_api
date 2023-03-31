@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/weather"
 	"strings"
 	"time"
@@ -29,14 +29,14 @@ type Weather struct {
 	FeelsLike float64 `json:"feels_like,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the WeatherQuery when eager-loading is set.
-	Edges           WeatherEdges `json:"edges"`
-	forcast_weather *int
+	Edges            WeatherEdges `json:"edges"`
+	forecast_weather *int
 }
 
 // WeatherEdges holds the relations/edges for other nodes in the graph.
 type WeatherEdges struct {
 	// Forcast holds the value of the forcast edge.
-	Forcast *Forcast `json:"forcast,omitempty"`
+	Forcast *Forecast `json:"forcast,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
@@ -44,11 +44,11 @@ type WeatherEdges struct {
 
 // ForcastOrErr returns the Forcast value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e WeatherEdges) ForcastOrErr() (*Forcast, error) {
+func (e WeatherEdges) ForcastOrErr() (*Forecast, error) {
 	if e.loadedTypes[0] {
 		if e.Forcast == nil {
 			// Edge was loaded but was not found.
-			return nil, &NotFoundError{label: forcast.Label}
+			return nil, &NotFoundError{label: forecast.Label}
 		}
 		return e.Forcast, nil
 	}
@@ -68,7 +68,7 @@ func (*Weather) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullString)
 		case weather.FieldTimeEpoch:
 			values[i] = new(sql.NullTime)
-		case weather.ForeignKeys[0]: // forcast_weather
+		case weather.ForeignKeys[0]: // forecast_weather
 			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Weather", columns[i])
@@ -123,10 +123,10 @@ func (w *Weather) assignValues(columns []string, values []any) error {
 			}
 		case weather.ForeignKeys[0]:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field forcast_weather", value)
+				return fmt.Errorf("unexpected type %T for edge-field forecast_weather", value)
 			} else if value.Valid {
-				w.forcast_weather = new(int)
-				*w.forcast_weather = int(value.Int64)
+				w.forecast_weather = new(int)
+				*w.forecast_weather = int(value.Int64)
 			}
 		}
 	}
@@ -134,7 +134,7 @@ func (w *Weather) assignValues(columns []string, values []any) error {
 }
 
 // QueryForcast queries the "forcast" edge of the Weather entity.
-func (w *Weather) QueryForcast() *ForcastQuery {
+func (w *Weather) QueryForcast() *ForecastQuery {
 	return NewWeatherClient(w.config).QueryForcast(w)
 }
 

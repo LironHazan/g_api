@@ -5,7 +5,7 @@ package ent
 import (
 	"context"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 	"g_api/libs/weather-lib/ent/weather"
 	"math"
@@ -22,7 +22,7 @@ type WeatherQuery struct {
 	order       []OrderFunc
 	inters      []Interceptor
 	predicates  []predicate.Weather
-	withForcast *ForcastQuery
+	withForcast *ForecastQuery
 	withFKs     bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -61,8 +61,8 @@ func (wq *WeatherQuery) Order(o ...OrderFunc) *WeatherQuery {
 }
 
 // QueryForcast chains the current query on the "forcast" edge.
-func (wq *WeatherQuery) QueryForcast() *ForcastQuery {
-	query := (&ForcastClient{config: wq.config}).Query()
+func (wq *WeatherQuery) QueryForcast() *ForecastQuery {
+	query := (&ForecastClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := wq.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -73,7 +73,7 @@ func (wq *WeatherQuery) QueryForcast() *ForcastQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(weather.Table, weather.FieldID, selector),
-			sqlgraph.To(forcast.Table, forcast.FieldID),
+			sqlgraph.To(forecast.Table, forecast.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForcastTable, weather.ForcastColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(wq.driver.Dialect(), step)
@@ -283,8 +283,8 @@ func (wq *WeatherQuery) Clone() *WeatherQuery {
 
 // WithForcast tells the query-builder to eager-load the nodes that are connected to
 // the "forcast" edge. The optional arguments are used to configure the query builder of the edge.
-func (wq *WeatherQuery) WithForcast(opts ...func(*ForcastQuery)) *WeatherQuery {
-	query := (&ForcastClient{config: wq.config}).Query()
+func (wq *WeatherQuery) WithForcast(opts ...func(*ForecastQuery)) *WeatherQuery {
+	query := (&ForecastClient{config: wq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
@@ -401,21 +401,21 @@ func (wq *WeatherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Weat
 	}
 	if query := wq.withForcast; query != nil {
 		if err := wq.loadForcast(ctx, query, nodes, nil,
-			func(n *Weather, e *Forcast) { n.Edges.Forcast = e }); err != nil {
+			func(n *Weather, e *Forecast) { n.Edges.Forcast = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (wq *WeatherQuery) loadForcast(ctx context.Context, query *ForcastQuery, nodes []*Weather, init func(*Weather), assign func(*Weather, *Forcast)) error {
+func (wq *WeatherQuery) loadForcast(ctx context.Context, query *ForecastQuery, nodes []*Weather, init func(*Weather), assign func(*Weather, *Forecast)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Weather)
 	for i := range nodes {
-		if nodes[i].forcast_weather == nil {
+		if nodes[i].forecast_weather == nil {
 			continue
 		}
-		fk := *nodes[i].forcast_weather
+		fk := *nodes[i].forecast_weather
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -424,7 +424,7 @@ func (wq *WeatherQuery) loadForcast(ctx context.Context, query *ForcastQuery, no
 	if len(ids) == 0 {
 		return nil
 	}
-	query.Where(forcast.IDIn(ids...))
+	query.Where(forecast.IDIn(ids...))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
@@ -432,7 +432,7 @@ func (wq *WeatherQuery) loadForcast(ctx context.Context, query *ForcastQuery, no
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "forcast_weather" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "forecast_weather" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)

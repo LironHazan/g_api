@@ -10,7 +10,7 @@ import (
 
 	"g_api/libs/weather-lib/ent/migrate"
 
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/weather"
 
 	"entgo.io/ent"
@@ -24,8 +24,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
-	// Forcast is the client for interacting with the Forcast builders.
-	Forcast *ForcastClient
+	// Forecast is the client for interacting with the Forecast builders.
+	Forecast *ForecastClient
 	// Weather is the client for interacting with the Weather builders.
 	Weather *WeatherClient
 }
@@ -41,7 +41,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
-	c.Forcast = NewForcastClient(c.config)
+	c.Forecast = NewForecastClient(c.config)
 	c.Weather = NewWeatherClient(c.config)
 }
 
@@ -123,10 +123,10 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		Forcast: NewForcastClient(cfg),
-		Weather: NewWeatherClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Forecast: NewForecastClient(cfg),
+		Weather:  NewWeatherClient(cfg),
 	}, nil
 }
 
@@ -144,17 +144,17 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:     ctx,
-		config:  cfg,
-		Forcast: NewForcastClient(cfg),
-		Weather: NewWeatherClient(cfg),
+		ctx:      ctx,
+		config:   cfg,
+		Forecast: NewForecastClient(cfg),
+		Weather:  NewWeatherClient(cfg),
 	}, nil
 }
 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Forcast.
+//		Forecast.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -176,22 +176,22 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Forcast.Use(hooks...)
+	c.Forecast.Use(hooks...)
 	c.Weather.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Forcast.Intercept(interceptors...)
+	c.Forecast.Intercept(interceptors...)
 	c.Weather.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
-	case *ForcastMutation:
-		return c.Forcast.mutate(ctx, m)
+	case *ForecastMutation:
+		return c.Forecast.mutate(ctx, m)
 	case *WeatherMutation:
 		return c.Weather.mutate(ctx, m)
 	default:
@@ -199,92 +199,92 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	}
 }
 
-// ForcastClient is a client for the Forcast schema.
-type ForcastClient struct {
+// ForecastClient is a client for the Forecast schema.
+type ForecastClient struct {
 	config
 }
 
-// NewForcastClient returns a client for the Forcast from the given config.
-func NewForcastClient(c config) *ForcastClient {
-	return &ForcastClient{config: c}
+// NewForecastClient returns a client for the Forecast from the given config.
+func NewForecastClient(c config) *ForecastClient {
+	return &ForecastClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `forcast.Hooks(f(g(h())))`.
-func (c *ForcastClient) Use(hooks ...Hook) {
-	c.hooks.Forcast = append(c.hooks.Forcast, hooks...)
+// A call to `Use(f, g, h)` equals to `forecast.Hooks(f(g(h())))`.
+func (c *ForecastClient) Use(hooks ...Hook) {
+	c.hooks.Forecast = append(c.hooks.Forecast, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `forcast.Intercept(f(g(h())))`.
-func (c *ForcastClient) Intercept(interceptors ...Interceptor) {
-	c.inters.Forcast = append(c.inters.Forcast, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `forecast.Intercept(f(g(h())))`.
+func (c *ForecastClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Forecast = append(c.inters.Forecast, interceptors...)
 }
 
-// Create returns a builder for creating a Forcast entity.
-func (c *ForcastClient) Create() *ForcastCreate {
-	mutation := newForcastMutation(c.config, OpCreate)
-	return &ForcastCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a Forecast entity.
+func (c *ForecastClient) Create() *ForecastCreate {
+	mutation := newForecastMutation(c.config, OpCreate)
+	return &ForecastCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of Forcast entities.
-func (c *ForcastClient) CreateBulk(builders ...*ForcastCreate) *ForcastCreateBulk {
-	return &ForcastCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of Forecast entities.
+func (c *ForecastClient) CreateBulk(builders ...*ForecastCreate) *ForecastCreateBulk {
+	return &ForecastCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for Forcast.
-func (c *ForcastClient) Update() *ForcastUpdate {
-	mutation := newForcastMutation(c.config, OpUpdate)
-	return &ForcastUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for Forecast.
+func (c *ForecastClient) Update() *ForecastUpdate {
+	mutation := newForecastMutation(c.config, OpUpdate)
+	return &ForecastUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *ForcastClient) UpdateOne(f *Forcast) *ForcastUpdateOne {
-	mutation := newForcastMutation(c.config, OpUpdateOne, withForcast(f))
-	return &ForcastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ForecastClient) UpdateOne(f *Forecast) *ForecastUpdateOne {
+	mutation := newForecastMutation(c.config, OpUpdateOne, withForecast(f))
+	return &ForecastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *ForcastClient) UpdateOneID(id int) *ForcastUpdateOne {
-	mutation := newForcastMutation(c.config, OpUpdateOne, withForcastID(id))
-	return &ForcastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *ForecastClient) UpdateOneID(id int) *ForecastUpdateOne {
+	mutation := newForecastMutation(c.config, OpUpdateOne, withForecastID(id))
+	return &ForecastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for Forcast.
-func (c *ForcastClient) Delete() *ForcastDelete {
-	mutation := newForcastMutation(c.config, OpDelete)
-	return &ForcastDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for Forecast.
+func (c *ForecastClient) Delete() *ForecastDelete {
+	mutation := newForecastMutation(c.config, OpDelete)
+	return &ForecastDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *ForcastClient) DeleteOne(f *Forcast) *ForcastDeleteOne {
+func (c *ForecastClient) DeleteOne(f *Forecast) *ForecastDeleteOne {
 	return c.DeleteOneID(f.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *ForcastClient) DeleteOneID(id int) *ForcastDeleteOne {
-	builder := c.Delete().Where(forcast.ID(id))
+func (c *ForecastClient) DeleteOneID(id int) *ForecastDeleteOne {
+	builder := c.Delete().Where(forecast.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &ForcastDeleteOne{builder}
+	return &ForecastDeleteOne{builder}
 }
 
-// Query returns a query builder for Forcast.
-func (c *ForcastClient) Query() *ForcastQuery {
-	return &ForcastQuery{
+// Query returns a query builder for Forecast.
+func (c *ForecastClient) Query() *ForecastQuery {
+	return &ForecastQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeForcast},
+		ctx:    &QueryContext{Type: TypeForecast},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a Forcast entity by its id.
-func (c *ForcastClient) Get(ctx context.Context, id int) (*Forcast, error) {
-	return c.Query().Where(forcast.ID(id)).Only(ctx)
+// Get returns a Forecast entity by its id.
+func (c *ForecastClient) Get(ctx context.Context, id int) (*Forecast, error) {
+	return c.Query().Where(forecast.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *ForcastClient) GetX(ctx context.Context, id int) *Forcast {
+func (c *ForecastClient) GetX(ctx context.Context, id int) *Forecast {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -292,15 +292,15 @@ func (c *ForcastClient) GetX(ctx context.Context, id int) *Forcast {
 	return obj
 }
 
-// QueryWeather queries the weather edge of a Forcast.
-func (c *ForcastClient) QueryWeather(f *Forcast) *WeatherQuery {
+// QueryWeather queries the weather edge of a Forecast.
+func (c *ForecastClient) QueryWeather(f *Forecast) *WeatherQuery {
 	query := (&WeatherClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := f.ID
 		step := sqlgraph.NewStep(
-			sqlgraph.From(forcast.Table, forcast.FieldID, id),
+			sqlgraph.From(forecast.Table, forecast.FieldID, id),
 			sqlgraph.To(weather.Table, weather.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, forcast.WeatherTable, forcast.WeatherColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, forecast.WeatherTable, forecast.WeatherColumn),
 		)
 		fromV = sqlgraph.Neighbors(f.driver.Dialect(), step)
 		return fromV, nil
@@ -309,27 +309,27 @@ func (c *ForcastClient) QueryWeather(f *Forcast) *WeatherQuery {
 }
 
 // Hooks returns the client hooks.
-func (c *ForcastClient) Hooks() []Hook {
-	return c.hooks.Forcast
+func (c *ForecastClient) Hooks() []Hook {
+	return c.hooks.Forecast
 }
 
 // Interceptors returns the client interceptors.
-func (c *ForcastClient) Interceptors() []Interceptor {
-	return c.inters.Forcast
+func (c *ForecastClient) Interceptors() []Interceptor {
+	return c.inters.Forecast
 }
 
-func (c *ForcastClient) mutate(ctx context.Context, m *ForcastMutation) (Value, error) {
+func (c *ForecastClient) mutate(ctx context.Context, m *ForecastMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&ForcastCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ForecastCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&ForcastUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ForecastUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&ForcastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&ForecastUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&ForcastDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&ForecastDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown Forcast mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown Forecast mutation op: %q", m.Op())
 	}
 }
 
@@ -427,13 +427,13 @@ func (c *WeatherClient) GetX(ctx context.Context, id int) *Weather {
 }
 
 // QueryForcast queries the forcast edge of a Weather.
-func (c *WeatherClient) QueryForcast(w *Weather) *ForcastQuery {
-	query := (&ForcastClient{config: c.config}).Query()
+func (c *WeatherClient) QueryForcast(w *Weather) *ForecastQuery {
+	query := (&ForecastClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := w.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(weather.Table, weather.FieldID, id),
-			sqlgraph.To(forcast.Table, forcast.FieldID),
+			sqlgraph.To(forecast.Table, forecast.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForcastTable, weather.ForcastColumn),
 		)
 		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
@@ -470,9 +470,9 @@ func (c *WeatherClient) mutate(ctx context.Context, m *WeatherMutation) (Value, 
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Forcast, Weather []ent.Hook
+		Forecast, Weather []ent.Hook
 	}
 	inters struct {
-		Forcast, Weather []ent.Interceptor
+		Forecast, Weather []ent.Interceptor
 	}
 )

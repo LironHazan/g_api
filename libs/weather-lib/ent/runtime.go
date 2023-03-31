@@ -3,7 +3,7 @@
 package ent
 
 import (
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/schema"
 )
 
@@ -11,22 +11,22 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	forcastFields := schema.Forcast{}.Fields()
-	_ = forcastFields
-	// forcastDescCountry is the schema descriptor for country field.
-	forcastDescCountry := forcastFields[0].Descriptor()
-	// forcast.CountryValidator is a validator for the "country" field. It is called by the builders before save.
-	forcast.CountryValidator = forcastDescCountry.Validators[0].(func(string) error)
-	// forcastDescMaxTemp is the schema descriptor for max_temp field.
-	forcastDescMaxTemp := forcastFields[5].Descriptor()
-	// forcast.DefaultMaxTemp holds the default value on creation for the max_temp field.
-	forcast.DefaultMaxTemp = forcastDescMaxTemp.Default.(float64)
-	// forcastDescMinTemp is the schema descriptor for min_temp field.
-	forcastDescMinTemp := forcastFields[6].Descriptor()
-	// forcast.DefaultMinTemp holds the default value on creation for the min_temp field.
-	forcast.DefaultMinTemp = forcastDescMinTemp.Default.(float64)
-	// forcastDescAvgTemp is the schema descriptor for avg_temp field.
-	forcastDescAvgTemp := forcastFields[7].Descriptor()
-	// forcast.DefaultAvgTemp holds the default value on creation for the avg_temp field.
-	forcast.DefaultAvgTemp = forcastDescAvgTemp.Default.(float64)
+	forecastFields := schema.Forecast{}.Fields()
+	_ = forecastFields
+	// forecastDescCountry is the schema descriptor for country field.
+	forecastDescCountry := forecastFields[0].Descriptor()
+	// forecast.CountryValidator is a validator for the "country" field. It is called by the builders before save.
+	forecast.CountryValidator = forecastDescCountry.Validators[0].(func(string) error)
+	// forecastDescMaxTemp is the schema descriptor for max_temp field.
+	forecastDescMaxTemp := forecastFields[5].Descriptor()
+	// forecast.DefaultMaxTemp holds the default value on creation for the max_temp field.
+	forecast.DefaultMaxTemp = forecastDescMaxTemp.Default.(float64)
+	// forecastDescMinTemp is the schema descriptor for min_temp field.
+	forecastDescMinTemp := forecastFields[6].Descriptor()
+	// forecast.DefaultMinTemp holds the default value on creation for the min_temp field.
+	forecast.DefaultMinTemp = forecastDescMinTemp.Default.(float64)
+	// forecastDescAvgTemp is the schema descriptor for avg_temp field.
+	forecastDescAvgTemp := forecastFields[7].Descriptor()
+	// forecast.DefaultAvgTemp holds the default value on creation for the avg_temp field.
+	forecast.DefaultAvgTemp = forecastDescAvgTemp.Default.(float64)
 }

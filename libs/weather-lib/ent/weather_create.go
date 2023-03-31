@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/weather"
 	"time"
 
@@ -67,13 +67,13 @@ func (wc *WeatherCreate) SetFeelsLike(f float64) *WeatherCreate {
 	return wc
 }
 
-// SetForcastID sets the "forcast" edge to the Forcast entity by ID.
+// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
 func (wc *WeatherCreate) SetForcastID(id int) *WeatherCreate {
 	wc.mutation.SetForcastID(id)
 	return wc
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forcast entity by ID if the given value is not nil.
+// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
 func (wc *WeatherCreate) SetNillableForcastID(id *int) *WeatherCreate {
 	if id != nil {
 		wc = wc.SetForcastID(*id)
@@ -81,8 +81,8 @@ func (wc *WeatherCreate) SetNillableForcastID(id *int) *WeatherCreate {
 	return wc
 }
 
-// SetForcast sets the "forcast" edge to the Forcast entity.
-func (wc *WeatherCreate) SetForcast(f *Forcast) *WeatherCreate {
+// SetForcast sets the "forcast" edge to the Forecast entity.
+func (wc *WeatherCreate) SetForcast(f *Forecast) *WeatherCreate {
 	return wc.SetForcastID(f.ID)
 }
 
@@ -183,13 +183,13 @@ func (wc *WeatherCreate) createSpec() (*Weather, *sqlgraph.CreateSpec) {
 			Columns: []string{weather.ForcastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.forcast_weather = &nodes[0]
+		_node.forecast_weather = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

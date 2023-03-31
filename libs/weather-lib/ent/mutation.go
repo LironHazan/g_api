@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 	"g_api/libs/weather-lib/ent/weather"
 	"sync"
@@ -25,12 +25,12 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeForcast = "Forcast"
-	TypeWeather = "Weather"
+	TypeForecast = "Forecast"
+	TypeWeather  = "Weather"
 )
 
-// ForcastMutation represents an operation that mutates the Forcast nodes in the graph.
-type ForcastMutation struct {
+// ForecastMutation represents an operation that mutates the Forecast nodes in the graph.
+type ForecastMutation struct {
 	config
 	op             Op
 	typ            string
@@ -51,21 +51,21 @@ type ForcastMutation struct {
 	removedweather map[int]struct{}
 	clearedweather bool
 	done           bool
-	oldValue       func(context.Context) (*Forcast, error)
-	predicates     []predicate.Forcast
+	oldValue       func(context.Context) (*Forecast, error)
+	predicates     []predicate.Forecast
 }
 
-var _ ent.Mutation = (*ForcastMutation)(nil)
+var _ ent.Mutation = (*ForecastMutation)(nil)
 
-// forcastOption allows management of the mutation configuration using functional options.
-type forcastOption func(*ForcastMutation)
+// forecastOption allows management of the mutation configuration using functional options.
+type forecastOption func(*ForecastMutation)
 
-// newForcastMutation creates new mutation for the Forcast entity.
-func newForcastMutation(c config, op Op, opts ...forcastOption) *ForcastMutation {
-	m := &ForcastMutation{
+// newForecastMutation creates new mutation for the Forecast entity.
+func newForecastMutation(c config, op Op, opts ...forecastOption) *ForecastMutation {
+	m := &ForecastMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeForcast,
+		typ:           TypeForecast,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -74,20 +74,20 @@ func newForcastMutation(c config, op Op, opts ...forcastOption) *ForcastMutation
 	return m
 }
 
-// withForcastID sets the ID field of the mutation.
-func withForcastID(id int) forcastOption {
-	return func(m *ForcastMutation) {
+// withForecastID sets the ID field of the mutation.
+func withForecastID(id int) forecastOption {
+	return func(m *ForecastMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *Forcast
+			value *Forecast
 		)
-		m.oldValue = func(ctx context.Context) (*Forcast, error) {
+		m.oldValue = func(ctx context.Context) (*Forecast, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().Forcast.Get(ctx, id)
+					value, err = m.Client().Forecast.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -96,10 +96,10 @@ func withForcastID(id int) forcastOption {
 	}
 }
 
-// withForcast sets the old Forcast of the mutation.
-func withForcast(node *Forcast) forcastOption {
-	return func(m *ForcastMutation) {
-		m.oldValue = func(context.Context) (*Forcast, error) {
+// withForecast sets the old Forecast of the mutation.
+func withForecast(node *Forecast) forecastOption {
+	return func(m *ForecastMutation) {
+		m.oldValue = func(context.Context) (*Forecast, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -108,7 +108,7 @@ func withForcast(node *Forcast) forcastOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m ForcastMutation) Client() *Client {
+func (m ForecastMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -116,7 +116,7 @@ func (m ForcastMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m ForcastMutation) Tx() (*Tx, error) {
+func (m ForecastMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, errors.New("ent: mutation is not running in a transaction")
 	}
@@ -127,7 +127,7 @@ func (m ForcastMutation) Tx() (*Tx, error) {
 
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *ForcastMutation) ID() (id int, exists bool) {
+func (m *ForecastMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -138,7 +138,7 @@ func (m *ForcastMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *ForcastMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *ForecastMutation) IDs(ctx context.Context) ([]int, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
@@ -147,19 +147,19 @@ func (m *ForcastMutation) IDs(ctx context.Context) ([]int, error) {
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().Forcast.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().Forecast.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
 }
 
 // SetCountry sets the "country" field.
-func (m *ForcastMutation) SetCountry(s string) {
+func (m *ForecastMutation) SetCountry(s string) {
 	m.country = &s
 }
 
 // Country returns the value of the "country" field in the mutation.
-func (m *ForcastMutation) Country() (r string, exists bool) {
+func (m *ForecastMutation) Country() (r string, exists bool) {
 	v := m.country
 	if v == nil {
 		return
@@ -167,10 +167,10 @@ func (m *ForcastMutation) Country() (r string, exists bool) {
 	return *v, true
 }
 
-// OldCountry returns the old "country" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldCountry returns the old "country" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldCountry(ctx context.Context) (v string, err error) {
+func (m *ForecastMutation) OldCountry(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCountry is only allowed on UpdateOne operations")
 	}
@@ -185,17 +185,17 @@ func (m *ForcastMutation) OldCountry(ctx context.Context) (v string, err error) 
 }
 
 // ResetCountry resets all changes to the "country" field.
-func (m *ForcastMutation) ResetCountry() {
+func (m *ForecastMutation) ResetCountry() {
 	m.country = nil
 }
 
 // SetRegion sets the "region" field.
-func (m *ForcastMutation) SetRegion(s string) {
+func (m *ForecastMutation) SetRegion(s string) {
 	m.region = &s
 }
 
 // Region returns the value of the "region" field in the mutation.
-func (m *ForcastMutation) Region() (r string, exists bool) {
+func (m *ForecastMutation) Region() (r string, exists bool) {
 	v := m.region
 	if v == nil {
 		return
@@ -203,10 +203,10 @@ func (m *ForcastMutation) Region() (r string, exists bool) {
 	return *v, true
 }
 
-// OldRegion returns the old "region" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldRegion returns the old "region" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldRegion(ctx context.Context) (v string, err error) {
+func (m *ForecastMutation) OldRegion(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldRegion is only allowed on UpdateOne operations")
 	}
@@ -221,30 +221,30 @@ func (m *ForcastMutation) OldRegion(ctx context.Context) (v string, err error) {
 }
 
 // ClearRegion clears the value of the "region" field.
-func (m *ForcastMutation) ClearRegion() {
+func (m *ForecastMutation) ClearRegion() {
 	m.region = nil
-	m.clearedFields[forcast.FieldRegion] = struct{}{}
+	m.clearedFields[forecast.FieldRegion] = struct{}{}
 }
 
 // RegionCleared returns if the "region" field was cleared in this mutation.
-func (m *ForcastMutation) RegionCleared() bool {
-	_, ok := m.clearedFields[forcast.FieldRegion]
+func (m *ForecastMutation) RegionCleared() bool {
+	_, ok := m.clearedFields[forecast.FieldRegion]
 	return ok
 }
 
 // ResetRegion resets all changes to the "region" field.
-func (m *ForcastMutation) ResetRegion() {
+func (m *ForecastMutation) ResetRegion() {
 	m.region = nil
-	delete(m.clearedFields, forcast.FieldRegion)
+	delete(m.clearedFields, forecast.FieldRegion)
 }
 
 // SetDate sets the "date" field.
-func (m *ForcastMutation) SetDate(t time.Time) {
+func (m *ForecastMutation) SetDate(t time.Time) {
 	m.date = &t
 }
 
 // Date returns the value of the "date" field in the mutation.
-func (m *ForcastMutation) Date() (r time.Time, exists bool) {
+func (m *ForecastMutation) Date() (r time.Time, exists bool) {
 	v := m.date
 	if v == nil {
 		return
@@ -252,10 +252,10 @@ func (m *ForcastMutation) Date() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldDate returns the old "date" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldDate returns the old "date" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+func (m *ForecastMutation) OldDate(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDate is only allowed on UpdateOne operations")
 	}
@@ -270,17 +270,17 @@ func (m *ForcastMutation) OldDate(ctx context.Context) (v time.Time, err error) 
 }
 
 // ResetDate resets all changes to the "date" field.
-func (m *ForcastMutation) ResetDate() {
+func (m *ForecastMutation) ResetDate() {
 	m.date = nil
 }
 
 // SetLocaltime sets the "localtime" field.
-func (m *ForcastMutation) SetLocaltime(t time.Time) {
+func (m *ForecastMutation) SetLocaltime(t time.Time) {
 	m.localtime = &t
 }
 
 // Localtime returns the value of the "localtime" field in the mutation.
-func (m *ForcastMutation) Localtime() (r time.Time, exists bool) {
+func (m *ForecastMutation) Localtime() (r time.Time, exists bool) {
 	v := m.localtime
 	if v == nil {
 		return
@@ -288,10 +288,10 @@ func (m *ForcastMutation) Localtime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldLocaltime returns the old "localtime" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldLocaltime returns the old "localtime" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldLocaltime(ctx context.Context) (v time.Time, err error) {
+func (m *ForecastMutation) OldLocaltime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldLocaltime is only allowed on UpdateOne operations")
 	}
@@ -306,30 +306,30 @@ func (m *ForcastMutation) OldLocaltime(ctx context.Context) (v time.Time, err er
 }
 
 // ClearLocaltime clears the value of the "localtime" field.
-func (m *ForcastMutation) ClearLocaltime() {
+func (m *ForecastMutation) ClearLocaltime() {
 	m.localtime = nil
-	m.clearedFields[forcast.FieldLocaltime] = struct{}{}
+	m.clearedFields[forecast.FieldLocaltime] = struct{}{}
 }
 
 // LocaltimeCleared returns if the "localtime" field was cleared in this mutation.
-func (m *ForcastMutation) LocaltimeCleared() bool {
-	_, ok := m.clearedFields[forcast.FieldLocaltime]
+func (m *ForecastMutation) LocaltimeCleared() bool {
+	_, ok := m.clearedFields[forecast.FieldLocaltime]
 	return ok
 }
 
 // ResetLocaltime resets all changes to the "localtime" field.
-func (m *ForcastMutation) ResetLocaltime() {
+func (m *ForecastMutation) ResetLocaltime() {
 	m.localtime = nil
-	delete(m.clearedFields, forcast.FieldLocaltime)
+	delete(m.clearedFields, forecast.FieldLocaltime)
 }
 
 // SetIcon sets the "icon" field.
-func (m *ForcastMutation) SetIcon(s string) {
+func (m *ForecastMutation) SetIcon(s string) {
 	m.icon = &s
 }
 
 // Icon returns the value of the "icon" field in the mutation.
-func (m *ForcastMutation) Icon() (r string, exists bool) {
+func (m *ForecastMutation) Icon() (r string, exists bool) {
 	v := m.icon
 	if v == nil {
 		return
@@ -337,10 +337,10 @@ func (m *ForcastMutation) Icon() (r string, exists bool) {
 	return *v, true
 }
 
-// OldIcon returns the old "icon" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldIcon returns the old "icon" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldIcon(ctx context.Context) (v string, err error) {
+func (m *ForecastMutation) OldIcon(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldIcon is only allowed on UpdateOne operations")
 	}
@@ -355,31 +355,31 @@ func (m *ForcastMutation) OldIcon(ctx context.Context) (v string, err error) {
 }
 
 // ClearIcon clears the value of the "icon" field.
-func (m *ForcastMutation) ClearIcon() {
+func (m *ForecastMutation) ClearIcon() {
 	m.icon = nil
-	m.clearedFields[forcast.FieldIcon] = struct{}{}
+	m.clearedFields[forecast.FieldIcon] = struct{}{}
 }
 
 // IconCleared returns if the "icon" field was cleared in this mutation.
-func (m *ForcastMutation) IconCleared() bool {
-	_, ok := m.clearedFields[forcast.FieldIcon]
+func (m *ForecastMutation) IconCleared() bool {
+	_, ok := m.clearedFields[forecast.FieldIcon]
 	return ok
 }
 
 // ResetIcon resets all changes to the "icon" field.
-func (m *ForcastMutation) ResetIcon() {
+func (m *ForecastMutation) ResetIcon() {
 	m.icon = nil
-	delete(m.clearedFields, forcast.FieldIcon)
+	delete(m.clearedFields, forecast.FieldIcon)
 }
 
 // SetMaxTemp sets the "max_temp" field.
-func (m *ForcastMutation) SetMaxTemp(f float64) {
+func (m *ForecastMutation) SetMaxTemp(f float64) {
 	m.max_temp = &f
 	m.addmax_temp = nil
 }
 
 // MaxTemp returns the value of the "max_temp" field in the mutation.
-func (m *ForcastMutation) MaxTemp() (r float64, exists bool) {
+func (m *ForecastMutation) MaxTemp() (r float64, exists bool) {
 	v := m.max_temp
 	if v == nil {
 		return
@@ -387,10 +387,10 @@ func (m *ForcastMutation) MaxTemp() (r float64, exists bool) {
 	return *v, true
 }
 
-// OldMaxTemp returns the old "max_temp" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldMaxTemp returns the old "max_temp" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldMaxTemp(ctx context.Context) (v float64, err error) {
+func (m *ForecastMutation) OldMaxTemp(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMaxTemp is only allowed on UpdateOne operations")
 	}
@@ -405,7 +405,7 @@ func (m *ForcastMutation) OldMaxTemp(ctx context.Context) (v float64, err error)
 }
 
 // AddMaxTemp adds f to the "max_temp" field.
-func (m *ForcastMutation) AddMaxTemp(f float64) {
+func (m *ForecastMutation) AddMaxTemp(f float64) {
 	if m.addmax_temp != nil {
 		*m.addmax_temp += f
 	} else {
@@ -414,7 +414,7 @@ func (m *ForcastMutation) AddMaxTemp(f float64) {
 }
 
 // AddedMaxTemp returns the value that was added to the "max_temp" field in this mutation.
-func (m *ForcastMutation) AddedMaxTemp() (r float64, exists bool) {
+func (m *ForecastMutation) AddedMaxTemp() (r float64, exists bool) {
 	v := m.addmax_temp
 	if v == nil {
 		return
@@ -423,19 +423,19 @@ func (m *ForcastMutation) AddedMaxTemp() (r float64, exists bool) {
 }
 
 // ResetMaxTemp resets all changes to the "max_temp" field.
-func (m *ForcastMutation) ResetMaxTemp() {
+func (m *ForecastMutation) ResetMaxTemp() {
 	m.max_temp = nil
 	m.addmax_temp = nil
 }
 
 // SetMinTemp sets the "min_temp" field.
-func (m *ForcastMutation) SetMinTemp(f float64) {
+func (m *ForecastMutation) SetMinTemp(f float64) {
 	m.min_temp = &f
 	m.addmin_temp = nil
 }
 
 // MinTemp returns the value of the "min_temp" field in the mutation.
-func (m *ForcastMutation) MinTemp() (r float64, exists bool) {
+func (m *ForecastMutation) MinTemp() (r float64, exists bool) {
 	v := m.min_temp
 	if v == nil {
 		return
@@ -443,10 +443,10 @@ func (m *ForcastMutation) MinTemp() (r float64, exists bool) {
 	return *v, true
 }
 
-// OldMinTemp returns the old "min_temp" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldMinTemp returns the old "min_temp" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldMinTemp(ctx context.Context) (v float64, err error) {
+func (m *ForecastMutation) OldMinTemp(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldMinTemp is only allowed on UpdateOne operations")
 	}
@@ -461,7 +461,7 @@ func (m *ForcastMutation) OldMinTemp(ctx context.Context) (v float64, err error)
 }
 
 // AddMinTemp adds f to the "min_temp" field.
-func (m *ForcastMutation) AddMinTemp(f float64) {
+func (m *ForecastMutation) AddMinTemp(f float64) {
 	if m.addmin_temp != nil {
 		*m.addmin_temp += f
 	} else {
@@ -470,7 +470,7 @@ func (m *ForcastMutation) AddMinTemp(f float64) {
 }
 
 // AddedMinTemp returns the value that was added to the "min_temp" field in this mutation.
-func (m *ForcastMutation) AddedMinTemp() (r float64, exists bool) {
+func (m *ForecastMutation) AddedMinTemp() (r float64, exists bool) {
 	v := m.addmin_temp
 	if v == nil {
 		return
@@ -479,19 +479,19 @@ func (m *ForcastMutation) AddedMinTemp() (r float64, exists bool) {
 }
 
 // ResetMinTemp resets all changes to the "min_temp" field.
-func (m *ForcastMutation) ResetMinTemp() {
+func (m *ForecastMutation) ResetMinTemp() {
 	m.min_temp = nil
 	m.addmin_temp = nil
 }
 
 // SetAvgTemp sets the "avg_temp" field.
-func (m *ForcastMutation) SetAvgTemp(f float64) {
+func (m *ForecastMutation) SetAvgTemp(f float64) {
 	m.avg_temp = &f
 	m.addavg_temp = nil
 }
 
 // AvgTemp returns the value of the "avg_temp" field in the mutation.
-func (m *ForcastMutation) AvgTemp() (r float64, exists bool) {
+func (m *ForecastMutation) AvgTemp() (r float64, exists bool) {
 	v := m.avg_temp
 	if v == nil {
 		return
@@ -499,10 +499,10 @@ func (m *ForcastMutation) AvgTemp() (r float64, exists bool) {
 	return *v, true
 }
 
-// OldAvgTemp returns the old "avg_temp" field's value of the Forcast entity.
-// If the Forcast object wasn't provided to the builder, the object is fetched from the database.
+// OldAvgTemp returns the old "avg_temp" field's value of the Forecast entity.
+// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForcastMutation) OldAvgTemp(ctx context.Context) (v float64, err error) {
+func (m *ForecastMutation) OldAvgTemp(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldAvgTemp is only allowed on UpdateOne operations")
 	}
@@ -517,7 +517,7 @@ func (m *ForcastMutation) OldAvgTemp(ctx context.Context) (v float64, err error)
 }
 
 // AddAvgTemp adds f to the "avg_temp" field.
-func (m *ForcastMutation) AddAvgTemp(f float64) {
+func (m *ForecastMutation) AddAvgTemp(f float64) {
 	if m.addavg_temp != nil {
 		*m.addavg_temp += f
 	} else {
@@ -526,7 +526,7 @@ func (m *ForcastMutation) AddAvgTemp(f float64) {
 }
 
 // AddedAvgTemp returns the value that was added to the "avg_temp" field in this mutation.
-func (m *ForcastMutation) AddedAvgTemp() (r float64, exists bool) {
+func (m *ForecastMutation) AddedAvgTemp() (r float64, exists bool) {
 	v := m.addavg_temp
 	if v == nil {
 		return
@@ -535,13 +535,13 @@ func (m *ForcastMutation) AddedAvgTemp() (r float64, exists bool) {
 }
 
 // ResetAvgTemp resets all changes to the "avg_temp" field.
-func (m *ForcastMutation) ResetAvgTemp() {
+func (m *ForecastMutation) ResetAvgTemp() {
 	m.avg_temp = nil
 	m.addavg_temp = nil
 }
 
 // AddWeatherIDs adds the "weather" edge to the Weather entity by ids.
-func (m *ForcastMutation) AddWeatherIDs(ids ...int) {
+func (m *ForecastMutation) AddWeatherIDs(ids ...int) {
 	if m.weather == nil {
 		m.weather = make(map[int]struct{})
 	}
@@ -551,17 +551,17 @@ func (m *ForcastMutation) AddWeatherIDs(ids ...int) {
 }
 
 // ClearWeather clears the "weather" edge to the Weather entity.
-func (m *ForcastMutation) ClearWeather() {
+func (m *ForecastMutation) ClearWeather() {
 	m.clearedweather = true
 }
 
 // WeatherCleared reports if the "weather" edge to the Weather entity was cleared.
-func (m *ForcastMutation) WeatherCleared() bool {
+func (m *ForecastMutation) WeatherCleared() bool {
 	return m.clearedweather
 }
 
 // RemoveWeatherIDs removes the "weather" edge to the Weather entity by IDs.
-func (m *ForcastMutation) RemoveWeatherIDs(ids ...int) {
+func (m *ForecastMutation) RemoveWeatherIDs(ids ...int) {
 	if m.removedweather == nil {
 		m.removedweather = make(map[int]struct{})
 	}
@@ -572,7 +572,7 @@ func (m *ForcastMutation) RemoveWeatherIDs(ids ...int) {
 }
 
 // RemovedWeather returns the removed IDs of the "weather" edge to the Weather entity.
-func (m *ForcastMutation) RemovedWeatherIDs() (ids []int) {
+func (m *ForecastMutation) RemovedWeatherIDs() (ids []int) {
 	for id := range m.removedweather {
 		ids = append(ids, id)
 	}
@@ -580,7 +580,7 @@ func (m *ForcastMutation) RemovedWeatherIDs() (ids []int) {
 }
 
 // WeatherIDs returns the "weather" edge IDs in the mutation.
-func (m *ForcastMutation) WeatherIDs() (ids []int) {
+func (m *ForecastMutation) WeatherIDs() (ids []int) {
 	for id := range m.weather {
 		ids = append(ids, id)
 	}
@@ -588,21 +588,21 @@ func (m *ForcastMutation) WeatherIDs() (ids []int) {
 }
 
 // ResetWeather resets all changes to the "weather" edge.
-func (m *ForcastMutation) ResetWeather() {
+func (m *ForecastMutation) ResetWeather() {
 	m.weather = nil
 	m.clearedweather = false
 	m.removedweather = nil
 }
 
-// Where appends a list predicates to the ForcastMutation builder.
-func (m *ForcastMutation) Where(ps ...predicate.Forcast) {
+// Where appends a list predicates to the ForecastMutation builder.
+func (m *ForecastMutation) Where(ps ...predicate.Forecast) {
 	m.predicates = append(m.predicates, ps...)
 }
 
-// WhereP appends storage-level predicates to the ForcastMutation builder. Using this method,
+// WhereP appends storage-level predicates to the ForecastMutation builder. Using this method,
 // users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *ForcastMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.Forcast, len(ps))
+func (m *ForecastMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.Forecast, len(ps))
 	for i := range ps {
 		p[i] = ps[i]
 	}
@@ -610,48 +610,48 @@ func (m *ForcastMutation) WhereP(ps ...func(*sql.Selector)) {
 }
 
 // Op returns the operation name.
-func (m *ForcastMutation) Op() Op {
+func (m *ForecastMutation) Op() Op {
 	return m.op
 }
 
 // SetOp allows setting the mutation operation.
-func (m *ForcastMutation) SetOp(op Op) {
+func (m *ForecastMutation) SetOp(op Op) {
 	m.op = op
 }
 
-// Type returns the node type of this mutation (Forcast).
-func (m *ForcastMutation) Type() string {
+// Type returns the node type of this mutation (Forecast).
+func (m *ForecastMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *ForcastMutation) Fields() []string {
+func (m *ForecastMutation) Fields() []string {
 	fields := make([]string, 0, 8)
 	if m.country != nil {
-		fields = append(fields, forcast.FieldCountry)
+		fields = append(fields, forecast.FieldCountry)
 	}
 	if m.region != nil {
-		fields = append(fields, forcast.FieldRegion)
+		fields = append(fields, forecast.FieldRegion)
 	}
 	if m.date != nil {
-		fields = append(fields, forcast.FieldDate)
+		fields = append(fields, forecast.FieldDate)
 	}
 	if m.localtime != nil {
-		fields = append(fields, forcast.FieldLocaltime)
+		fields = append(fields, forecast.FieldLocaltime)
 	}
 	if m.icon != nil {
-		fields = append(fields, forcast.FieldIcon)
+		fields = append(fields, forecast.FieldIcon)
 	}
 	if m.max_temp != nil {
-		fields = append(fields, forcast.FieldMaxTemp)
+		fields = append(fields, forecast.FieldMaxTemp)
 	}
 	if m.min_temp != nil {
-		fields = append(fields, forcast.FieldMinTemp)
+		fields = append(fields, forecast.FieldMinTemp)
 	}
 	if m.avg_temp != nil {
-		fields = append(fields, forcast.FieldAvgTemp)
+		fields = append(fields, forecast.FieldAvgTemp)
 	}
 	return fields
 }
@@ -659,23 +659,23 @@ func (m *ForcastMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *ForcastMutation) Field(name string) (ent.Value, bool) {
+func (m *ForecastMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case forcast.FieldCountry:
+	case forecast.FieldCountry:
 		return m.Country()
-	case forcast.FieldRegion:
+	case forecast.FieldRegion:
 		return m.Region()
-	case forcast.FieldDate:
+	case forecast.FieldDate:
 		return m.Date()
-	case forcast.FieldLocaltime:
+	case forecast.FieldLocaltime:
 		return m.Localtime()
-	case forcast.FieldIcon:
+	case forecast.FieldIcon:
 		return m.Icon()
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		return m.MaxTemp()
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		return m.MinTemp()
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		return m.AvgTemp()
 	}
 	return nil, false
@@ -684,83 +684,83 @@ func (m *ForcastMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *ForcastMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *ForecastMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case forcast.FieldCountry:
+	case forecast.FieldCountry:
 		return m.OldCountry(ctx)
-	case forcast.FieldRegion:
+	case forecast.FieldRegion:
 		return m.OldRegion(ctx)
-	case forcast.FieldDate:
+	case forecast.FieldDate:
 		return m.OldDate(ctx)
-	case forcast.FieldLocaltime:
+	case forecast.FieldLocaltime:
 		return m.OldLocaltime(ctx)
-	case forcast.FieldIcon:
+	case forecast.FieldIcon:
 		return m.OldIcon(ctx)
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		return m.OldMaxTemp(ctx)
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		return m.OldMinTemp(ctx)
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		return m.OldAvgTemp(ctx)
 	}
-	return nil, fmt.Errorf("unknown Forcast field %s", name)
+	return nil, fmt.Errorf("unknown Forecast field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ForcastMutation) SetField(name string, value ent.Value) error {
+func (m *ForecastMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case forcast.FieldCountry:
+	case forecast.FieldCountry:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCountry(v)
 		return nil
-	case forcast.FieldRegion:
+	case forecast.FieldRegion:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRegion(v)
 		return nil
-	case forcast.FieldDate:
+	case forecast.FieldDate:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDate(v)
 		return nil
-	case forcast.FieldLocaltime:
+	case forecast.FieldLocaltime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLocaltime(v)
 		return nil
-	case forcast.FieldIcon:
+	case forecast.FieldIcon:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIcon(v)
 		return nil
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMaxTemp(v)
 		return nil
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMinTemp(v)
 		return nil
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -768,21 +768,21 @@ func (m *ForcastMutation) SetField(name string, value ent.Value) error {
 		m.SetAvgTemp(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Forcast field %s", name)
+	return fmt.Errorf("unknown Forecast field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *ForcastMutation) AddedFields() []string {
+func (m *ForecastMutation) AddedFields() []string {
 	var fields []string
 	if m.addmax_temp != nil {
-		fields = append(fields, forcast.FieldMaxTemp)
+		fields = append(fields, forecast.FieldMaxTemp)
 	}
 	if m.addmin_temp != nil {
-		fields = append(fields, forcast.FieldMinTemp)
+		fields = append(fields, forecast.FieldMinTemp)
 	}
 	if m.addavg_temp != nil {
-		fields = append(fields, forcast.FieldAvgTemp)
+		fields = append(fields, forecast.FieldAvgTemp)
 	}
 	return fields
 }
@@ -790,13 +790,13 @@ func (m *ForcastMutation) AddedFields() []string {
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *ForcastMutation) AddedField(name string) (ent.Value, bool) {
+func (m *ForecastMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		return m.AddedMaxTemp()
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		return m.AddedMinTemp()
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		return m.AddedAvgTemp()
 	}
 	return nil, false
@@ -805,23 +805,23 @@ func (m *ForcastMutation) AddedField(name string) (ent.Value, bool) {
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *ForcastMutation) AddField(name string, value ent.Value) error {
+func (m *ForecastMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMaxTemp(v)
 		return nil
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddMinTemp(v)
 		return nil
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -829,95 +829,95 @@ func (m *ForcastMutation) AddField(name string, value ent.Value) error {
 		m.AddAvgTemp(v)
 		return nil
 	}
-	return fmt.Errorf("unknown Forcast numeric field %s", name)
+	return fmt.Errorf("unknown Forecast numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *ForcastMutation) ClearedFields() []string {
+func (m *ForecastMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(forcast.FieldRegion) {
-		fields = append(fields, forcast.FieldRegion)
+	if m.FieldCleared(forecast.FieldRegion) {
+		fields = append(fields, forecast.FieldRegion)
 	}
-	if m.FieldCleared(forcast.FieldLocaltime) {
-		fields = append(fields, forcast.FieldLocaltime)
+	if m.FieldCleared(forecast.FieldLocaltime) {
+		fields = append(fields, forecast.FieldLocaltime)
 	}
-	if m.FieldCleared(forcast.FieldIcon) {
-		fields = append(fields, forcast.FieldIcon)
+	if m.FieldCleared(forecast.FieldIcon) {
+		fields = append(fields, forecast.FieldIcon)
 	}
 	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *ForcastMutation) FieldCleared(name string) bool {
+func (m *ForecastMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *ForcastMutation) ClearField(name string) error {
+func (m *ForecastMutation) ClearField(name string) error {
 	switch name {
-	case forcast.FieldRegion:
+	case forecast.FieldRegion:
 		m.ClearRegion()
 		return nil
-	case forcast.FieldLocaltime:
+	case forecast.FieldLocaltime:
 		m.ClearLocaltime()
 		return nil
-	case forcast.FieldIcon:
+	case forecast.FieldIcon:
 		m.ClearIcon()
 		return nil
 	}
-	return fmt.Errorf("unknown Forcast nullable field %s", name)
+	return fmt.Errorf("unknown Forecast nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *ForcastMutation) ResetField(name string) error {
+func (m *ForecastMutation) ResetField(name string) error {
 	switch name {
-	case forcast.FieldCountry:
+	case forecast.FieldCountry:
 		m.ResetCountry()
 		return nil
-	case forcast.FieldRegion:
+	case forecast.FieldRegion:
 		m.ResetRegion()
 		return nil
-	case forcast.FieldDate:
+	case forecast.FieldDate:
 		m.ResetDate()
 		return nil
-	case forcast.FieldLocaltime:
+	case forecast.FieldLocaltime:
 		m.ResetLocaltime()
 		return nil
-	case forcast.FieldIcon:
+	case forecast.FieldIcon:
 		m.ResetIcon()
 		return nil
-	case forcast.FieldMaxTemp:
+	case forecast.FieldMaxTemp:
 		m.ResetMaxTemp()
 		return nil
-	case forcast.FieldMinTemp:
+	case forecast.FieldMinTemp:
 		m.ResetMinTemp()
 		return nil
-	case forcast.FieldAvgTemp:
+	case forecast.FieldAvgTemp:
 		m.ResetAvgTemp()
 		return nil
 	}
-	return fmt.Errorf("unknown Forcast field %s", name)
+	return fmt.Errorf("unknown Forecast field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *ForcastMutation) AddedEdges() []string {
+func (m *ForecastMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
 	if m.weather != nil {
-		edges = append(edges, forcast.EdgeWeather)
+		edges = append(edges, forecast.EdgeWeather)
 	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *ForcastMutation) AddedIDs(name string) []ent.Value {
+func (m *ForecastMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case forcast.EdgeWeather:
+	case forecast.EdgeWeather:
 		ids := make([]ent.Value, 0, len(m.weather))
 		for id := range m.weather {
 			ids = append(ids, id)
@@ -928,19 +928,19 @@ func (m *ForcastMutation) AddedIDs(name string) []ent.Value {
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *ForcastMutation) RemovedEdges() []string {
+func (m *ForecastMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 1)
 	if m.removedweather != nil {
-		edges = append(edges, forcast.EdgeWeather)
+		edges = append(edges, forecast.EdgeWeather)
 	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *ForcastMutation) RemovedIDs(name string) []ent.Value {
+func (m *ForecastMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case forcast.EdgeWeather:
+	case forecast.EdgeWeather:
 		ids := make([]ent.Value, 0, len(m.removedweather))
 		for id := range m.removedweather {
 			ids = append(ids, id)
@@ -951,19 +951,19 @@ func (m *ForcastMutation) RemovedIDs(name string) []ent.Value {
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *ForcastMutation) ClearedEdges() []string {
+func (m *ForecastMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
 	if m.clearedweather {
-		edges = append(edges, forcast.EdgeWeather)
+		edges = append(edges, forecast.EdgeWeather)
 	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *ForcastMutation) EdgeCleared(name string) bool {
+func (m *ForecastMutation) EdgeCleared(name string) bool {
 	switch name {
-	case forcast.EdgeWeather:
+	case forecast.EdgeWeather:
 		return m.clearedweather
 	}
 	return false
@@ -971,21 +971,21 @@ func (m *ForcastMutation) EdgeCleared(name string) bool {
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *ForcastMutation) ClearEdge(name string) error {
+func (m *ForecastMutation) ClearEdge(name string) error {
 	switch name {
 	}
-	return fmt.Errorf("unknown Forcast unique edge %s", name)
+	return fmt.Errorf("unknown Forecast unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *ForcastMutation) ResetEdge(name string) error {
+func (m *ForecastMutation) ResetEdge(name string) error {
 	switch name {
-	case forcast.EdgeWeather:
+	case forecast.EdgeWeather:
 		m.ResetWeather()
 		return nil
 	}
-	return fmt.Errorf("unknown Forcast edge %s", name)
+	return fmt.Errorf("unknown Forecast edge %s", name)
 }
 
 // WeatherMutation represents an operation that mutates the Weather nodes in the graph.
@@ -1374,17 +1374,17 @@ func (m *WeatherMutation) ResetFeelsLike() {
 	m.addfeels_like = nil
 }
 
-// SetForcastID sets the "forcast" edge to the Forcast entity by id.
+// SetForcastID sets the "forcast" edge to the Forecast entity by id.
 func (m *WeatherMutation) SetForcastID(id int) {
 	m.forcast = &id
 }
 
-// ClearForcast clears the "forcast" edge to the Forcast entity.
+// ClearForcast clears the "forcast" edge to the Forecast entity.
 func (m *WeatherMutation) ClearForcast() {
 	m.clearedforcast = true
 }
 
-// ForcastCleared reports if the "forcast" edge to the Forcast entity was cleared.
+// ForcastCleared reports if the "forcast" edge to the Forecast entity was cleared.
 func (m *WeatherMutation) ForcastCleared() bool {
 	return m.clearedforcast
 }

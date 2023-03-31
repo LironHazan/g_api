@@ -6,8 +6,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// Forcast is the predicate function for forcast builders.
-type Forcast func(*sql.Selector)
+// Forecast is the predicate function for forecast builders.
+type Forecast func(*sql.Selector)
 
 // Weather is the predicate function for weather builders.
 type Weather func(*sql.Selector)

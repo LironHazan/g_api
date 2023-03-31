@@ -4,15 +4,15 @@ package ent
 
 import (
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"strings"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
 
-// Forcast is the model entity for the Forcast schema.
-type Forcast struct {
+// Forecast is the model entity for the Forecast schema.
+type Forecast struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
@@ -33,12 +33,12 @@ type Forcast struct {
 	// AvgTemp holds the value of the "avg_temp" field.
 	AvgTemp float64 `json:"avg_temp,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
-	// The values are being populated by the ForcastQuery when eager-loading is set.
-	Edges ForcastEdges `json:"edges"`
+	// The values are being populated by the ForecastQuery when eager-loading is set.
+	Edges ForecastEdges `json:"edges"`
 }
 
-// ForcastEdges holds the relations/edges for other nodes in the graph.
-type ForcastEdges struct {
+// ForecastEdges holds the relations/edges for other nodes in the graph.
+type ForecastEdges struct {
 	// Weather holds the value of the weather edge.
 	Weather []*Weather `json:"weather,omitempty"`
 	// loadedTypes holds the information for reporting if a
@@ -48,7 +48,7 @@ type ForcastEdges struct {
 
 // WeatherOrErr returns the Weather value or an error if the edge
 // was not loaded in eager-loading.
-func (e ForcastEdges) WeatherOrErr() ([]*Weather, error) {
+func (e ForecastEdges) WeatherOrErr() ([]*Weather, error) {
 	if e.loadedTypes[0] {
 		return e.Weather, nil
 	}
@@ -56,82 +56,82 @@ func (e ForcastEdges) WeatherOrErr() ([]*Weather, error) {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*Forcast) scanValues(columns []string) ([]any, error) {
+func (*Forecast) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case forcast.FieldMaxTemp, forcast.FieldMinTemp, forcast.FieldAvgTemp:
+		case forecast.FieldMaxTemp, forecast.FieldMinTemp, forecast.FieldAvgTemp:
 			values[i] = new(sql.NullFloat64)
-		case forcast.FieldID:
+		case forecast.FieldID:
 			values[i] = new(sql.NullInt64)
-		case forcast.FieldCountry, forcast.FieldRegion, forcast.FieldIcon:
+		case forecast.FieldCountry, forecast.FieldRegion, forecast.FieldIcon:
 			values[i] = new(sql.NullString)
-		case forcast.FieldDate, forcast.FieldLocaltime:
+		case forecast.FieldDate, forecast.FieldLocaltime:
 			values[i] = new(sql.NullTime)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type Forcast", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type Forecast", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the Forcast fields.
-func (f *Forcast) assignValues(columns []string, values []any) error {
+// to the Forecast fields.
+func (f *Forecast) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case forcast.FieldID:
+		case forecast.FieldID:
 			value, ok := values[i].(*sql.NullInt64)
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			f.ID = int(value.Int64)
-		case forcast.FieldCountry:
+		case forecast.FieldCountry:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field country", values[i])
 			} else if value.Valid {
 				f.Country = value.String
 			}
-		case forcast.FieldRegion:
+		case forecast.FieldRegion:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field region", values[i])
 			} else if value.Valid {
 				f.Region = value.String
 			}
-		case forcast.FieldDate:
+		case forecast.FieldDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field date", values[i])
 			} else if value.Valid {
 				f.Date = value.Time
 			}
-		case forcast.FieldLocaltime:
+		case forecast.FieldLocaltime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field localtime", values[i])
 			} else if value.Valid {
 				f.Localtime = value.Time
 			}
-		case forcast.FieldIcon:
+		case forecast.FieldIcon:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field icon", values[i])
 			} else if value.Valid {
 				f.Icon = value.String
 			}
-		case forcast.FieldMaxTemp:
+		case forecast.FieldMaxTemp:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field max_temp", values[i])
 			} else if value.Valid {
 				f.MaxTemp = value.Float64
 			}
-		case forcast.FieldMinTemp:
+		case forecast.FieldMinTemp:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field min_temp", values[i])
 			} else if value.Valid {
 				f.MinTemp = value.Float64
 			}
-		case forcast.FieldAvgTemp:
+		case forecast.FieldAvgTemp:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field avg_temp", values[i])
 			} else if value.Valid {
@@ -142,33 +142,33 @@ func (f *Forcast) assignValues(columns []string, values []any) error {
 	return nil
 }
 
-// QueryWeather queries the "weather" edge of the Forcast entity.
-func (f *Forcast) QueryWeather() *WeatherQuery {
-	return NewForcastClient(f.config).QueryWeather(f)
+// QueryWeather queries the "weather" edge of the Forecast entity.
+func (f *Forecast) QueryWeather() *WeatherQuery {
+	return NewForecastClient(f.config).QueryWeather(f)
 }
 
-// Update returns a builder for updating this Forcast.
-// Note that you need to call Forcast.Unwrap() before calling this method if this Forcast
+// Update returns a builder for updating this Forecast.
+// Note that you need to call Forecast.Unwrap() before calling this method if this Forecast
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (f *Forcast) Update() *ForcastUpdateOne {
-	return NewForcastClient(f.config).UpdateOne(f)
+func (f *Forecast) Update() *ForecastUpdateOne {
+	return NewForecastClient(f.config).UpdateOne(f)
 }
 
-// Unwrap unwraps the Forcast entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the Forecast entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (f *Forcast) Unwrap() *Forcast {
+func (f *Forecast) Unwrap() *Forecast {
 	_tx, ok := f.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: Forcast is not a transactional entity")
+		panic("ent: Forecast is not a transactional entity")
 	}
 	f.config.driver = _tx.drv
 	return f
 }
 
 // String implements the fmt.Stringer.
-func (f *Forcast) String() string {
+func (f *Forecast) String() string {
 	var builder strings.Builder
-	builder.WriteString("Forcast(")
+	builder.WriteString("Forecast(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", f.ID))
 	builder.WriteString("country=")
 	builder.WriteString(f.Country)
@@ -197,5 +197,5 @@ func (f *Forcast) String() string {
 	return builder.String()
 }
 
-// Forcasts is a parsable slice of Forcast.
-type Forcasts []*Forcast
+// Forecasts is a parsable slice of Forecast.
+type Forecasts []*Forecast

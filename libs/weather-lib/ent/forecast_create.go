@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/weather"
 	"time"
 
@@ -14,27 +14,27 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ForcastCreate is the builder for creating a Forcast entity.
-type ForcastCreate struct {
+// ForecastCreate is the builder for creating a Forecast entity.
+type ForecastCreate struct {
 	config
-	mutation *ForcastMutation
+	mutation *ForecastMutation
 	hooks    []Hook
 }
 
 // SetCountry sets the "country" field.
-func (fc *ForcastCreate) SetCountry(s string) *ForcastCreate {
+func (fc *ForecastCreate) SetCountry(s string) *ForecastCreate {
 	fc.mutation.SetCountry(s)
 	return fc
 }
 
 // SetRegion sets the "region" field.
-func (fc *ForcastCreate) SetRegion(s string) *ForcastCreate {
+func (fc *ForecastCreate) SetRegion(s string) *ForecastCreate {
 	fc.mutation.SetRegion(s)
 	return fc
 }
 
 // SetNillableRegion sets the "region" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableRegion(s *string) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableRegion(s *string) *ForecastCreate {
 	if s != nil {
 		fc.SetRegion(*s)
 	}
@@ -42,19 +42,19 @@ func (fc *ForcastCreate) SetNillableRegion(s *string) *ForcastCreate {
 }
 
 // SetDate sets the "date" field.
-func (fc *ForcastCreate) SetDate(t time.Time) *ForcastCreate {
+func (fc *ForecastCreate) SetDate(t time.Time) *ForecastCreate {
 	fc.mutation.SetDate(t)
 	return fc
 }
 
 // SetLocaltime sets the "localtime" field.
-func (fc *ForcastCreate) SetLocaltime(t time.Time) *ForcastCreate {
+func (fc *ForecastCreate) SetLocaltime(t time.Time) *ForecastCreate {
 	fc.mutation.SetLocaltime(t)
 	return fc
 }
 
 // SetNillableLocaltime sets the "localtime" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableLocaltime(t *time.Time) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableLocaltime(t *time.Time) *ForecastCreate {
 	if t != nil {
 		fc.SetLocaltime(*t)
 	}
@@ -62,13 +62,13 @@ func (fc *ForcastCreate) SetNillableLocaltime(t *time.Time) *ForcastCreate {
 }
 
 // SetIcon sets the "icon" field.
-func (fc *ForcastCreate) SetIcon(s string) *ForcastCreate {
+func (fc *ForecastCreate) SetIcon(s string) *ForecastCreate {
 	fc.mutation.SetIcon(s)
 	return fc
 }
 
 // SetNillableIcon sets the "icon" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableIcon(s *string) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableIcon(s *string) *ForecastCreate {
 	if s != nil {
 		fc.SetIcon(*s)
 	}
@@ -76,13 +76,13 @@ func (fc *ForcastCreate) SetNillableIcon(s *string) *ForcastCreate {
 }
 
 // SetMaxTemp sets the "max_temp" field.
-func (fc *ForcastCreate) SetMaxTemp(f float64) *ForcastCreate {
+func (fc *ForecastCreate) SetMaxTemp(f float64) *ForecastCreate {
 	fc.mutation.SetMaxTemp(f)
 	return fc
 }
 
 // SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableMaxTemp(f *float64) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableMaxTemp(f *float64) *ForecastCreate {
 	if f != nil {
 		fc.SetMaxTemp(*f)
 	}
@@ -90,13 +90,13 @@ func (fc *ForcastCreate) SetNillableMaxTemp(f *float64) *ForcastCreate {
 }
 
 // SetMinTemp sets the "min_temp" field.
-func (fc *ForcastCreate) SetMinTemp(f float64) *ForcastCreate {
+func (fc *ForecastCreate) SetMinTemp(f float64) *ForecastCreate {
 	fc.mutation.SetMinTemp(f)
 	return fc
 }
 
 // SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableMinTemp(f *float64) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableMinTemp(f *float64) *ForecastCreate {
 	if f != nil {
 		fc.SetMinTemp(*f)
 	}
@@ -104,13 +104,13 @@ func (fc *ForcastCreate) SetNillableMinTemp(f *float64) *ForcastCreate {
 }
 
 // SetAvgTemp sets the "avg_temp" field.
-func (fc *ForcastCreate) SetAvgTemp(f float64) *ForcastCreate {
+func (fc *ForecastCreate) SetAvgTemp(f float64) *ForecastCreate {
 	fc.mutation.SetAvgTemp(f)
 	return fc
 }
 
 // SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fc *ForcastCreate) SetNillableAvgTemp(f *float64) *ForcastCreate {
+func (fc *ForecastCreate) SetNillableAvgTemp(f *float64) *ForecastCreate {
 	if f != nil {
 		fc.SetAvgTemp(*f)
 	}
@@ -118,13 +118,13 @@ func (fc *ForcastCreate) SetNillableAvgTemp(f *float64) *ForcastCreate {
 }
 
 // AddWeatherIDs adds the "weather" edge to the Weather entity by IDs.
-func (fc *ForcastCreate) AddWeatherIDs(ids ...int) *ForcastCreate {
+func (fc *ForecastCreate) AddWeatherIDs(ids ...int) *ForecastCreate {
 	fc.mutation.AddWeatherIDs(ids...)
 	return fc
 }
 
 // AddWeather adds the "weather" edges to the Weather entity.
-func (fc *ForcastCreate) AddWeather(w ...*Weather) *ForcastCreate {
+func (fc *ForecastCreate) AddWeather(w ...*Weather) *ForecastCreate {
 	ids := make([]int, len(w))
 	for i := range w {
 		ids[i] = w[i].ID
@@ -132,19 +132,19 @@ func (fc *ForcastCreate) AddWeather(w ...*Weather) *ForcastCreate {
 	return fc.AddWeatherIDs(ids...)
 }
 
-// Mutation returns the ForcastMutation object of the builder.
-func (fc *ForcastCreate) Mutation() *ForcastMutation {
+// Mutation returns the ForecastMutation object of the builder.
+func (fc *ForecastCreate) Mutation() *ForecastMutation {
 	return fc.mutation
 }
 
-// Save creates the Forcast in the database.
-func (fc *ForcastCreate) Save(ctx context.Context) (*Forcast, error) {
+// Save creates the Forecast in the database.
+func (fc *ForecastCreate) Save(ctx context.Context) (*Forecast, error) {
 	fc.defaults()
-	return withHooks[*Forcast, ForcastMutation](ctx, fc.sqlSave, fc.mutation, fc.hooks)
+	return withHooks[*Forecast, ForecastMutation](ctx, fc.sqlSave, fc.mutation, fc.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (fc *ForcastCreate) SaveX(ctx context.Context) *Forcast {
+func (fc *ForecastCreate) SaveX(ctx context.Context) *Forecast {
 	v, err := fc.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -153,60 +153,60 @@ func (fc *ForcastCreate) SaveX(ctx context.Context) *Forcast {
 }
 
 // Exec executes the query.
-func (fc *ForcastCreate) Exec(ctx context.Context) error {
+func (fc *ForecastCreate) Exec(ctx context.Context) error {
 	_, err := fc.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fc *ForcastCreate) ExecX(ctx context.Context) {
+func (fc *ForecastCreate) ExecX(ctx context.Context) {
 	if err := fc.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (fc *ForcastCreate) defaults() {
+func (fc *ForecastCreate) defaults() {
 	if _, ok := fc.mutation.MaxTemp(); !ok {
-		v := forcast.DefaultMaxTemp
+		v := forecast.DefaultMaxTemp
 		fc.mutation.SetMaxTemp(v)
 	}
 	if _, ok := fc.mutation.MinTemp(); !ok {
-		v := forcast.DefaultMinTemp
+		v := forecast.DefaultMinTemp
 		fc.mutation.SetMinTemp(v)
 	}
 	if _, ok := fc.mutation.AvgTemp(); !ok {
-		v := forcast.DefaultAvgTemp
+		v := forecast.DefaultAvgTemp
 		fc.mutation.SetAvgTemp(v)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (fc *ForcastCreate) check() error {
+func (fc *ForecastCreate) check() error {
 	if _, ok := fc.mutation.Country(); !ok {
-		return &ValidationError{Name: "country", err: errors.New(`ent: missing required field "Forcast.country"`)}
+		return &ValidationError{Name: "country", err: errors.New(`ent: missing required field "Forecast.country"`)}
 	}
 	if v, ok := fc.mutation.Country(); ok {
-		if err := forcast.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forcast.country": %w`, err)}
+		if err := forecast.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forecast.country": %w`, err)}
 		}
 	}
 	if _, ok := fc.mutation.Date(); !ok {
-		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "Forcast.date"`)}
+		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "Forecast.date"`)}
 	}
 	if _, ok := fc.mutation.MaxTemp(); !ok {
-		return &ValidationError{Name: "max_temp", err: errors.New(`ent: missing required field "Forcast.max_temp"`)}
+		return &ValidationError{Name: "max_temp", err: errors.New(`ent: missing required field "Forecast.max_temp"`)}
 	}
 	if _, ok := fc.mutation.MinTemp(); !ok {
-		return &ValidationError{Name: "min_temp", err: errors.New(`ent: missing required field "Forcast.min_temp"`)}
+		return &ValidationError{Name: "min_temp", err: errors.New(`ent: missing required field "Forecast.min_temp"`)}
 	}
 	if _, ok := fc.mutation.AvgTemp(); !ok {
-		return &ValidationError{Name: "avg_temp", err: errors.New(`ent: missing required field "Forcast.avg_temp"`)}
+		return &ValidationError{Name: "avg_temp", err: errors.New(`ent: missing required field "Forecast.avg_temp"`)}
 	}
 	return nil
 }
 
-func (fc *ForcastCreate) sqlSave(ctx context.Context) (*Forcast, error) {
+func (fc *ForecastCreate) sqlSave(ctx context.Context) (*Forecast, error) {
 	if err := fc.check(); err != nil {
 		return nil, err
 	}
@@ -224,49 +224,49 @@ func (fc *ForcastCreate) sqlSave(ctx context.Context) (*Forcast, error) {
 	return _node, nil
 }
 
-func (fc *ForcastCreate) createSpec() (*Forcast, *sqlgraph.CreateSpec) {
+func (fc *ForecastCreate) createSpec() (*Forecast, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Forcast{config: fc.config}
-		_spec = sqlgraph.NewCreateSpec(forcast.Table, sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt))
+		_node = &Forecast{config: fc.config}
+		_spec = sqlgraph.NewCreateSpec(forecast.Table, sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt))
 	)
 	if value, ok := fc.mutation.Country(); ok {
-		_spec.SetField(forcast.FieldCountry, field.TypeString, value)
+		_spec.SetField(forecast.FieldCountry, field.TypeString, value)
 		_node.Country = value
 	}
 	if value, ok := fc.mutation.Region(); ok {
-		_spec.SetField(forcast.FieldRegion, field.TypeString, value)
+		_spec.SetField(forecast.FieldRegion, field.TypeString, value)
 		_node.Region = value
 	}
 	if value, ok := fc.mutation.Date(); ok {
-		_spec.SetField(forcast.FieldDate, field.TypeTime, value)
+		_spec.SetField(forecast.FieldDate, field.TypeTime, value)
 		_node.Date = value
 	}
 	if value, ok := fc.mutation.Localtime(); ok {
-		_spec.SetField(forcast.FieldLocaltime, field.TypeTime, value)
+		_spec.SetField(forecast.FieldLocaltime, field.TypeTime, value)
 		_node.Localtime = value
 	}
 	if value, ok := fc.mutation.Icon(); ok {
-		_spec.SetField(forcast.FieldIcon, field.TypeString, value)
+		_spec.SetField(forecast.FieldIcon, field.TypeString, value)
 		_node.Icon = value
 	}
 	if value, ok := fc.mutation.MaxTemp(); ok {
-		_spec.SetField(forcast.FieldMaxTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
 		_node.MaxTemp = value
 	}
 	if value, ok := fc.mutation.MinTemp(); ok {
-		_spec.SetField(forcast.FieldMinTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
 		_node.MinTemp = value
 	}
 	if value, ok := fc.mutation.AvgTemp(); ok {
-		_spec.SetField(forcast.FieldAvgTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
 		_node.AvgTemp = value
 	}
 	if nodes := fc.mutation.WeatherIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -280,23 +280,23 @@ func (fc *ForcastCreate) createSpec() (*Forcast, *sqlgraph.CreateSpec) {
 	return _node, _spec
 }
 
-// ForcastCreateBulk is the builder for creating many Forcast entities in bulk.
-type ForcastCreateBulk struct {
+// ForecastCreateBulk is the builder for creating many Forecast entities in bulk.
+type ForecastCreateBulk struct {
 	config
-	builders []*ForcastCreate
+	builders []*ForecastCreate
 }
 
-// Save creates the Forcast entities in the database.
-func (fcb *ForcastCreateBulk) Save(ctx context.Context) ([]*Forcast, error) {
+// Save creates the Forecast entities in the database.
+func (fcb *ForecastCreateBulk) Save(ctx context.Context) ([]*Forecast, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(fcb.builders))
-	nodes := make([]*Forcast, len(fcb.builders))
+	nodes := make([]*Forecast, len(fcb.builders))
 	mutators := make([]Mutator, len(fcb.builders))
 	for i := range fcb.builders {
 		func(i int, root context.Context) {
 			builder := fcb.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*ForcastMutation)
+				mutation, ok := m.(*ForecastMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -343,7 +343,7 @@ func (fcb *ForcastCreateBulk) Save(ctx context.Context) ([]*Forcast, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (fcb *ForcastCreateBulk) SaveX(ctx context.Context) []*Forcast {
+func (fcb *ForecastCreateBulk) SaveX(ctx context.Context) []*Forecast {
 	v, err := fcb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -352,13 +352,13 @@ func (fcb *ForcastCreateBulk) SaveX(ctx context.Context) []*Forcast {
 }
 
 // Exec executes the query.
-func (fcb *ForcastCreateBulk) Exec(ctx context.Context) error {
+func (fcb *ForecastCreateBulk) Exec(ctx context.Context) error {
 	_, err := fcb.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fcb *ForcastCreateBulk) ExecX(ctx context.Context) {
+func (fcb *ForecastCreateBulk) ExecX(ctx context.Context) {
 	if err := fcb.Exec(ctx); err != nil {
 		panic(err)
 	}

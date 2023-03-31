@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 	"g_api/libs/weather-lib/ent/weather"
 	"time"
@@ -16,33 +16,33 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// ForcastUpdate is the builder for updating Forcast entities.
-type ForcastUpdate struct {
+// ForecastUpdate is the builder for updating Forecast entities.
+type ForecastUpdate struct {
 	config
 	hooks    []Hook
-	mutation *ForcastMutation
+	mutation *ForecastMutation
 }
 
-// Where appends a list predicates to the ForcastUpdate builder.
-func (fu *ForcastUpdate) Where(ps ...predicate.Forcast) *ForcastUpdate {
+// Where appends a list predicates to the ForecastUpdate builder.
+func (fu *ForecastUpdate) Where(ps ...predicate.Forecast) *ForecastUpdate {
 	fu.mutation.Where(ps...)
 	return fu
 }
 
 // SetCountry sets the "country" field.
-func (fu *ForcastUpdate) SetCountry(s string) *ForcastUpdate {
+func (fu *ForecastUpdate) SetCountry(s string) *ForecastUpdate {
 	fu.mutation.SetCountry(s)
 	return fu
 }
 
 // SetRegion sets the "region" field.
-func (fu *ForcastUpdate) SetRegion(s string) *ForcastUpdate {
+func (fu *ForecastUpdate) SetRegion(s string) *ForecastUpdate {
 	fu.mutation.SetRegion(s)
 	return fu
 }
 
 // SetNillableRegion sets the "region" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableRegion(s *string) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableRegion(s *string) *ForecastUpdate {
 	if s != nil {
 		fu.SetRegion(*s)
 	}
@@ -50,25 +50,25 @@ func (fu *ForcastUpdate) SetNillableRegion(s *string) *ForcastUpdate {
 }
 
 // ClearRegion clears the value of the "region" field.
-func (fu *ForcastUpdate) ClearRegion() *ForcastUpdate {
+func (fu *ForecastUpdate) ClearRegion() *ForecastUpdate {
 	fu.mutation.ClearRegion()
 	return fu
 }
 
 // SetDate sets the "date" field.
-func (fu *ForcastUpdate) SetDate(t time.Time) *ForcastUpdate {
+func (fu *ForecastUpdate) SetDate(t time.Time) *ForecastUpdate {
 	fu.mutation.SetDate(t)
 	return fu
 }
 
 // SetLocaltime sets the "localtime" field.
-func (fu *ForcastUpdate) SetLocaltime(t time.Time) *ForcastUpdate {
+func (fu *ForecastUpdate) SetLocaltime(t time.Time) *ForecastUpdate {
 	fu.mutation.SetLocaltime(t)
 	return fu
 }
 
 // SetNillableLocaltime sets the "localtime" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableLocaltime(t *time.Time) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableLocaltime(t *time.Time) *ForecastUpdate {
 	if t != nil {
 		fu.SetLocaltime(*t)
 	}
@@ -76,19 +76,19 @@ func (fu *ForcastUpdate) SetNillableLocaltime(t *time.Time) *ForcastUpdate {
 }
 
 // ClearLocaltime clears the value of the "localtime" field.
-func (fu *ForcastUpdate) ClearLocaltime() *ForcastUpdate {
+func (fu *ForecastUpdate) ClearLocaltime() *ForecastUpdate {
 	fu.mutation.ClearLocaltime()
 	return fu
 }
 
 // SetIcon sets the "icon" field.
-func (fu *ForcastUpdate) SetIcon(s string) *ForcastUpdate {
+func (fu *ForecastUpdate) SetIcon(s string) *ForecastUpdate {
 	fu.mutation.SetIcon(s)
 	return fu
 }
 
 // SetNillableIcon sets the "icon" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableIcon(s *string) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableIcon(s *string) *ForecastUpdate {
 	if s != nil {
 		fu.SetIcon(*s)
 	}
@@ -96,20 +96,20 @@ func (fu *ForcastUpdate) SetNillableIcon(s *string) *ForcastUpdate {
 }
 
 // ClearIcon clears the value of the "icon" field.
-func (fu *ForcastUpdate) ClearIcon() *ForcastUpdate {
+func (fu *ForecastUpdate) ClearIcon() *ForecastUpdate {
 	fu.mutation.ClearIcon()
 	return fu
 }
 
 // SetMaxTemp sets the "max_temp" field.
-func (fu *ForcastUpdate) SetMaxTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetMaxTemp(f float64) *ForecastUpdate {
 	fu.mutation.ResetMaxTemp()
 	fu.mutation.SetMaxTemp(f)
 	return fu
 }
 
 // SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableMaxTemp(f *float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableMaxTemp(f *float64) *ForecastUpdate {
 	if f != nil {
 		fu.SetMaxTemp(*f)
 	}
@@ -117,20 +117,20 @@ func (fu *ForcastUpdate) SetNillableMaxTemp(f *float64) *ForcastUpdate {
 }
 
 // AddMaxTemp adds f to the "max_temp" field.
-func (fu *ForcastUpdate) AddMaxTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) AddMaxTemp(f float64) *ForecastUpdate {
 	fu.mutation.AddMaxTemp(f)
 	return fu
 }
 
 // SetMinTemp sets the "min_temp" field.
-func (fu *ForcastUpdate) SetMinTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetMinTemp(f float64) *ForecastUpdate {
 	fu.mutation.ResetMinTemp()
 	fu.mutation.SetMinTemp(f)
 	return fu
 }
 
 // SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableMinTemp(f *float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableMinTemp(f *float64) *ForecastUpdate {
 	if f != nil {
 		fu.SetMinTemp(*f)
 	}
@@ -138,20 +138,20 @@ func (fu *ForcastUpdate) SetNillableMinTemp(f *float64) *ForcastUpdate {
 }
 
 // AddMinTemp adds f to the "min_temp" field.
-func (fu *ForcastUpdate) AddMinTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) AddMinTemp(f float64) *ForecastUpdate {
 	fu.mutation.AddMinTemp(f)
 	return fu
 }
 
 // SetAvgTemp sets the "avg_temp" field.
-func (fu *ForcastUpdate) SetAvgTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetAvgTemp(f float64) *ForecastUpdate {
 	fu.mutation.ResetAvgTemp()
 	fu.mutation.SetAvgTemp(f)
 	return fu
 }
 
 // SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fu *ForcastUpdate) SetNillableAvgTemp(f *float64) *ForcastUpdate {
+func (fu *ForecastUpdate) SetNillableAvgTemp(f *float64) *ForecastUpdate {
 	if f != nil {
 		fu.SetAvgTemp(*f)
 	}
@@ -159,19 +159,19 @@ func (fu *ForcastUpdate) SetNillableAvgTemp(f *float64) *ForcastUpdate {
 }
 
 // AddAvgTemp adds f to the "avg_temp" field.
-func (fu *ForcastUpdate) AddAvgTemp(f float64) *ForcastUpdate {
+func (fu *ForecastUpdate) AddAvgTemp(f float64) *ForecastUpdate {
 	fu.mutation.AddAvgTemp(f)
 	return fu
 }
 
 // AddWeatherIDs adds the "weather" edge to the Weather entity by IDs.
-func (fu *ForcastUpdate) AddWeatherIDs(ids ...int) *ForcastUpdate {
+func (fu *ForecastUpdate) AddWeatherIDs(ids ...int) *ForecastUpdate {
 	fu.mutation.AddWeatherIDs(ids...)
 	return fu
 }
 
 // AddWeather adds the "weather" edges to the Weather entity.
-func (fu *ForcastUpdate) AddWeather(w ...*Weather) *ForcastUpdate {
+func (fu *ForecastUpdate) AddWeather(w ...*Weather) *ForecastUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
 		ids[i] = w[i].ID
@@ -179,25 +179,25 @@ func (fu *ForcastUpdate) AddWeather(w ...*Weather) *ForcastUpdate {
 	return fu.AddWeatherIDs(ids...)
 }
 
-// Mutation returns the ForcastMutation object of the builder.
-func (fu *ForcastUpdate) Mutation() *ForcastMutation {
+// Mutation returns the ForecastMutation object of the builder.
+func (fu *ForecastUpdate) Mutation() *ForecastMutation {
 	return fu.mutation
 }
 
 // ClearWeather clears all "weather" edges to the Weather entity.
-func (fu *ForcastUpdate) ClearWeather() *ForcastUpdate {
+func (fu *ForecastUpdate) ClearWeather() *ForecastUpdate {
 	fu.mutation.ClearWeather()
 	return fu
 }
 
 // RemoveWeatherIDs removes the "weather" edge to Weather entities by IDs.
-func (fu *ForcastUpdate) RemoveWeatherIDs(ids ...int) *ForcastUpdate {
+func (fu *ForecastUpdate) RemoveWeatherIDs(ids ...int) *ForecastUpdate {
 	fu.mutation.RemoveWeatherIDs(ids...)
 	return fu
 }
 
 // RemoveWeather removes "weather" edges to Weather entities.
-func (fu *ForcastUpdate) RemoveWeather(w ...*Weather) *ForcastUpdate {
+func (fu *ForecastUpdate) RemoveWeather(w ...*Weather) *ForecastUpdate {
 	ids := make([]int, len(w))
 	for i := range w {
 		ids[i] = w[i].ID
@@ -206,12 +206,12 @@ func (fu *ForcastUpdate) RemoveWeather(w ...*Weather) *ForcastUpdate {
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (fu *ForcastUpdate) Save(ctx context.Context) (int, error) {
-	return withHooks[int, ForcastMutation](ctx, fu.sqlSave, fu.mutation, fu.hooks)
+func (fu *ForecastUpdate) Save(ctx context.Context) (int, error) {
+	return withHooks[int, ForecastMutation](ctx, fu.sqlSave, fu.mutation, fu.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (fu *ForcastUpdate) SaveX(ctx context.Context) int {
+func (fu *ForecastUpdate) SaveX(ctx context.Context) int {
 	affected, err := fu.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -220,33 +220,33 @@ func (fu *ForcastUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (fu *ForcastUpdate) Exec(ctx context.Context) error {
+func (fu *ForecastUpdate) Exec(ctx context.Context) error {
 	_, err := fu.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fu *ForcastUpdate) ExecX(ctx context.Context) {
+func (fu *ForecastUpdate) ExecX(ctx context.Context) {
 	if err := fu.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (fu *ForcastUpdate) check() error {
+func (fu *ForecastUpdate) check() error {
 	if v, ok := fu.mutation.Country(); ok {
-		if err := forcast.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forcast.country": %w`, err)}
+		if err := forecast.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forecast.country": %w`, err)}
 		}
 	}
 	return nil
 }
 
-func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (fu *ForecastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := fu.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(forcast.Table, forcast.Columns, sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(forecast.Table, forecast.Columns, sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt))
 	if ps := fu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -255,53 +255,53 @@ func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := fu.mutation.Country(); ok {
-		_spec.SetField(forcast.FieldCountry, field.TypeString, value)
+		_spec.SetField(forecast.FieldCountry, field.TypeString, value)
 	}
 	if value, ok := fu.mutation.Region(); ok {
-		_spec.SetField(forcast.FieldRegion, field.TypeString, value)
+		_spec.SetField(forecast.FieldRegion, field.TypeString, value)
 	}
 	if fu.mutation.RegionCleared() {
-		_spec.ClearField(forcast.FieldRegion, field.TypeString)
+		_spec.ClearField(forecast.FieldRegion, field.TypeString)
 	}
 	if value, ok := fu.mutation.Date(); ok {
-		_spec.SetField(forcast.FieldDate, field.TypeTime, value)
+		_spec.SetField(forecast.FieldDate, field.TypeTime, value)
 	}
 	if value, ok := fu.mutation.Localtime(); ok {
-		_spec.SetField(forcast.FieldLocaltime, field.TypeTime, value)
+		_spec.SetField(forecast.FieldLocaltime, field.TypeTime, value)
 	}
 	if fu.mutation.LocaltimeCleared() {
-		_spec.ClearField(forcast.FieldLocaltime, field.TypeTime)
+		_spec.ClearField(forecast.FieldLocaltime, field.TypeTime)
 	}
 	if value, ok := fu.mutation.Icon(); ok {
-		_spec.SetField(forcast.FieldIcon, field.TypeString, value)
+		_spec.SetField(forecast.FieldIcon, field.TypeString, value)
 	}
 	if fu.mutation.IconCleared() {
-		_spec.ClearField(forcast.FieldIcon, field.TypeString)
+		_spec.ClearField(forecast.FieldIcon, field.TypeString)
 	}
 	if value, ok := fu.mutation.MaxTemp(); ok {
-		_spec.SetField(forcast.FieldMaxTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fu.mutation.AddedMaxTemp(); ok {
-		_spec.AddField(forcast.FieldMaxTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldMaxTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fu.mutation.MinTemp(); ok {
-		_spec.SetField(forcast.FieldMinTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fu.mutation.AddedMinTemp(); ok {
-		_spec.AddField(forcast.FieldMinTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldMinTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fu.mutation.AvgTemp(); ok {
-		_spec.SetField(forcast.FieldAvgTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fu.mutation.AddedAvgTemp(); ok {
-		_spec.AddField(forcast.FieldAvgTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldAvgTemp, field.TypeFloat64, value)
 	}
 	if fu.mutation.WeatherCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -313,8 +313,8 @@ func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -329,8 +329,8 @@ func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -343,7 +343,7 @@ func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, fu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{forcast.Label}
+			err = &NotFoundError{forecast.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -353,28 +353,28 @@ func (fu *ForcastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	return n, nil
 }
 
-// ForcastUpdateOne is the builder for updating a single Forcast entity.
-type ForcastUpdateOne struct {
+// ForecastUpdateOne is the builder for updating a single Forecast entity.
+type ForecastUpdateOne struct {
 	config
 	fields   []string
 	hooks    []Hook
-	mutation *ForcastMutation
+	mutation *ForecastMutation
 }
 
 // SetCountry sets the "country" field.
-func (fuo *ForcastUpdateOne) SetCountry(s string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetCountry(s string) *ForecastUpdateOne {
 	fuo.mutation.SetCountry(s)
 	return fuo
 }
 
 // SetRegion sets the "region" field.
-func (fuo *ForcastUpdateOne) SetRegion(s string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetRegion(s string) *ForecastUpdateOne {
 	fuo.mutation.SetRegion(s)
 	return fuo
 }
 
 // SetNillableRegion sets the "region" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableRegion(s *string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableRegion(s *string) *ForecastUpdateOne {
 	if s != nil {
 		fuo.SetRegion(*s)
 	}
@@ -382,25 +382,25 @@ func (fuo *ForcastUpdateOne) SetNillableRegion(s *string) *ForcastUpdateOne {
 }
 
 // ClearRegion clears the value of the "region" field.
-func (fuo *ForcastUpdateOne) ClearRegion() *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) ClearRegion() *ForecastUpdateOne {
 	fuo.mutation.ClearRegion()
 	return fuo
 }
 
 // SetDate sets the "date" field.
-func (fuo *ForcastUpdateOne) SetDate(t time.Time) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetDate(t time.Time) *ForecastUpdateOne {
 	fuo.mutation.SetDate(t)
 	return fuo
 }
 
 // SetLocaltime sets the "localtime" field.
-func (fuo *ForcastUpdateOne) SetLocaltime(t time.Time) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetLocaltime(t time.Time) *ForecastUpdateOne {
 	fuo.mutation.SetLocaltime(t)
 	return fuo
 }
 
 // SetNillableLocaltime sets the "localtime" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableLocaltime(t *time.Time) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableLocaltime(t *time.Time) *ForecastUpdateOne {
 	if t != nil {
 		fuo.SetLocaltime(*t)
 	}
@@ -408,19 +408,19 @@ func (fuo *ForcastUpdateOne) SetNillableLocaltime(t *time.Time) *ForcastUpdateOn
 }
 
 // ClearLocaltime clears the value of the "localtime" field.
-func (fuo *ForcastUpdateOne) ClearLocaltime() *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) ClearLocaltime() *ForecastUpdateOne {
 	fuo.mutation.ClearLocaltime()
 	return fuo
 }
 
 // SetIcon sets the "icon" field.
-func (fuo *ForcastUpdateOne) SetIcon(s string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetIcon(s string) *ForecastUpdateOne {
 	fuo.mutation.SetIcon(s)
 	return fuo
 }
 
 // SetNillableIcon sets the "icon" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableIcon(s *string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableIcon(s *string) *ForecastUpdateOne {
 	if s != nil {
 		fuo.SetIcon(*s)
 	}
@@ -428,20 +428,20 @@ func (fuo *ForcastUpdateOne) SetNillableIcon(s *string) *ForcastUpdateOne {
 }
 
 // ClearIcon clears the value of the "icon" field.
-func (fuo *ForcastUpdateOne) ClearIcon() *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) ClearIcon() *ForecastUpdateOne {
 	fuo.mutation.ClearIcon()
 	return fuo
 }
 
 // SetMaxTemp sets the "max_temp" field.
-func (fuo *ForcastUpdateOne) SetMaxTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetMaxTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.ResetMaxTemp()
 	fuo.mutation.SetMaxTemp(f)
 	return fuo
 }
 
 // SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableMaxTemp(f *float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableMaxTemp(f *float64) *ForecastUpdateOne {
 	if f != nil {
 		fuo.SetMaxTemp(*f)
 	}
@@ -449,20 +449,20 @@ func (fuo *ForcastUpdateOne) SetNillableMaxTemp(f *float64) *ForcastUpdateOne {
 }
 
 // AddMaxTemp adds f to the "max_temp" field.
-func (fuo *ForcastUpdateOne) AddMaxTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) AddMaxTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.AddMaxTemp(f)
 	return fuo
 }
 
 // SetMinTemp sets the "min_temp" field.
-func (fuo *ForcastUpdateOne) SetMinTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetMinTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.ResetMinTemp()
 	fuo.mutation.SetMinTemp(f)
 	return fuo
 }
 
 // SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableMinTemp(f *float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableMinTemp(f *float64) *ForecastUpdateOne {
 	if f != nil {
 		fuo.SetMinTemp(*f)
 	}
@@ -470,20 +470,20 @@ func (fuo *ForcastUpdateOne) SetNillableMinTemp(f *float64) *ForcastUpdateOne {
 }
 
 // AddMinTemp adds f to the "min_temp" field.
-func (fuo *ForcastUpdateOne) AddMinTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) AddMinTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.AddMinTemp(f)
 	return fuo
 }
 
 // SetAvgTemp sets the "avg_temp" field.
-func (fuo *ForcastUpdateOne) SetAvgTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetAvgTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.ResetAvgTemp()
 	fuo.mutation.SetAvgTemp(f)
 	return fuo
 }
 
 // SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fuo *ForcastUpdateOne) SetNillableAvgTemp(f *float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) SetNillableAvgTemp(f *float64) *ForecastUpdateOne {
 	if f != nil {
 		fuo.SetAvgTemp(*f)
 	}
@@ -491,19 +491,19 @@ func (fuo *ForcastUpdateOne) SetNillableAvgTemp(f *float64) *ForcastUpdateOne {
 }
 
 // AddAvgTemp adds f to the "avg_temp" field.
-func (fuo *ForcastUpdateOne) AddAvgTemp(f float64) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) AddAvgTemp(f float64) *ForecastUpdateOne {
 	fuo.mutation.AddAvgTemp(f)
 	return fuo
 }
 
 // AddWeatherIDs adds the "weather" edge to the Weather entity by IDs.
-func (fuo *ForcastUpdateOne) AddWeatherIDs(ids ...int) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) AddWeatherIDs(ids ...int) *ForecastUpdateOne {
 	fuo.mutation.AddWeatherIDs(ids...)
 	return fuo
 }
 
 // AddWeather adds the "weather" edges to the Weather entity.
-func (fuo *ForcastUpdateOne) AddWeather(w ...*Weather) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) AddWeather(w ...*Weather) *ForecastUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
 		ids[i] = w[i].ID
@@ -511,25 +511,25 @@ func (fuo *ForcastUpdateOne) AddWeather(w ...*Weather) *ForcastUpdateOne {
 	return fuo.AddWeatherIDs(ids...)
 }
 
-// Mutation returns the ForcastMutation object of the builder.
-func (fuo *ForcastUpdateOne) Mutation() *ForcastMutation {
+// Mutation returns the ForecastMutation object of the builder.
+func (fuo *ForecastUpdateOne) Mutation() *ForecastMutation {
 	return fuo.mutation
 }
 
 // ClearWeather clears all "weather" edges to the Weather entity.
-func (fuo *ForcastUpdateOne) ClearWeather() *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) ClearWeather() *ForecastUpdateOne {
 	fuo.mutation.ClearWeather()
 	return fuo
 }
 
 // RemoveWeatherIDs removes the "weather" edge to Weather entities by IDs.
-func (fuo *ForcastUpdateOne) RemoveWeatherIDs(ids ...int) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) RemoveWeatherIDs(ids ...int) *ForecastUpdateOne {
 	fuo.mutation.RemoveWeatherIDs(ids...)
 	return fuo
 }
 
 // RemoveWeather removes "weather" edges to Weather entities.
-func (fuo *ForcastUpdateOne) RemoveWeather(w ...*Weather) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) RemoveWeather(w ...*Weather) *ForecastUpdateOne {
 	ids := make([]int, len(w))
 	for i := range w {
 		ids[i] = w[i].ID
@@ -537,26 +537,26 @@ func (fuo *ForcastUpdateOne) RemoveWeather(w ...*Weather) *ForcastUpdateOne {
 	return fuo.RemoveWeatherIDs(ids...)
 }
 
-// Where appends a list predicates to the ForcastUpdate builder.
-func (fuo *ForcastUpdateOne) Where(ps ...predicate.Forcast) *ForcastUpdateOne {
+// Where appends a list predicates to the ForecastUpdate builder.
+func (fuo *ForecastUpdateOne) Where(ps ...predicate.Forecast) *ForecastUpdateOne {
 	fuo.mutation.Where(ps...)
 	return fuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (fuo *ForcastUpdateOne) Select(field string, fields ...string) *ForcastUpdateOne {
+func (fuo *ForecastUpdateOne) Select(field string, fields ...string) *ForecastUpdateOne {
 	fuo.fields = append([]string{field}, fields...)
 	return fuo
 }
 
-// Save executes the query and returns the updated Forcast entity.
-func (fuo *ForcastUpdateOne) Save(ctx context.Context) (*Forcast, error) {
-	return withHooks[*Forcast, ForcastMutation](ctx, fuo.sqlSave, fuo.mutation, fuo.hooks)
+// Save executes the query and returns the updated Forecast entity.
+func (fuo *ForecastUpdateOne) Save(ctx context.Context) (*Forecast, error) {
+	return withHooks[*Forecast, ForecastMutation](ctx, fuo.sqlSave, fuo.mutation, fuo.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (fuo *ForcastUpdateOne) SaveX(ctx context.Context) *Forcast {
+func (fuo *ForecastUpdateOne) SaveX(ctx context.Context) *Forecast {
 	node, err := fuo.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -565,46 +565,46 @@ func (fuo *ForcastUpdateOne) SaveX(ctx context.Context) *Forcast {
 }
 
 // Exec executes the query on the entity.
-func (fuo *ForcastUpdateOne) Exec(ctx context.Context) error {
+func (fuo *ForecastUpdateOne) Exec(ctx context.Context) error {
 	_, err := fuo.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (fuo *ForcastUpdateOne) ExecX(ctx context.Context) {
+func (fuo *ForecastUpdateOne) ExecX(ctx context.Context) {
 	if err := fuo.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (fuo *ForcastUpdateOne) check() error {
+func (fuo *ForecastUpdateOne) check() error {
 	if v, ok := fuo.mutation.Country(); ok {
-		if err := forcast.CountryValidator(v); err != nil {
-			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forcast.country": %w`, err)}
+		if err := forecast.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "Forecast.country": %w`, err)}
 		}
 	}
 	return nil
 }
 
-func (fuo *ForcastUpdateOne) sqlSave(ctx context.Context) (_node *Forcast, err error) {
+func (fuo *ForecastUpdateOne) sqlSave(ctx context.Context) (_node *Forecast, err error) {
 	if err := fuo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(forcast.Table, forcast.Columns, sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(forecast.Table, forecast.Columns, sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt))
 	id, ok := fuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Forcast.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Forecast.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := fuo.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, forcast.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, forecast.FieldID)
 		for _, f := range fields {
-			if !forcast.ValidColumn(f) {
+			if !forecast.ValidColumn(f) {
 				return nil, &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 			}
-			if f != forcast.FieldID {
+			if f != forecast.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)
 			}
 		}
@@ -617,53 +617,53 @@ func (fuo *ForcastUpdateOne) sqlSave(ctx context.Context) (_node *Forcast, err e
 		}
 	}
 	if value, ok := fuo.mutation.Country(); ok {
-		_spec.SetField(forcast.FieldCountry, field.TypeString, value)
+		_spec.SetField(forecast.FieldCountry, field.TypeString, value)
 	}
 	if value, ok := fuo.mutation.Region(); ok {
-		_spec.SetField(forcast.FieldRegion, field.TypeString, value)
+		_spec.SetField(forecast.FieldRegion, field.TypeString, value)
 	}
 	if fuo.mutation.RegionCleared() {
-		_spec.ClearField(forcast.FieldRegion, field.TypeString)
+		_spec.ClearField(forecast.FieldRegion, field.TypeString)
 	}
 	if value, ok := fuo.mutation.Date(); ok {
-		_spec.SetField(forcast.FieldDate, field.TypeTime, value)
+		_spec.SetField(forecast.FieldDate, field.TypeTime, value)
 	}
 	if value, ok := fuo.mutation.Localtime(); ok {
-		_spec.SetField(forcast.FieldLocaltime, field.TypeTime, value)
+		_spec.SetField(forecast.FieldLocaltime, field.TypeTime, value)
 	}
 	if fuo.mutation.LocaltimeCleared() {
-		_spec.ClearField(forcast.FieldLocaltime, field.TypeTime)
+		_spec.ClearField(forecast.FieldLocaltime, field.TypeTime)
 	}
 	if value, ok := fuo.mutation.Icon(); ok {
-		_spec.SetField(forcast.FieldIcon, field.TypeString, value)
+		_spec.SetField(forecast.FieldIcon, field.TypeString, value)
 	}
 	if fuo.mutation.IconCleared() {
-		_spec.ClearField(forcast.FieldIcon, field.TypeString)
+		_spec.ClearField(forecast.FieldIcon, field.TypeString)
 	}
 	if value, ok := fuo.mutation.MaxTemp(); ok {
-		_spec.SetField(forcast.FieldMaxTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fuo.mutation.AddedMaxTemp(); ok {
-		_spec.AddField(forcast.FieldMaxTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldMaxTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fuo.mutation.MinTemp(); ok {
-		_spec.SetField(forcast.FieldMinTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fuo.mutation.AddedMinTemp(); ok {
-		_spec.AddField(forcast.FieldMinTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldMinTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fuo.mutation.AvgTemp(); ok {
-		_spec.SetField(forcast.FieldAvgTemp, field.TypeFloat64, value)
+		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
 	}
 	if value, ok := fuo.mutation.AddedAvgTemp(); ok {
-		_spec.AddField(forcast.FieldAvgTemp, field.TypeFloat64, value)
+		_spec.AddField(forecast.FieldAvgTemp, field.TypeFloat64, value)
 	}
 	if fuo.mutation.WeatherCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -675,8 +675,8 @@ func (fuo *ForcastUpdateOne) sqlSave(ctx context.Context) (_node *Forcast, err e
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -691,8 +691,8 @@ func (fuo *ForcastUpdateOne) sqlSave(ctx context.Context) (_node *Forcast, err e
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   forcast.WeatherTable,
-			Columns: []string{forcast.WeatherColumn},
+			Table:   forecast.WeatherTable,
+			Columns: []string{forecast.WeatherColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(weather.FieldID, field.TypeInt),
@@ -703,12 +703,12 @@ func (fuo *ForcastUpdateOne) sqlSave(ctx context.Context) (_node *Forcast, err e
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	_node = &Forcast{config: fuo.config}
+	_node = &Forecast{config: fuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
 	if err = sqlgraph.UpdateNode(ctx, fuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{forcast.Label}
+			err = &NotFoundError{forecast.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}

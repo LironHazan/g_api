@@ -57,13 +57,8 @@ func pushForcast(forcast any) {
 }
 
 func TriggerForcastPipline() {
-	// Data + modeling:
 
 	// Phase1
-	// call queryForcast
-	// transform + push to pg (via ent)
-
-	// Phase2
 	// call queryForcast
 	// push to topics [[IL] , [UK], [US]]
 	// consume + transform
@@ -74,7 +69,7 @@ func TriggerForcastPipline() {
 	// generate API
 	// UI consumer (like the iphone app)
 
-	regions := [3]string{"Tel-Aviv", "Cancon", "Los Angeles"}
+	regions := [3]string{"Tel-Aviv", "Paris", "Los Angeles"}
 
 	for _, r := range regions {
 		forcast, err := queryForcast(r)

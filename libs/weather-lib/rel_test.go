@@ -41,9 +41,9 @@ func Test_Weather(t *testing.T) {
 
 }
 
-func populateDay(client *ent.Client, ctx context.Context) (*ent.Forcast, error) {
+func populateDay(client *ent.Client, ctx context.Context) (*ent.Forecast, error) {
 	newDate := time.Date(2023, time.March, 30, 0, 0, 0, 0, time.UTC)
-	return client.Forcast.Create().
+	return client.Forecast.Create().
 		SetDate(newDate).
 		SetCountry("Israel").
 		SetRegion("TelAviv").

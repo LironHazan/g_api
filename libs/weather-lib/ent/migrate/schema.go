@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	// ForcastsColumns holds the columns for the "forcasts" table.
-	ForcastsColumns = []*schema.Column{
+	// ForecastsColumns holds the columns for the "forecasts" table.
+	ForecastsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "country", Type: field.TypeString, Size: 2147483647},
 		{Name: "region", Type: field.TypeString, Nullable: true, Size: 2147483647},
@@ -20,11 +20,11 @@ var (
 		{Name: "min_temp", Type: field.TypeFloat64, Default: 0},
 		{Name: "avg_temp", Type: field.TypeFloat64, Default: 0},
 	}
-	// ForcastsTable holds the schema information for the "forcasts" table.
-	ForcastsTable = &schema.Table{
-		Name:       "forcasts",
-		Columns:    ForcastsColumns,
-		PrimaryKey: []*schema.Column{ForcastsColumns[0]},
+	// ForecastsTable holds the schema information for the "forecasts" table.
+	ForecastsTable = &schema.Table{
+		Name:       "forecasts",
+		Columns:    ForecastsColumns,
+		PrimaryKey: []*schema.Column{ForecastsColumns[0]},
 	}
 	// WeathersColumns holds the columns for the "weathers" table.
 	WeathersColumns = []*schema.Column{
@@ -34,7 +34,7 @@ var (
 		{Name: "time_epoch", Type: field.TypeTime, Nullable: true},
 		{Name: "temp", Type: field.TypeFloat64},
 		{Name: "feels_like", Type: field.TypeFloat64},
-		{Name: "forcast_weather", Type: field.TypeInt, Nullable: true},
+		{Name: "forecast_weather", Type: field.TypeInt, Nullable: true},
 	}
 	// WeathersTable holds the schema information for the "weathers" table.
 	WeathersTable = &schema.Table{
@@ -43,20 +43,20 @@ var (
 		PrimaryKey: []*schema.Column{WeathersColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "weathers_forcasts_weather",
+				Symbol:     "weathers_forecasts_weather",
 				Columns:    []*schema.Column{WeathersColumns[6]},
-				RefColumns: []*schema.Column{ForcastsColumns[0]},
+				RefColumns: []*schema.Column{ForecastsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ForcastsTable,
+		ForecastsTable,
 		WeathersTable,
 	}
 )
 
 func init() {
-	WeathersTable.ForeignKeys[0].RefTable = ForcastsTable
+	WeathersTable.ForeignKeys[0].RefTable = ForecastsTable
 }

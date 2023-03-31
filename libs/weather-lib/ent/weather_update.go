@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"g_api/libs/weather-lib/ent/forcast"
+	"g_api/libs/weather-lib/ent/forecast"
 	"g_api/libs/weather-lib/ent/predicate"
 	"g_api/libs/weather-lib/ent/weather"
 	"time"
@@ -108,13 +108,13 @@ func (wu *WeatherUpdate) AddFeelsLike(f float64) *WeatherUpdate {
 	return wu
 }
 
-// SetForcastID sets the "forcast" edge to the Forcast entity by ID.
+// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
 func (wu *WeatherUpdate) SetForcastID(id int) *WeatherUpdate {
 	wu.mutation.SetForcastID(id)
 	return wu
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forcast entity by ID if the given value is not nil.
+// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
 func (wu *WeatherUpdate) SetNillableForcastID(id *int) *WeatherUpdate {
 	if id != nil {
 		wu = wu.SetForcastID(*id)
@@ -122,8 +122,8 @@ func (wu *WeatherUpdate) SetNillableForcastID(id *int) *WeatherUpdate {
 	return wu
 }
 
-// SetForcast sets the "forcast" edge to the Forcast entity.
-func (wu *WeatherUpdate) SetForcast(f *Forcast) *WeatherUpdate {
+// SetForcast sets the "forcast" edge to the Forecast entity.
+func (wu *WeatherUpdate) SetForcast(f *Forecast) *WeatherUpdate {
 	return wu.SetForcastID(f.ID)
 }
 
@@ -132,7 +132,7 @@ func (wu *WeatherUpdate) Mutation() *WeatherMutation {
 	return wu.mutation
 }
 
-// ClearForcast clears the "forcast" edge to the Forcast entity.
+// ClearForcast clears the "forcast" edge to the Forecast entity.
 func (wu *WeatherUpdate) ClearForcast() *WeatherUpdate {
 	wu.mutation.ClearForcast()
 	return wu
@@ -212,7 +212,7 @@ func (wu *WeatherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{weather.ForcastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -225,7 +225,7 @@ func (wu *WeatherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Columns: []string{weather.ForcastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -332,13 +332,13 @@ func (wuo *WeatherUpdateOne) AddFeelsLike(f float64) *WeatherUpdateOne {
 	return wuo
 }
 
-// SetForcastID sets the "forcast" edge to the Forcast entity by ID.
+// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
 func (wuo *WeatherUpdateOne) SetForcastID(id int) *WeatherUpdateOne {
 	wuo.mutation.SetForcastID(id)
 	return wuo
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forcast entity by ID if the given value is not nil.
+// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
 func (wuo *WeatherUpdateOne) SetNillableForcastID(id *int) *WeatherUpdateOne {
 	if id != nil {
 		wuo = wuo.SetForcastID(*id)
@@ -346,8 +346,8 @@ func (wuo *WeatherUpdateOne) SetNillableForcastID(id *int) *WeatherUpdateOne {
 	return wuo
 }
 
-// SetForcast sets the "forcast" edge to the Forcast entity.
-func (wuo *WeatherUpdateOne) SetForcast(f *Forcast) *WeatherUpdateOne {
+// SetForcast sets the "forcast" edge to the Forecast entity.
+func (wuo *WeatherUpdateOne) SetForcast(f *Forecast) *WeatherUpdateOne {
 	return wuo.SetForcastID(f.ID)
 }
 
@@ -356,7 +356,7 @@ func (wuo *WeatherUpdateOne) Mutation() *WeatherMutation {
 	return wuo.mutation
 }
 
-// ClearForcast clears the "forcast" edge to the Forcast entity.
+// ClearForcast clears the "forcast" edge to the Forecast entity.
 func (wuo *WeatherUpdateOne) ClearForcast() *WeatherUpdateOne {
 	wuo.mutation.ClearForcast()
 	return wuo
@@ -466,7 +466,7 @@ func (wuo *WeatherUpdateOne) sqlSave(ctx context.Context) (_node *Weather, err e
 			Columns: []string{weather.ForcastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
@@ -479,7 +479,7 @@ func (wuo *WeatherUpdateOne) sqlSave(ctx context.Context) (_node *Weather, err e
 			Columns: []string{weather.ForcastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(forcast.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
