@@ -27,19 +27,28 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  go-server:
-    build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      - broker
-      - postgres
-    environment:
-      - PGHOST=postgres
-      - PGUSER=myuser
-      - PGPASSWORD=mypassword
-      - PGDATABASE=mydb
-      - KAFKA_BROKERS=kafka:9092
+#  go-whether-pub:
+#    build: .
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - broker
+#    environment:
+#      - KAFKA_BROKERS=kafka:9092
+#
+#  go-weather-sub:
+#    build: .
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - broker
+#      - postgres
+#    environment:
+#      - PGHOST=postgres
+#      - PGUSER=myuser
+#      - PGPASSWORD=mypassword
+#      - PGDATABASE=mydb
+#      - KAFKA_BROKERS=kafka:9092
 
   postgres:
     image: postgres:latest
