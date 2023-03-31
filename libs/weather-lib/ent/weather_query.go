@@ -18,12 +18,12 @@ import (
 // WeatherQuery is the builder for querying Weather entities.
 type WeatherQuery struct {
 	config
-	ctx         *QueryContext
-	order       []OrderFunc
-	inters      []Interceptor
-	predicates  []predicate.Weather
-	withForcast *ForecastQuery
-	withFKs     bool
+	ctx          *QueryContext
+	order        []OrderFunc
+	inters       []Interceptor
+	predicates   []predicate.Weather
+	withForecast *ForecastQuery
+	withFKs      bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -60,8 +60,8 @@ func (wq *WeatherQuery) Order(o ...OrderFunc) *WeatherQuery {
 	return wq
 }
 
-// QueryForcast chains the current query on the "forcast" edge.
-func (wq *WeatherQuery) QueryForcast() *ForecastQuery {
+// QueryForecast chains the current query on the "forecast" edge.
+func (wq *WeatherQuery) QueryForecast() *ForecastQuery {
 	query := (&ForecastClient{config: wq.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := wq.prepareQuery(ctx); err != nil {
@@ -74,7 +74,7 @@ func (wq *WeatherQuery) QueryForcast() *ForecastQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(weather.Table, weather.FieldID, selector),
 			sqlgraph.To(forecast.Table, forecast.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForcastTable, weather.ForcastColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForecastTable, weather.ForecastColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(wq.driver.Dialect(), step)
 		return fromU, nil
@@ -269,26 +269,26 @@ func (wq *WeatherQuery) Clone() *WeatherQuery {
 		return nil
 	}
 	return &WeatherQuery{
-		config:      wq.config,
-		ctx:         wq.ctx.Clone(),
-		order:       append([]OrderFunc{}, wq.order...),
-		inters:      append([]Interceptor{}, wq.inters...),
-		predicates:  append([]predicate.Weather{}, wq.predicates...),
-		withForcast: wq.withForcast.Clone(),
+		config:       wq.config,
+		ctx:          wq.ctx.Clone(),
+		order:        append([]OrderFunc{}, wq.order...),
+		inters:       append([]Interceptor{}, wq.inters...),
+		predicates:   append([]predicate.Weather{}, wq.predicates...),
+		withForecast: wq.withForecast.Clone(),
 		// clone intermediate query.
 		sql:  wq.sql.Clone(),
 		path: wq.path,
 	}
 }
 
-// WithForcast tells the query-builder to eager-load the nodes that are connected to
-// the "forcast" edge. The optional arguments are used to configure the query builder of the edge.
-func (wq *WeatherQuery) WithForcast(opts ...func(*ForecastQuery)) *WeatherQuery {
+// WithForecast tells the query-builder to eager-load the nodes that are connected to
+// the "forecast" edge. The optional arguments are used to configure the query builder of the edge.
+func (wq *WeatherQuery) WithForecast(opts ...func(*ForecastQuery)) *WeatherQuery {
 	query := (&ForecastClient{config: wq.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	wq.withForcast = query
+	wq.withForecast = query
 	return wq
 }
 
@@ -372,10 +372,10 @@ func (wq *WeatherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Weat
 		withFKs     = wq.withFKs
 		_spec       = wq.querySpec()
 		loadedTypes = [1]bool{
-			wq.withForcast != nil,
+			wq.withForecast != nil,
 		}
 	)
-	if wq.withForcast != nil {
+	if wq.withForecast != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -399,16 +399,16 @@ func (wq *WeatherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Weat
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := wq.withForcast; query != nil {
-		if err := wq.loadForcast(ctx, query, nodes, nil,
-			func(n *Weather, e *Forecast) { n.Edges.Forcast = e }); err != nil {
+	if query := wq.withForecast; query != nil {
+		if err := wq.loadForecast(ctx, query, nodes, nil,
+			func(n *Weather, e *Forecast) { n.Edges.Forecast = e }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (wq *WeatherQuery) loadForcast(ctx context.Context, query *ForecastQuery, nodes []*Weather, init func(*Weather), assign func(*Weather, *Forecast)) error {
+func (wq *WeatherQuery) loadForecast(ctx context.Context, query *ForecastQuery, nodes []*Weather, init func(*Weather), assign func(*Weather, *Forecast)) error {
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Weather)
 	for i := range nodes {

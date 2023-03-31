@@ -26,7 +26,7 @@ func (Weather) Fields() []ent.Field {
 // Edges of the Weather.
 func (Weather) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.From("forcast", Forecast.Type).
+		edge.From("forecast", Forecast.Type).
 			Ref("weather").
 			Unique(),
 	}

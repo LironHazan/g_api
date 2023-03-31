@@ -35,24 +35,24 @@ type Weather struct {
 
 // WeatherEdges holds the relations/edges for other nodes in the graph.
 type WeatherEdges struct {
-	// Forcast holds the value of the forcast edge.
-	Forcast *Forecast `json:"forcast,omitempty"`
+	// Forecast holds the value of the forecast edge.
+	Forecast *Forecast `json:"forecast,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [1]bool
 }
 
-// ForcastOrErr returns the Forcast value or an error if the edge
+// ForecastOrErr returns the Forecast value or an error if the edge
 // was not loaded in eager-loading, or loaded but was not found.
-func (e WeatherEdges) ForcastOrErr() (*Forecast, error) {
+func (e WeatherEdges) ForecastOrErr() (*Forecast, error) {
 	if e.loadedTypes[0] {
-		if e.Forcast == nil {
+		if e.Forecast == nil {
 			// Edge was loaded but was not found.
 			return nil, &NotFoundError{label: forecast.Label}
 		}
-		return e.Forcast, nil
+		return e.Forecast, nil
 	}
-	return nil, &NotLoadedError{edge: "forcast"}
+	return nil, &NotLoadedError{edge: "forecast"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -133,9 +133,9 @@ func (w *Weather) assignValues(columns []string, values []any) error {
 	return nil
 }
 
-// QueryForcast queries the "forcast" edge of the Weather entity.
-func (w *Weather) QueryForcast() *ForecastQuery {
-	return NewWeatherClient(w.config).QueryForcast(w)
+// QueryForecast queries the "forecast" edge of the Weather entity.
+func (w *Weather) QueryForecast() *ForecastQuery {
+	return NewWeatherClient(w.config).QueryForecast(w)
 }
 
 // Update returns a builder for updating this Weather.

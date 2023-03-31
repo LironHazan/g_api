@@ -12,7 +12,7 @@ const apiEndpoint = "https://api.weatherapi.com/v1/forecast.json"
 
 type Result = interface{}
 
-func queryForcast(region string) (Result, error) {
+func queryForecast(region string) (Result, error) {
 	req, err := http.NewRequest("GET", apiEndpoint, nil)
 	if err != nil {
 		return nil, err
@@ -52,14 +52,14 @@ func queryForcast(region string) (Result, error) {
 	return result, nil
 }
 
-func pushForcast(forcast any) {
-	fmt.Println(forcast)
+func pushForecast(forecast any) {
+	fmt.Println(forecast)
 }
 
-func TriggerForcastPipline() {
+func TriggerForecastPipline() {
 
 	// Phase1
-	// call queryForcast
+	// call queryForecast
 	// push to topics [[IL] , [UK], [US]]
 	// consume + transform
 	// push to pg
@@ -72,9 +72,9 @@ func TriggerForcastPipline() {
 	regions := [3]string{"Tel-Aviv", "Paris", "Los Angeles"}
 
 	for _, r := range regions {
-		forcast, err := queryForcast(r)
+		forecast, err := queryForecast(r)
 		if err != nil {
-			pushForcast(forcast)
+			pushForecast(forecast)
 		}
 	}
 

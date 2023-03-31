@@ -325,24 +325,24 @@ func FeelsLikeLTE(v float64) predicate.Weather {
 	return predicate.Weather(sql.FieldLTE(FieldFeelsLike, v))
 }
 
-// HasForcast applies the HasEdge predicate on the "forcast" edge.
-func HasForcast() predicate.Weather {
+// HasForecast applies the HasEdge predicate on the "forecast" edge.
+func HasForecast() predicate.Weather {
 	return predicate.Weather(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ForcastTable, ForcastColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, ForecastTable, ForecastColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasForcastWith applies the HasEdge predicate on the "forcast" edge with a given conditions (other predicates).
-func HasForcastWith(preds ...predicate.Forecast) predicate.Weather {
+// HasForecastWith applies the HasEdge predicate on the "forecast" edge with a given conditions (other predicates).
+func HasForecastWith(preds ...predicate.Forecast) predicate.Weather {
 	return predicate.Weather(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(ForcastInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, ForcastTable, ForcastColumn),
+			sqlgraph.To(ForecastInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, ForecastTable, ForecastColumn),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

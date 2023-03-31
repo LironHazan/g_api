@@ -17,17 +17,17 @@ const (
 	FieldTemp = "temp"
 	// FieldFeelsLike holds the string denoting the feels_like field in the database.
 	FieldFeelsLike = "feels_like"
-	// EdgeForcast holds the string denoting the forcast edge name in mutations.
-	EdgeForcast = "forcast"
+	// EdgeForecast holds the string denoting the forecast edge name in mutations.
+	EdgeForecast = "forecast"
 	// Table holds the table name of the weather in the database.
 	Table = "weathers"
-	// ForcastTable is the table that holds the forcast relation/edge.
-	ForcastTable = "weathers"
-	// ForcastInverseTable is the table name for the Forecast entity.
+	// ForecastTable is the table that holds the forecast relation/edge.
+	ForecastTable = "weathers"
+	// ForecastInverseTable is the table name for the Forecast entity.
 	// It exists in this package in order to avoid circular dependency with the "forecast" package.
-	ForcastInverseTable = "forecasts"
-	// ForcastColumn is the table column denoting the forcast relation/edge.
-	ForcastColumn = "forecast_weather"
+	ForecastInverseTable = "forecasts"
+	// ForecastColumn is the table column denoting the forecast relation/edge.
+	ForecastColumn = "forecast_weather"
 )
 
 // Columns holds all SQL columns for weather fields.

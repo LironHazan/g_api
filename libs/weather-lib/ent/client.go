@@ -426,15 +426,15 @@ func (c *WeatherClient) GetX(ctx context.Context, id int) *Weather {
 	return obj
 }
 
-// QueryForcast queries the forcast edge of a Weather.
-func (c *WeatherClient) QueryForcast(w *Weather) *ForecastQuery {
+// QueryForecast queries the forecast edge of a Weather.
+func (c *WeatherClient) QueryForecast(w *Weather) *ForecastQuery {
 	query := (&ForecastClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := w.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(weather.Table, weather.FieldID, id),
 			sqlgraph.To(forecast.Table, forecast.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForcastTable, weather.ForcastColumn),
+			sqlgraph.Edge(sqlgraph.M2O, true, weather.ForecastTable, weather.ForecastColumn),
 		)
 		fromV = sqlgraph.Neighbors(w.driver.Dialect(), step)
 		return fromV, nil

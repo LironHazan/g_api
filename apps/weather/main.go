@@ -11,8 +11,8 @@ func main() {
 	//producer, err := producer.NewProducer(brokers)
 
 	ticker := time.NewTicker(12 * time.Hour)
-	weather_lib.TriggerForcastPipline()
+	weather_lib.TriggerForecastPipline()
 	for range ticker.C {
-		weather_lib.TriggerForcastPipline()
+		weather_lib.TriggerForecastPipline()
 	}
 }

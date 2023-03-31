@@ -67,23 +67,23 @@ func (wc *WeatherCreate) SetFeelsLike(f float64) *WeatherCreate {
 	return wc
 }
 
-// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
-func (wc *WeatherCreate) SetForcastID(id int) *WeatherCreate {
-	wc.mutation.SetForcastID(id)
+// SetForecastID sets the "forecast" edge to the Forecast entity by ID.
+func (wc *WeatherCreate) SetForecastID(id int) *WeatherCreate {
+	wc.mutation.SetForecastID(id)
 	return wc
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
-func (wc *WeatherCreate) SetNillableForcastID(id *int) *WeatherCreate {
+// SetNillableForecastID sets the "forecast" edge to the Forecast entity by ID if the given value is not nil.
+func (wc *WeatherCreate) SetNillableForecastID(id *int) *WeatherCreate {
 	if id != nil {
-		wc = wc.SetForcastID(*id)
+		wc = wc.SetForecastID(*id)
 	}
 	return wc
 }
 
-// SetForcast sets the "forcast" edge to the Forecast entity.
-func (wc *WeatherCreate) SetForcast(f *Forecast) *WeatherCreate {
-	return wc.SetForcastID(f.ID)
+// SetForecast sets the "forecast" edge to the Forecast entity.
+func (wc *WeatherCreate) SetForecast(f *Forecast) *WeatherCreate {
+	return wc.SetForecastID(f.ID)
 }
 
 // Mutation returns the WeatherMutation object of the builder.
@@ -175,12 +175,12 @@ func (wc *WeatherCreate) createSpec() (*Weather, *sqlgraph.CreateSpec) {
 		_spec.SetField(weather.FieldFeelsLike, field.TypeFloat64, value)
 		_node.FeelsLike = value
 	}
-	if nodes := wc.mutation.ForcastIDs(); len(nodes) > 0 {
+	if nodes := wc.mutation.ForecastIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   weather.ForcastTable,
-			Columns: []string{weather.ForcastColumn},
+			Table:   weather.ForecastTable,
+			Columns: []string{weather.ForecastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),

@@ -108,23 +108,23 @@ func (wu *WeatherUpdate) AddFeelsLike(f float64) *WeatherUpdate {
 	return wu
 }
 
-// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
-func (wu *WeatherUpdate) SetForcastID(id int) *WeatherUpdate {
-	wu.mutation.SetForcastID(id)
+// SetForecastID sets the "forecast" edge to the Forecast entity by ID.
+func (wu *WeatherUpdate) SetForecastID(id int) *WeatherUpdate {
+	wu.mutation.SetForecastID(id)
 	return wu
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
-func (wu *WeatherUpdate) SetNillableForcastID(id *int) *WeatherUpdate {
+// SetNillableForecastID sets the "forecast" edge to the Forecast entity by ID if the given value is not nil.
+func (wu *WeatherUpdate) SetNillableForecastID(id *int) *WeatherUpdate {
 	if id != nil {
-		wu = wu.SetForcastID(*id)
+		wu = wu.SetForecastID(*id)
 	}
 	return wu
 }
 
-// SetForcast sets the "forcast" edge to the Forecast entity.
-func (wu *WeatherUpdate) SetForcast(f *Forecast) *WeatherUpdate {
-	return wu.SetForcastID(f.ID)
+// SetForecast sets the "forecast" edge to the Forecast entity.
+func (wu *WeatherUpdate) SetForecast(f *Forecast) *WeatherUpdate {
+	return wu.SetForecastID(f.ID)
 }
 
 // Mutation returns the WeatherMutation object of the builder.
@@ -132,9 +132,9 @@ func (wu *WeatherUpdate) Mutation() *WeatherMutation {
 	return wu.mutation
 }
 
-// ClearForcast clears the "forcast" edge to the Forecast entity.
-func (wu *WeatherUpdate) ClearForcast() *WeatherUpdate {
-	wu.mutation.ClearForcast()
+// ClearForecast clears the "forecast" edge to the Forecast entity.
+func (wu *WeatherUpdate) ClearForecast() *WeatherUpdate {
+	wu.mutation.ClearForecast()
 	return wu
 }
 
@@ -204,12 +204,12 @@ func (wu *WeatherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := wu.mutation.AddedFeelsLike(); ok {
 		_spec.AddField(weather.FieldFeelsLike, field.TypeFloat64, value)
 	}
-	if wu.mutation.ForcastCleared() {
+	if wu.mutation.ForecastCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   weather.ForcastTable,
-			Columns: []string{weather.ForcastColumn},
+			Table:   weather.ForecastTable,
+			Columns: []string{weather.ForecastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
@@ -217,12 +217,12 @@ func (wu *WeatherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wu.mutation.ForcastIDs(); len(nodes) > 0 {
+	if nodes := wu.mutation.ForecastIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   weather.ForcastTable,
-			Columns: []string{weather.ForcastColumn},
+			Table:   weather.ForecastTable,
+			Columns: []string{weather.ForecastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
@@ -332,23 +332,23 @@ func (wuo *WeatherUpdateOne) AddFeelsLike(f float64) *WeatherUpdateOne {
 	return wuo
 }
 
-// SetForcastID sets the "forcast" edge to the Forecast entity by ID.
-func (wuo *WeatherUpdateOne) SetForcastID(id int) *WeatherUpdateOne {
-	wuo.mutation.SetForcastID(id)
+// SetForecastID sets the "forecast" edge to the Forecast entity by ID.
+func (wuo *WeatherUpdateOne) SetForecastID(id int) *WeatherUpdateOne {
+	wuo.mutation.SetForecastID(id)
 	return wuo
 }
 
-// SetNillableForcastID sets the "forcast" edge to the Forecast entity by ID if the given value is not nil.
-func (wuo *WeatherUpdateOne) SetNillableForcastID(id *int) *WeatherUpdateOne {
+// SetNillableForecastID sets the "forecast" edge to the Forecast entity by ID if the given value is not nil.
+func (wuo *WeatherUpdateOne) SetNillableForecastID(id *int) *WeatherUpdateOne {
 	if id != nil {
-		wuo = wuo.SetForcastID(*id)
+		wuo = wuo.SetForecastID(*id)
 	}
 	return wuo
 }
 
-// SetForcast sets the "forcast" edge to the Forecast entity.
-func (wuo *WeatherUpdateOne) SetForcast(f *Forecast) *WeatherUpdateOne {
-	return wuo.SetForcastID(f.ID)
+// SetForecast sets the "forecast" edge to the Forecast entity.
+func (wuo *WeatherUpdateOne) SetForecast(f *Forecast) *WeatherUpdateOne {
+	return wuo.SetForecastID(f.ID)
 }
 
 // Mutation returns the WeatherMutation object of the builder.
@@ -356,9 +356,9 @@ func (wuo *WeatherUpdateOne) Mutation() *WeatherMutation {
 	return wuo.mutation
 }
 
-// ClearForcast clears the "forcast" edge to the Forecast entity.
-func (wuo *WeatherUpdateOne) ClearForcast() *WeatherUpdateOne {
-	wuo.mutation.ClearForcast()
+// ClearForecast clears the "forecast" edge to the Forecast entity.
+func (wuo *WeatherUpdateOne) ClearForecast() *WeatherUpdateOne {
+	wuo.mutation.ClearForecast()
 	return wuo
 }
 
@@ -458,12 +458,12 @@ func (wuo *WeatherUpdateOne) sqlSave(ctx context.Context) (_node *Weather, err e
 	if value, ok := wuo.mutation.AddedFeelsLike(); ok {
 		_spec.AddField(weather.FieldFeelsLike, field.TypeFloat64, value)
 	}
-	if wuo.mutation.ForcastCleared() {
+	if wuo.mutation.ForecastCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   weather.ForcastTable,
-			Columns: []string{weather.ForcastColumn},
+			Table:   weather.ForecastTable,
+			Columns: []string{weather.ForecastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),
@@ -471,12 +471,12 @@ func (wuo *WeatherUpdateOne) sqlSave(ctx context.Context) (_node *Weather, err e
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := wuo.mutation.ForcastIDs(); len(nodes) > 0 {
+	if nodes := wuo.mutation.ForecastIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
 			Inverse: true,
-			Table:   weather.ForcastTable,
-			Columns: []string{weather.ForcastColumn},
+			Table:   weather.ForecastTable,
+			Columns: []string{weather.ForecastColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(forecast.FieldID, field.TypeInt),

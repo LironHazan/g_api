@@ -991,23 +991,23 @@ func (m *ForecastMutation) ResetEdge(name string) error {
 // WeatherMutation represents an operation that mutates the Weather nodes in the graph.
 type WeatherMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int
-	icon           *string
-	time           *int
-	addtime        *int
-	time_epoch     *time.Time
-	temp           *float64
-	addtemp        *float64
-	feels_like     *float64
-	addfeels_like  *float64
-	clearedFields  map[string]struct{}
-	forcast        *int
-	clearedforcast bool
-	done           bool
-	oldValue       func(context.Context) (*Weather, error)
-	predicates     []predicate.Weather
+	op              Op
+	typ             string
+	id              *int
+	icon            *string
+	time            *int
+	addtime         *int
+	time_epoch      *time.Time
+	temp            *float64
+	addtemp         *float64
+	feels_like      *float64
+	addfeels_like   *float64
+	clearedFields   map[string]struct{}
+	forecast        *int
+	clearedforecast bool
+	done            bool
+	oldValue        func(context.Context) (*Weather, error)
+	predicates      []predicate.Weather
 }
 
 var _ ent.Mutation = (*WeatherMutation)(nil)
@@ -1374,43 +1374,43 @@ func (m *WeatherMutation) ResetFeelsLike() {
 	m.addfeels_like = nil
 }
 
-// SetForcastID sets the "forcast" edge to the Forecast entity by id.
-func (m *WeatherMutation) SetForcastID(id int) {
-	m.forcast = &id
+// SetForecastID sets the "forecast" edge to the Forecast entity by id.
+func (m *WeatherMutation) SetForecastID(id int) {
+	m.forecast = &id
 }
 
-// ClearForcast clears the "forcast" edge to the Forecast entity.
-func (m *WeatherMutation) ClearForcast() {
-	m.clearedforcast = true
+// ClearForecast clears the "forecast" edge to the Forecast entity.
+func (m *WeatherMutation) ClearForecast() {
+	m.clearedforecast = true
 }
 
-// ForcastCleared reports if the "forcast" edge to the Forecast entity was cleared.
-func (m *WeatherMutation) ForcastCleared() bool {
-	return m.clearedforcast
+// ForecastCleared reports if the "forecast" edge to the Forecast entity was cleared.
+func (m *WeatherMutation) ForecastCleared() bool {
+	return m.clearedforecast
 }
 
-// ForcastID returns the "forcast" edge ID in the mutation.
-func (m *WeatherMutation) ForcastID() (id int, exists bool) {
-	if m.forcast != nil {
-		return *m.forcast, true
+// ForecastID returns the "forecast" edge ID in the mutation.
+func (m *WeatherMutation) ForecastID() (id int, exists bool) {
+	if m.forecast != nil {
+		return *m.forecast, true
 	}
 	return
 }
 
-// ForcastIDs returns the "forcast" edge IDs in the mutation.
+// ForecastIDs returns the "forecast" edge IDs in the mutation.
 // Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
-// ForcastID instead. It exists only for internal usage by the builders.
-func (m *WeatherMutation) ForcastIDs() (ids []int) {
-	if id := m.forcast; id != nil {
+// ForecastID instead. It exists only for internal usage by the builders.
+func (m *WeatherMutation) ForecastIDs() (ids []int) {
+	if id := m.forecast; id != nil {
 		ids = append(ids, *id)
 	}
 	return
 }
 
-// ResetForcast resets all changes to the "forcast" edge.
-func (m *WeatherMutation) ResetForcast() {
-	m.forcast = nil
-	m.clearedforcast = false
+// ResetForecast resets all changes to the "forecast" edge.
+func (m *WeatherMutation) ResetForecast() {
+	m.forecast = nil
+	m.clearedforecast = false
 }
 
 // Where appends a list predicates to the WeatherMutation builder.
@@ -1669,8 +1669,8 @@ func (m *WeatherMutation) ResetField(name string) error {
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *WeatherMutation) AddedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.forcast != nil {
-		edges = append(edges, weather.EdgeForcast)
+	if m.forecast != nil {
+		edges = append(edges, weather.EdgeForecast)
 	}
 	return edges
 }
@@ -1679,8 +1679,8 @@ func (m *WeatherMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *WeatherMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case weather.EdgeForcast:
-		if id := m.forcast; id != nil {
+	case weather.EdgeForecast:
+		if id := m.forecast; id != nil {
 			return []ent.Value{*id}
 		}
 	}
@@ -1702,8 +1702,8 @@ func (m *WeatherMutation) RemovedIDs(name string) []ent.Value {
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *WeatherMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 1)
-	if m.clearedforcast {
-		edges = append(edges, weather.EdgeForcast)
+	if m.clearedforecast {
+		edges = append(edges, weather.EdgeForecast)
 	}
 	return edges
 }
@@ -1712,8 +1712,8 @@ func (m *WeatherMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *WeatherMutation) EdgeCleared(name string) bool {
 	switch name {
-	case weather.EdgeForcast:
-		return m.clearedforcast
+	case weather.EdgeForecast:
+		return m.clearedforecast
 	}
 	return false
 }
@@ -1722,8 +1722,8 @@ func (m *WeatherMutation) EdgeCleared(name string) bool {
 // if that edge is not defined in the schema.
 func (m *WeatherMutation) ClearEdge(name string) error {
 	switch name {
-	case weather.EdgeForcast:
-		m.ClearForcast()
+	case weather.EdgeForecast:
+		m.ClearForecast()
 		return nil
 	}
 	return fmt.Errorf("unknown Weather unique edge %s", name)
@@ -1733,8 +1733,8 @@ func (m *WeatherMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *WeatherMutation) ResetEdge(name string) error {
 	switch name {
-	case weather.EdgeForcast:
-		m.ResetForcast()
+	case weather.EdgeForecast:
+		m.ResetForecast()
 		return nil
 	}
 	return fmt.Errorf("unknown Weather edge %s", name)
