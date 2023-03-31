@@ -19,8 +19,8 @@ func main() {
 	}
 	defer _producer.Close()
 	ticker := time.NewTicker(12 * time.Hour)
-	weather_lib.PublishForecasts(_producer, os.Getenv("323c2774127c47fc9aa121442232903"))
+	weather_lib.PublishForecasts(_producer, os.Getenv(os.Getenv("API_KEY")))
 	for range ticker.C {
-		weather_lib.PublishForecasts(_producer, os.Getenv("323c2774127c47fc9aa121442232903"))
+		weather_lib.PublishForecasts(_producer, os.Getenv(os.Getenv("API_KEY")))
 	}
 }
