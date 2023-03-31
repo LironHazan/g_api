@@ -14,8 +14,8 @@ Exploring the Github gql API and NX go-lang / rust support in a polyglot monorep
 - [ ] Containers integration for local development.
 - [x] Lib generators in a non-nx opinionated structure (I don't like the concept of `src/lib`, should be just `/lib`)
 - [x] Github workflows in polyglot NX project. 
-- [ ] State of vite/vitest in NX
-- [ ] Checkout ent 
+- [x] State of vite/vitest in NX
+- [x] Checkout ent 
 - [ ] dogolangci-lint run
 - [x] checkout nxrs/cargo
 - [x] [rspack](https://github.com/web-infra-dev/rspack) gapi app (Similar to Parcel the underline parser and transformers are based on SWC)
@@ -37,14 +37,6 @@ Adds the go.mod at the root of the project that should be used for all go projec
 
 Using the generators will add the test and build tasks executors. 
 Missing some [conventions](https://github.com/golang-standards/project-layout), e.g. `/cmd`  `/pkg` `/internal`
-
-The `cmd` directory is where the app main goes 
-
-The `pkg` directory is where you put your public libraries
-
-The `internal` directory is the place to put your private packages
-
-At least when generating a lib we can add the proper layout, for app not sure we need the cmd as in nx its under apps anyway.
 
 Let's extend it:
 
