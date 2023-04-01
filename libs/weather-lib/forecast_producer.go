@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -36,11 +37,12 @@ func queryForecast(region string, apiKey string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("Received response with body size: %d", len(body))
 
 	return body, nil
 }
 
-func PushForecast(producer *kafka.Producer, region string, forecast []byte) {
+func pushForecast(producer *kafka.Producer, region string, forecast []byte) {
 	topic := RegionToTopic()[region]
 	fmt.Printf("publishing to: %v\n", topic)
 
@@ -48,6 +50,8 @@ func PushForecast(producer *kafka.Producer, region string, forecast []byte) {
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Value:          forecast,
 	}
+
+	log.Printf("Received at time: %s", message.Timestamp.Format("2006-01-02 15:04:05"))
 
 	deliveryChan := make(chan kafka.Event)
 	err := producer.Produce(message, deliveryChan)
@@ -66,11 +70,16 @@ func PushForecast(producer *kafka.Producer, region string, forecast []byte) {
 	}
 }
 
-func PublishForecasts(producer *kafka.Producer, apiKey string) {
+func PublishForecasts(producer *kafka.Producer, apiKey string) error {
 	for region, _ := range RegionToTopic() {
 		forecast, err := queryForecast(region, apiKey)
+
 		if err != nil {
-			PushForecast(producer, region, forecast)
+			return err
 		}
+
+		log.Printf("Pushing body: %d", len(forecast))
+		pushForecast(producer, region, forecast)
 	}
+	return nil
 }
