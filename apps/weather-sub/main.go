@@ -1,20 +1,26 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	weather_lib "g_api/libs/weather-lib"
+	"g_api/libs/weather-lib/db"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"log"
 )
 
 func main() {
-	err := handleForecast(onSuccess)
+	client := db.Open("postgresql://user:password@127.0.0.1/database") //todo env vars
+	ctx := context.Background()
+	err := handleForecast(func(msg weather_lib.Message) {
+		weather_lib.ProcessMsg(msg, client, ctx)
+	})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func handleForecast(onSuccess func(msg weather_lib.Message)) error {
+func handleForecast(onSuccess weather_lib.MessageHandler) error {
 	_consumer, err := initConsumer()
 	if err != nil {
 		fmt.Printf("failed to create consumer: %s\n", err)
@@ -23,10 +29,6 @@ func handleForecast(onSuccess func(msg weather_lib.Message)) error {
 	defer _consumer.Close()
 	weather_lib.SubscribeToForecastUpdates(_consumer, onSuccess, onError)
 	return nil
-}
-
-func onSuccess(msg weather_lib.Message) {
-	// call transform + push logic here
 }
 
 func onError(err error) {

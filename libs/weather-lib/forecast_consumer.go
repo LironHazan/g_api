@@ -10,6 +10,8 @@ type Message struct {
 	Topic string
 }
 
+type MessageHandler func(msg Message)
+
 func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan Message) error {
 	err := consumer.SubscribeTopics([]string{topic}, nil)
 	if err != nil {
@@ -27,7 +29,7 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan Messa
 	}
 }
 
-func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess func(message Message), onError ...func(error)) {
+func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess MessageHandler, onError ...func(error)) {
 	ch := make(chan Message) // should it be bounded?
 
 	for _, topic := range RegionToTopic() {
