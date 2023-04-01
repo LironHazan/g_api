@@ -5,7 +5,12 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan []byte) error {
+type Message struct {
+	Msg   []byte
+	Topic string
+}
+
+func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan Message) error {
 	err := consumer.SubscribeTopics([]string{topic}, nil)
 	if err != nil {
 		return err
@@ -18,12 +23,12 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan []byt
 			return err
 		}
 		fmt.Printf("received message: %v\n", string(msg.Value))
-		messages <- msg.Value
+		messages <- Message{Msg: msg.Value, Topic: topic}
 	}
 }
 
-func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess func([]byte), onError ...func(error)) {
-	ch := make(chan []byte) // should it be bounded?
+func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess func(message Message), onError ...func(error)) {
+	ch := make(chan Message) // should it be bounded?
 
 	for _, topic := range RegionToTopic() {
 		go func(t string) {
@@ -35,7 +40,7 @@ func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess func([]byte)
 		}(topic)
 	}
 	for msg := range ch {
-		fmt.Println(string(msg))
+		fmt.Println(string(msg.Msg))
 		onSuccess(msg)
 	}
 }

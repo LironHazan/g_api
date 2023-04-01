@@ -4,20 +4,39 @@ import (
 	"fmt"
 	weather_lib "g_api/libs/weather-lib"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"log"
 )
 
 func main() {
-	_consumer, err := kafka.NewConsumer(&kafka.ConfigMap{
+	err := handleForecast(onSuccess)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func handleForecast(onSuccess func(msg weather_lib.Message)) error {
+	_consumer, err := initConsumer()
+	if err != nil {
+		fmt.Printf("failed to create consumer: %s\n", err)
+		return err
+	}
+	defer _consumer.Close()
+	weather_lib.SubscribeToForecastUpdates(_consumer, onSuccess, onError)
+	return nil
+}
+
+func onSuccess(msg weather_lib.Message) {
+	// call transform + push logic here
+}
+
+func onError(err error) {
+	log.Printf("failed: %s\n", err)
+}
+
+func initConsumer() (*kafka.Consumer, error) {
+	return kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": "localhost:9092", //todo: env variable
 		"group.id":          "my-group-id",
 		"auto.offset.reset": "earliest",
-	})
-	if err != nil {
-		fmt.Printf("failed to create consumer: %s\n", err)
-		return
-	}
-	defer _consumer.Close()
-	weather_lib.SubscribeToForecastUpdates(_consumer, func(val []byte) {
-		// do nothing
 	})
 }
