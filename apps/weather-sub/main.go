@@ -37,8 +37,9 @@ func onError(err error) {
 
 func initConsumer() (*kafka.Consumer, error) {
 	return kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092", //todo: env variable
-		"group.id":          "my-group-id",
-		"auto.offset.reset": "earliest",
+		"bootstrap.servers":  "localhost:9092", //todo: env variable
+		"group.id":           "my-group-id",
+		"auto.offset.reset":  "latest",
+		"enable.auto.commit": false,
 	})
 }

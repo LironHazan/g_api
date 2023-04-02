@@ -12,7 +12,7 @@ type Message struct {
 
 type MessageHandler func(msg Message)
 
-func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan Message) error {
+func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHandler) error {
 	err := consumer.SubscribeTopics([]string{topic}, nil)
 	if err != nil {
 		return err
@@ -25,7 +25,7 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, messages chan Messa
 			return err
 		}
 		fmt.Printf("received message: %v\n", string(msg.Value))
-		messages <- Message{Msg: msg.Value, Topic: topic}
+		onSuccess(Message{Msg: msg.Value, Topic: topic})
 	}
 }
 
@@ -34,7 +34,7 @@ func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess MessageHandl
 
 	for _, topic := range RegionToTopic() {
 		go func(t string) {
-			if err := ConsumeForecast(t, consumer, ch); err != nil {
+			if err := ConsumeForecast(t, consumer, onSuccess); err != nil {
 				if len(onError) > 0 {
 					onError[0](err)
 				}
