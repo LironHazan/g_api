@@ -12,23 +12,25 @@ import (
 func main() {
 	client := db.Open("postgresql://user:password@127.0.0.1/database") //todo env vars
 	ctx := context.Background()
-	err := handleForecast(func(msg weather_lib.Message) {
-		weather_lib.ProcessMsg(msg, client, ctx)
-	})
-	if err != nil {
-		panic(err)
-	}
-}
+	consumer, err := initConsumer()
 
-func handleForecast(onSuccess weather_lib.MessageHandler) error {
-	_consumer, err := initConsumer()
 	if err != nil {
 		fmt.Printf("failed to create consumer: %s\n", err)
-		return err
+		panic(err)
 	}
-	defer _consumer.Close()
-	weather_lib.SubscribeToForecastUpdates(_consumer, onSuccess, onError)
-	return nil
+
+	handleForecast(consumer, func(msg weather_lib.Message) {
+		weather_lib.ProcessMsg(msg, client, ctx)
+		// manually commit offset
+		if _, err := consumer.CommitMessage(msg.Msg); err != nil {
+			onError(err) // not optimal at all
+		}
+	})
+}
+
+func handleForecast(consumer *kafka.Consumer, onSuccess weather_lib.MessageHandler) {
+	defer consumer.Close()
+	weather_lib.SubscribeToForecastUpdates(consumer, onSuccess, onError)
 }
 
 func onError(err error) {

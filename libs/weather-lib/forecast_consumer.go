@@ -6,7 +6,7 @@ import (
 )
 
 type Message struct {
-	Msg   []byte
+	Msg   *kafka.Message
 	Topic string
 }
 
@@ -25,7 +25,7 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHa
 			return err
 		}
 		fmt.Printf("received message: %v\n", string(msg.Value))
-		onSuccess(Message{Msg: msg.Value, Topic: topic})
+		onSuccess(Message{Msg: msg, Topic: topic})
 	}
 }
 
@@ -42,7 +42,7 @@ func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess MessageHandl
 		}(topic)
 	}
 	for msg := range ch {
-		fmt.Println(string(msg.Msg))
+		fmt.Println(string(msg.Msg.Value))
 		onSuccess(msg)
 	}
 }
