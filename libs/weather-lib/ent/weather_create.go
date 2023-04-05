@@ -35,6 +35,12 @@ func (wc *WeatherCreate) SetNillableIcon(s *string) *WeatherCreate {
 	return wc
 }
 
+// SetDate sets the "date" field.
+func (wc *WeatherCreate) SetDate(t time.Time) *WeatherCreate {
+	wc.mutation.SetDate(t)
+	return wc
+}
+
 // SetTime sets the "time" field.
 func (wc *WeatherCreate) SetTime(i int) *WeatherCreate {
 	wc.mutation.SetTime(i)
@@ -120,6 +126,9 @@ func (wc *WeatherCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (wc *WeatherCreate) check() error {
+	if _, ok := wc.mutation.Date(); !ok {
+		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "Weather.date"`)}
+	}
 	if _, ok := wc.mutation.Time(); !ok {
 		return &ValidationError{Name: "time", err: errors.New(`ent: missing required field "Weather.time"`)}
 	}
@@ -158,6 +167,10 @@ func (wc *WeatherCreate) createSpec() (*Weather, *sqlgraph.CreateSpec) {
 	if value, ok := wc.mutation.Icon(); ok {
 		_spec.SetField(weather.FieldIcon, field.TypeString, value)
 		_node.Icon = value
+	}
+	if value, ok := wc.mutation.Date(); ok {
+		_spec.SetField(weather.FieldDate, field.TypeTime, value)
+		_node.Date = value
 	}
 	if value, ok := wc.mutation.Time(); ok {
 		_spec.SetField(weather.FieldTime, field.TypeInt, value)

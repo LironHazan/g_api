@@ -995,6 +995,7 @@ type WeatherMutation struct {
 	typ             string
 	id              *int
 	icon            *string
+	date            *time.Time
 	time            *int
 	addtime         *int
 	time_epoch      *time.Time
@@ -1155,6 +1156,42 @@ func (m *WeatherMutation) IconCleared() bool {
 func (m *WeatherMutation) ResetIcon() {
 	m.icon = nil
 	delete(m.clearedFields, weather.FieldIcon)
+}
+
+// SetDate sets the "date" field.
+func (m *WeatherMutation) SetDate(t time.Time) {
+	m.date = &t
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *WeatherMutation) Date() (r time.Time, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the Weather entity.
+// If the Weather object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *WeatherMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *WeatherMutation) ResetDate() {
+	m.date = nil
 }
 
 // SetTime sets the "time" field.
@@ -1447,9 +1484,12 @@ func (m *WeatherMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *WeatherMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.icon != nil {
 		fields = append(fields, weather.FieldIcon)
+	}
+	if m.date != nil {
+		fields = append(fields, weather.FieldDate)
 	}
 	if m.time != nil {
 		fields = append(fields, weather.FieldTime)
@@ -1473,6 +1513,8 @@ func (m *WeatherMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case weather.FieldIcon:
 		return m.Icon()
+	case weather.FieldDate:
+		return m.Date()
 	case weather.FieldTime:
 		return m.Time()
 	case weather.FieldTimeEpoch:
@@ -1492,6 +1534,8 @@ func (m *WeatherMutation) OldField(ctx context.Context, name string) (ent.Value,
 	switch name {
 	case weather.FieldIcon:
 		return m.OldIcon(ctx)
+	case weather.FieldDate:
+		return m.OldDate(ctx)
 	case weather.FieldTime:
 		return m.OldTime(ctx)
 	case weather.FieldTimeEpoch:
@@ -1515,6 +1559,13 @@ func (m *WeatherMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetIcon(v)
+		return nil
+	case weather.FieldDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
 		return nil
 	case weather.FieldTime:
 		v, ok := value.(int)
@@ -1649,6 +1700,9 @@ func (m *WeatherMutation) ResetField(name string) error {
 	switch name {
 	case weather.FieldIcon:
 		m.ResetIcon()
+		return nil
+	case weather.FieldDate:
+		m.ResetDate()
 		return nil
 	case weather.FieldTime:
 		m.ResetTime()

@@ -9,6 +9,8 @@ const (
 	FieldID = "id"
 	// FieldIcon holds the string denoting the icon field in the database.
 	FieldIcon = "icon"
+	// FieldDate holds the string denoting the date field in the database.
+	FieldDate = "date"
 	// FieldTime holds the string denoting the time field in the database.
 	FieldTime = "time"
 	// FieldTimeEpoch holds the string denoting the time_epoch field in the database.
@@ -34,6 +36,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldIcon,
+	FieldDate,
 	FieldTime,
 	FieldTimeEpoch,
 	FieldTemp,

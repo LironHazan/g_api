@@ -49,6 +49,12 @@ func (wu *WeatherUpdate) ClearIcon() *WeatherUpdate {
 	return wu
 }
 
+// SetDate sets the "date" field.
+func (wu *WeatherUpdate) SetDate(t time.Time) *WeatherUpdate {
+	wu.mutation.SetDate(t)
+	return wu
+}
+
 // SetTime sets the "time" field.
 func (wu *WeatherUpdate) SetTime(i int) *WeatherUpdate {
 	wu.mutation.ResetTime()
@@ -180,6 +186,9 @@ func (wu *WeatherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if wu.mutation.IconCleared() {
 		_spec.ClearField(weather.FieldIcon, field.TypeString)
 	}
+	if value, ok := wu.mutation.Date(); ok {
+		_spec.SetField(weather.FieldDate, field.TypeTime, value)
+	}
 	if value, ok := wu.mutation.Time(); ok {
 		_spec.SetField(weather.FieldTime, field.TypeInt, value)
 	}
@@ -270,6 +279,12 @@ func (wuo *WeatherUpdateOne) SetNillableIcon(s *string) *WeatherUpdateOne {
 // ClearIcon clears the value of the "icon" field.
 func (wuo *WeatherUpdateOne) ClearIcon() *WeatherUpdateOne {
 	wuo.mutation.ClearIcon()
+	return wuo
+}
+
+// SetDate sets the "date" field.
+func (wuo *WeatherUpdateOne) SetDate(t time.Time) *WeatherUpdateOne {
+	wuo.mutation.SetDate(t)
 	return wuo
 }
 
@@ -433,6 +448,9 @@ func (wuo *WeatherUpdateOne) sqlSave(ctx context.Context) (_node *Weather, err e
 	}
 	if wuo.mutation.IconCleared() {
 		_spec.ClearField(weather.FieldIcon, field.TypeString)
+	}
+	if value, ok := wuo.mutation.Date(); ok {
+		_spec.SetField(weather.FieldDate, field.TypeTime, value)
 	}
 	if value, ok := wuo.mutation.Time(); ok {
 		_spec.SetField(weather.FieldTime, field.TypeInt, value)

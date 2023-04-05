@@ -10,13 +10,16 @@ import (
 )
 
 func main() {
-	client := db.Open("postgresql://user:password@127.0.0.1/database") //todo env vars
+	client := db.Open("postgresql://myuser:mypassword@127.0.0.1/mydb") //todo env vars
 	ctx := context.Background()
+	if err := client.Schema.Create(ctx); err != nil {
+		log.Fatal(err)
+	}
 	consumer, err := initConsumer()
 
 	if err != nil {
 		fmt.Printf("failed to create consumer: %s\n", err)
-		panic(err)
+		log.Fatal(err)
 	}
 
 	handleForecast(consumer, func(msg weather_lib.Message) {

@@ -16,6 +16,7 @@ func (Weather) Fields() []ent.Field {
 	return []ent.Field{
 		field.Text("icon").
 			Optional(),
+		field.Time("date"), //day
 		field.Int("time"),
 		field.Time("time_epoch").Optional(),
 		field.Float("temp"),

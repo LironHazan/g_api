@@ -60,6 +60,11 @@ func Icon(v string) predicate.Weather {
 	return predicate.Weather(sql.FieldEQ(FieldIcon, v))
 }
 
+// Date applies equality check predicate on the "date" field. It's identical to DateEQ.
+func Date(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldEQ(FieldDate, v))
+}
+
 // Time applies equality check predicate on the "time" field. It's identical to TimeEQ.
 func Time(v int) predicate.Weather {
 	return predicate.Weather(sql.FieldEQ(FieldTime, v))
@@ -153,6 +158,46 @@ func IconEqualFold(v string) predicate.Weather {
 // IconContainsFold applies the ContainsFold predicate on the "icon" field.
 func IconContainsFold(v string) predicate.Weather {
 	return predicate.Weather(sql.FieldContainsFold(FieldIcon, v))
+}
+
+// DateEQ applies the EQ predicate on the "date" field.
+func DateEQ(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldEQ(FieldDate, v))
+}
+
+// DateNEQ applies the NEQ predicate on the "date" field.
+func DateNEQ(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldNEQ(FieldDate, v))
+}
+
+// DateIn applies the In predicate on the "date" field.
+func DateIn(vs ...time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldIn(FieldDate, vs...))
+}
+
+// DateNotIn applies the NotIn predicate on the "date" field.
+func DateNotIn(vs ...time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldNotIn(FieldDate, vs...))
+}
+
+// DateGT applies the GT predicate on the "date" field.
+func DateGT(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldGT(FieldDate, v))
+}
+
+// DateGTE applies the GTE predicate on the "date" field.
+func DateGTE(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldGTE(FieldDate, v))
+}
+
+// DateLT applies the LT predicate on the "date" field.
+func DateLT(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldLT(FieldDate, v))
+}
+
+// DateLTE applies the LTE predicate on the "date" field.
+func DateLTE(v time.Time) predicate.Weather {
+	return predicate.Weather(sql.FieldLTE(FieldDate, v))
 }
 
 // TimeEQ applies the EQ predicate on the "time" field.

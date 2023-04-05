@@ -24,7 +24,8 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHa
 			fmt.Printf("error while consuming message: %v\n", err)
 			return err
 		}
-		fmt.Printf("received message: %v\n", string(msg.Value))
+		// fmt.Printf("received message: %v\n", string(msg.Value))
+		fmt.Printf("received message")
 		onSuccess(Message{Msg: msg, Topic: topic})
 	}
 }

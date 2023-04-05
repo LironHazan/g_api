@@ -30,6 +30,7 @@ var (
 	WeathersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "icon", Type: field.TypeString, Nullable: true, Size: 2147483647},
+		{Name: "date", Type: field.TypeTime},
 		{Name: "time", Type: field.TypeInt},
 		{Name: "time_epoch", Type: field.TypeTime, Nullable: true},
 		{Name: "temp", Type: field.TypeFloat64},
@@ -44,7 +45,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "weathers_forecasts_weather",
-				Columns:    []*schema.Column{WeathersColumns[6]},
+				Columns:    []*schema.Column{WeathersColumns[7]},
 				RefColumns: []*schema.Column{ForecastsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},

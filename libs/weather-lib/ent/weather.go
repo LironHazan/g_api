@@ -19,6 +19,8 @@ type Weather struct {
 	ID int `json:"id,omitempty"`
 	// Icon holds the value of the "icon" field.
 	Icon string `json:"icon,omitempty"`
+	// Date holds the value of the "date" field.
+	Date time.Time `json:"date,omitempty"`
 	// Time holds the value of the "time" field.
 	Time int `json:"time,omitempty"`
 	// TimeEpoch holds the value of the "time_epoch" field.
@@ -66,7 +68,7 @@ func (*Weather) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case weather.FieldIcon:
 			values[i] = new(sql.NullString)
-		case weather.FieldTimeEpoch:
+		case weather.FieldDate, weather.FieldTimeEpoch:
 			values[i] = new(sql.NullTime)
 		case weather.ForeignKeys[0]: // forecast_weather
 			values[i] = new(sql.NullInt64)
@@ -96,6 +98,12 @@ func (w *Weather) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field icon", values[i])
 			} else if value.Valid {
 				w.Icon = value.String
+			}
+		case weather.FieldDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field date", values[i])
+			} else if value.Valid {
+				w.Date = value.Time
 			}
 		case weather.FieldTime:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -163,6 +171,9 @@ func (w *Weather) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", w.ID))
 	builder.WriteString("icon=")
 	builder.WriteString(w.Icon)
+	builder.WriteString(", ")
+	builder.WriteString("date=")
+	builder.WriteString(w.Date.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("time=")
 	builder.WriteString(fmt.Sprintf("%v", w.Time))
