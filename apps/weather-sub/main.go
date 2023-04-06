@@ -23,7 +23,7 @@ func main() {
 	}
 
 	handleForecast(consumer, func(msg weather_lib.Message) {
-		weather_lib.ProcessMsg(msg, client, ctx)
+		weather_lib.ProcessMsg(msg, client)
 		// manually commit offset
 		if _, err := consumer.CommitMessage(msg.Msg); err != nil {
 			onError(err) // not optimal at all

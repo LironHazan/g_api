@@ -2,6 +2,7 @@ package weather_lib
 
 import (
 	"fmt"
+	"g_api/libs/weather-lib/internal"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"io"
 	"log"
@@ -43,7 +44,7 @@ func queryForecast(region string, apiKey string) ([]byte, error) {
 }
 
 func pushForecast(producer *kafka.Producer, region string, forecast []byte) {
-	topic := RegionToTopic()[region]
+	topic := internal.RegionToTopic()[region]
 	fmt.Printf("publishing to: %v\n", topic)
 
 	message := &kafka.Message{
@@ -71,7 +72,7 @@ func pushForecast(producer *kafka.Producer, region string, forecast []byte) {
 }
 
 func PublishForecasts(producer *kafka.Producer, apiKey string) error {
-	for region, _ := range RegionToTopic() {
+	for region, _ := range internal.RegionToTopic() {
 		forecast, err := queryForecast(region, apiKey)
 
 		if err != nil {

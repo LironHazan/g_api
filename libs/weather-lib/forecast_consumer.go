@@ -2,6 +2,7 @@ package weather_lib
 
 import (
 	"fmt"
+	"g_api/libs/weather-lib/internal"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
@@ -33,7 +34,7 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHa
 func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess MessageHandler, onError ...func(error)) {
 	ch := make(chan Message) // should it be bounded?
 
-	for _, topic := range RegionToTopic() {
+	for _, topic := range internal.RegionToTopic() {
 		go func(t string) {
 			if err := ConsumeForecast(t, consumer, onSuccess); err != nil {
 				if len(onError) > 0 {

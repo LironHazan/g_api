@@ -30,7 +30,6 @@ kafka-topics --create \
 --replication-factor 1 \
 --partitions 1`
 
-
 Development:
 
 Todo - move following to containers/weather

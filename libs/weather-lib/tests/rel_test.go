@@ -1,4 +1,4 @@
-package weather_lib
+package tests
 
 import (
 	"context"
@@ -58,6 +58,7 @@ func populateHour(client *ent.Client, ctx context.Context) (*ent.Weather, error)
 	return client.Weather.Create().
 		SetTemp(10.1).
 		SetFeelsLike(9.1).
+		SetDate(newDate).
 		SetTime(newDate.Hour()).
 		Save(ctx)
 }

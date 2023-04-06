@@ -1,4 +1,4 @@
-package weather_lib
+package internal
 
 func RegionToTopic() map[string]string {
 	return map[string]string{
