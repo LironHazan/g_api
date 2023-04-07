@@ -14,7 +14,7 @@ import (
 
 func ProcessMsg(msg Message, client *ent.Client, ctx context.Context) {
 	// Get msg and transform data and push to table
-	log.Println("processing message: ")
+	log.Println("processing message from topic: ", msg.Topic)
 	forecasts, err := internal.ConstructForecasts(msg.Msg.Value)
 	if err != nil {
 		log.Println(err)
@@ -36,4 +36,5 @@ func ProcessMsg(msg Message, client *ent.Client, ctx context.Context) {
 		//todo: add hours iteration and push weather to pg
 
 	}
+	return
 }
