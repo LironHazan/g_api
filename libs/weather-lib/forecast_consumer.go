@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"g_api/libs/weather-lib/internal"
 	"github.com/confluentinc/confluent-kafka-go/kafka"
+	"sync"
 )
 
 type Message struct {
@@ -13,11 +14,10 @@ type Message struct {
 
 type MessageHandler func(msg Message)
 
-func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHandler) error {
-	err := consumer.SubscribeTopics([]string{topic}, nil)
-	if err != nil {
-		return err
-	}
+func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHandler, wg *sync.WaitGroup) error {
+	defer wg.Done()
+
+	fmt.Printf("Subscribed to topic: [  %s  ] \n", topic)
 
 	for {
 		msg, err := consumer.ReadMessage(-1)
@@ -25,26 +25,20 @@ func ConsumeForecast(topic string, consumer *kafka.Consumer, onSuccess MessageHa
 			fmt.Printf("error while consuming message: %v\n", err)
 			return err
 		}
-		// fmt.Printf("received message: %v\n", string(msg.Value))
-		fmt.Printf("received message")
+		fmt.Printf("operating on received message in topic %s\n", topic)
 		onSuccess(Message{Msg: msg, Topic: topic})
 	}
 }
 
 func SubscribeToForecastUpdates(consumer *kafka.Consumer, onSuccess MessageHandler, onError ...func(error)) {
-	ch := make(chan Message) // should it be bounded?
-
+	err := consumer.SubscribeTopics([]string{"tel_aviv", "los_angeles", "paris"}, nil)
+	if err != nil {
+		onError[0](err)
+	}
+	var wg sync.WaitGroup
 	for _, topic := range internal.RegionToTopic() {
-		go func(t string) {
-			if err := ConsumeForecast(t, consumer, onSuccess); err != nil {
-				if len(onError) > 0 {
-					onError[0](err)
-				}
-			}
-		}(topic)
+		wg.Add(1)
+		go ConsumeForecast(topic, consumer, onSuccess, &wg)
 	}
-	for msg := range ch {
-		fmt.Println(string(msg.Msg.Value))
-		onSuccess(msg)
-	}
+	wg.Wait()
 }
