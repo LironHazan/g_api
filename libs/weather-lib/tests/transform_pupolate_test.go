@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"g_api/libs/weather-lib/internal"
 	_ "github.com/mattn/go-sqlite3"
 	"io"
@@ -59,11 +60,11 @@ func TestParseLocationData(t *testing.T) {
 	}
 }
 
-//func Test_constructForecast(t *testing.T) {
-//	data, err := loadData("data.json")
-//	forecasts, err := internal.ConstructForecasts(data)
-//	if err != nil {
-//		return
-//	}
-//	fmt.Println(forecasts)
-//}
+func Test_constructForecast(t *testing.T) {
+	data, err := loadData("data.json")
+	forecasts, err := internal.ConstructForecasts(data)
+	if err != nil {
+		return
+	}
+	fmt.Println(forecasts)
+}

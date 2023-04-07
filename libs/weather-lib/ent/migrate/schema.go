@@ -16,9 +16,7 @@ var (
 		{Name: "date", Type: field.TypeTime},
 		{Name: "localtime", Type: field.TypeTime, Nullable: true},
 		{Name: "icon", Type: field.TypeString, Nullable: true, Size: 2147483647},
-		{Name: "max_temp", Type: field.TypeFloat64, Default: 0},
-		{Name: "min_temp", Type: field.TypeFloat64, Default: 0},
-		{Name: "avg_temp", Type: field.TypeFloat64, Default: 0},
+		{Name: "temp", Type: field.TypeFloat64, Default: 0},
 	}
 	// ForecastsTable holds the schema information for the "forecasts" table.
 	ForecastsTable = &schema.Table{

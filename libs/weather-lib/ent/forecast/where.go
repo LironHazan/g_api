@@ -80,19 +80,9 @@ func Icon(v string) predicate.Forecast {
 	return predicate.Forecast(sql.FieldEQ(FieldIcon, v))
 }
 
-// MaxTemp applies equality check predicate on the "max_temp" field. It's identical to MaxTempEQ.
-func MaxTemp(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldMaxTemp, v))
-}
-
-// MinTemp applies equality check predicate on the "min_temp" field. It's identical to MinTempEQ.
-func MinTemp(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldMinTemp, v))
-}
-
-// AvgTemp applies equality check predicate on the "avg_temp" field. It's identical to AvgTempEQ.
-func AvgTemp(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldAvgTemp, v))
+// Temp applies equality check predicate on the "temp" field. It's identical to TempEQ.
+func Temp(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldEQ(FieldTemp, v))
 }
 
 // CountryEQ applies the EQ predicate on the "country" field.
@@ -400,124 +390,44 @@ func IconContainsFold(v string) predicate.Forecast {
 	return predicate.Forecast(sql.FieldContainsFold(FieldIcon, v))
 }
 
-// MaxTempEQ applies the EQ predicate on the "max_temp" field.
-func MaxTempEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldMaxTemp, v))
+// TempEQ applies the EQ predicate on the "temp" field.
+func TempEQ(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldEQ(FieldTemp, v))
 }
 
-// MaxTempNEQ applies the NEQ predicate on the "max_temp" field.
-func MaxTempNEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNEQ(FieldMaxTemp, v))
+// TempNEQ applies the NEQ predicate on the "temp" field.
+func TempNEQ(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldNEQ(FieldTemp, v))
 }
 
-// MaxTempIn applies the In predicate on the "max_temp" field.
-func MaxTempIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldIn(FieldMaxTemp, vs...))
+// TempIn applies the In predicate on the "temp" field.
+func TempIn(vs ...float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldIn(FieldTemp, vs...))
 }
 
-// MaxTempNotIn applies the NotIn predicate on the "max_temp" field.
-func MaxTempNotIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNotIn(FieldMaxTemp, vs...))
+// TempNotIn applies the NotIn predicate on the "temp" field.
+func TempNotIn(vs ...float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldNotIn(FieldTemp, vs...))
 }
 
-// MaxTempGT applies the GT predicate on the "max_temp" field.
-func MaxTempGT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGT(FieldMaxTemp, v))
+// TempGT applies the GT predicate on the "temp" field.
+func TempGT(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldGT(FieldTemp, v))
 }
 
-// MaxTempGTE applies the GTE predicate on the "max_temp" field.
-func MaxTempGTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGTE(FieldMaxTemp, v))
+// TempGTE applies the GTE predicate on the "temp" field.
+func TempGTE(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldGTE(FieldTemp, v))
 }
 
-// MaxTempLT applies the LT predicate on the "max_temp" field.
-func MaxTempLT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLT(FieldMaxTemp, v))
+// TempLT applies the LT predicate on the "temp" field.
+func TempLT(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldLT(FieldTemp, v))
 }
 
-// MaxTempLTE applies the LTE predicate on the "max_temp" field.
-func MaxTempLTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLTE(FieldMaxTemp, v))
-}
-
-// MinTempEQ applies the EQ predicate on the "min_temp" field.
-func MinTempEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldMinTemp, v))
-}
-
-// MinTempNEQ applies the NEQ predicate on the "min_temp" field.
-func MinTempNEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNEQ(FieldMinTemp, v))
-}
-
-// MinTempIn applies the In predicate on the "min_temp" field.
-func MinTempIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldIn(FieldMinTemp, vs...))
-}
-
-// MinTempNotIn applies the NotIn predicate on the "min_temp" field.
-func MinTempNotIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNotIn(FieldMinTemp, vs...))
-}
-
-// MinTempGT applies the GT predicate on the "min_temp" field.
-func MinTempGT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGT(FieldMinTemp, v))
-}
-
-// MinTempGTE applies the GTE predicate on the "min_temp" field.
-func MinTempGTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGTE(FieldMinTemp, v))
-}
-
-// MinTempLT applies the LT predicate on the "min_temp" field.
-func MinTempLT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLT(FieldMinTemp, v))
-}
-
-// MinTempLTE applies the LTE predicate on the "min_temp" field.
-func MinTempLTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLTE(FieldMinTemp, v))
-}
-
-// AvgTempEQ applies the EQ predicate on the "avg_temp" field.
-func AvgTempEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldEQ(FieldAvgTemp, v))
-}
-
-// AvgTempNEQ applies the NEQ predicate on the "avg_temp" field.
-func AvgTempNEQ(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNEQ(FieldAvgTemp, v))
-}
-
-// AvgTempIn applies the In predicate on the "avg_temp" field.
-func AvgTempIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldIn(FieldAvgTemp, vs...))
-}
-
-// AvgTempNotIn applies the NotIn predicate on the "avg_temp" field.
-func AvgTempNotIn(vs ...float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldNotIn(FieldAvgTemp, vs...))
-}
-
-// AvgTempGT applies the GT predicate on the "avg_temp" field.
-func AvgTempGT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGT(FieldAvgTemp, v))
-}
-
-// AvgTempGTE applies the GTE predicate on the "avg_temp" field.
-func AvgTempGTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldGTE(FieldAvgTemp, v))
-}
-
-// AvgTempLT applies the LT predicate on the "avg_temp" field.
-func AvgTempLT(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLT(FieldAvgTemp, v))
-}
-
-// AvgTempLTE applies the LTE predicate on the "avg_temp" field.
-func AvgTempLTE(v float64) predicate.Forecast {
-	return predicate.Forecast(sql.FieldLTE(FieldAvgTemp, v))
+// TempLTE applies the LTE predicate on the "temp" field.
+func TempLTE(v float64) predicate.Forecast {
+	return predicate.Forecast(sql.FieldLTE(FieldTemp, v))
 }
 
 // HasWeather applies the HasEdge predicate on the "weather" edge.
