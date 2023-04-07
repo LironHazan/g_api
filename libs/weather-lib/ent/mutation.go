@@ -40,12 +40,8 @@ type ForecastMutation struct {
 	date           *time.Time
 	localtime      *time.Time
 	icon           *string
-	max_temp       *float64
-	addmax_temp    *float64
-	min_temp       *float64
-	addmin_temp    *float64
-	avg_temp       *float64
-	addavg_temp    *float64
+	temp           *float64
+	addtemp        *float64
 	clearedFields  map[string]struct{}
 	weather        map[int]struct{}
 	removedweather map[int]struct{}
@@ -372,172 +368,60 @@ func (m *ForecastMutation) ResetIcon() {
 	delete(m.clearedFields, forecast.FieldIcon)
 }
 
-// SetMaxTemp sets the "max_temp" field.
-func (m *ForecastMutation) SetMaxTemp(f float64) {
-	m.max_temp = &f
-	m.addmax_temp = nil
+// SetTemp sets the "temp" field.
+func (m *ForecastMutation) SetTemp(f float64) {
+	m.temp = &f
+	m.addtemp = nil
 }
 
-// MaxTemp returns the value of the "max_temp" field in the mutation.
-func (m *ForecastMutation) MaxTemp() (r float64, exists bool) {
-	v := m.max_temp
+// Temp returns the value of the "temp" field in the mutation.
+func (m *ForecastMutation) Temp() (r float64, exists bool) {
+	v := m.temp
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldMaxTemp returns the old "max_temp" field's value of the Forecast entity.
+// OldTemp returns the old "temp" field's value of the Forecast entity.
 // If the Forecast object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForecastMutation) OldMaxTemp(ctx context.Context) (v float64, err error) {
+func (m *ForecastMutation) OldTemp(ctx context.Context) (v float64, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMaxTemp is only allowed on UpdateOne operations")
+		return v, errors.New("OldTemp is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMaxTemp requires an ID field in the mutation")
+		return v, errors.New("OldTemp requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMaxTemp: %w", err)
+		return v, fmt.Errorf("querying old value for OldTemp: %w", err)
 	}
-	return oldValue.MaxTemp, nil
+	return oldValue.Temp, nil
 }
 
-// AddMaxTemp adds f to the "max_temp" field.
-func (m *ForecastMutation) AddMaxTemp(f float64) {
-	if m.addmax_temp != nil {
-		*m.addmax_temp += f
+// AddTemp adds f to the "temp" field.
+func (m *ForecastMutation) AddTemp(f float64) {
+	if m.addtemp != nil {
+		*m.addtemp += f
 	} else {
-		m.addmax_temp = &f
+		m.addtemp = &f
 	}
 }
 
-// AddedMaxTemp returns the value that was added to the "max_temp" field in this mutation.
-func (m *ForecastMutation) AddedMaxTemp() (r float64, exists bool) {
-	v := m.addmax_temp
+// AddedTemp returns the value that was added to the "temp" field in this mutation.
+func (m *ForecastMutation) AddedTemp() (r float64, exists bool) {
+	v := m.addtemp
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetMaxTemp resets all changes to the "max_temp" field.
-func (m *ForecastMutation) ResetMaxTemp() {
-	m.max_temp = nil
-	m.addmax_temp = nil
-}
-
-// SetMinTemp sets the "min_temp" field.
-func (m *ForecastMutation) SetMinTemp(f float64) {
-	m.min_temp = &f
-	m.addmin_temp = nil
-}
-
-// MinTemp returns the value of the "min_temp" field in the mutation.
-func (m *ForecastMutation) MinTemp() (r float64, exists bool) {
-	v := m.min_temp
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldMinTemp returns the old "min_temp" field's value of the Forecast entity.
-// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForecastMutation) OldMinTemp(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldMinTemp is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldMinTemp requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldMinTemp: %w", err)
-	}
-	return oldValue.MinTemp, nil
-}
-
-// AddMinTemp adds f to the "min_temp" field.
-func (m *ForecastMutation) AddMinTemp(f float64) {
-	if m.addmin_temp != nil {
-		*m.addmin_temp += f
-	} else {
-		m.addmin_temp = &f
-	}
-}
-
-// AddedMinTemp returns the value that was added to the "min_temp" field in this mutation.
-func (m *ForecastMutation) AddedMinTemp() (r float64, exists bool) {
-	v := m.addmin_temp
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetMinTemp resets all changes to the "min_temp" field.
-func (m *ForecastMutation) ResetMinTemp() {
-	m.min_temp = nil
-	m.addmin_temp = nil
-}
-
-// SetAvgTemp sets the "avg_temp" field.
-func (m *ForecastMutation) SetAvgTemp(f float64) {
-	m.avg_temp = &f
-	m.addavg_temp = nil
-}
-
-// AvgTemp returns the value of the "avg_temp" field in the mutation.
-func (m *ForecastMutation) AvgTemp() (r float64, exists bool) {
-	v := m.avg_temp
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAvgTemp returns the old "avg_temp" field's value of the Forecast entity.
-// If the Forecast object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ForecastMutation) OldAvgTemp(ctx context.Context) (v float64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAvgTemp is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAvgTemp requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAvgTemp: %w", err)
-	}
-	return oldValue.AvgTemp, nil
-}
-
-// AddAvgTemp adds f to the "avg_temp" field.
-func (m *ForecastMutation) AddAvgTemp(f float64) {
-	if m.addavg_temp != nil {
-		*m.addavg_temp += f
-	} else {
-		m.addavg_temp = &f
-	}
-}
-
-// AddedAvgTemp returns the value that was added to the "avg_temp" field in this mutation.
-func (m *ForecastMutation) AddedAvgTemp() (r float64, exists bool) {
-	v := m.addavg_temp
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetAvgTemp resets all changes to the "avg_temp" field.
-func (m *ForecastMutation) ResetAvgTemp() {
-	m.avg_temp = nil
-	m.addavg_temp = nil
+// ResetTemp resets all changes to the "temp" field.
+func (m *ForecastMutation) ResetTemp() {
+	m.temp = nil
+	m.addtemp = nil
 }
 
 // AddWeatherIDs adds the "weather" edge to the Weather entity by ids.
@@ -628,7 +512,7 @@ func (m *ForecastMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *ForecastMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 6)
 	if m.country != nil {
 		fields = append(fields, forecast.FieldCountry)
 	}
@@ -644,14 +528,8 @@ func (m *ForecastMutation) Fields() []string {
 	if m.icon != nil {
 		fields = append(fields, forecast.FieldIcon)
 	}
-	if m.max_temp != nil {
-		fields = append(fields, forecast.FieldMaxTemp)
-	}
-	if m.min_temp != nil {
-		fields = append(fields, forecast.FieldMinTemp)
-	}
-	if m.avg_temp != nil {
-		fields = append(fields, forecast.FieldAvgTemp)
+	if m.temp != nil {
+		fields = append(fields, forecast.FieldTemp)
 	}
 	return fields
 }
@@ -671,12 +549,8 @@ func (m *ForecastMutation) Field(name string) (ent.Value, bool) {
 		return m.Localtime()
 	case forecast.FieldIcon:
 		return m.Icon()
-	case forecast.FieldMaxTemp:
-		return m.MaxTemp()
-	case forecast.FieldMinTemp:
-		return m.MinTemp()
-	case forecast.FieldAvgTemp:
-		return m.AvgTemp()
+	case forecast.FieldTemp:
+		return m.Temp()
 	}
 	return nil, false
 }
@@ -696,12 +570,8 @@ func (m *ForecastMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldLocaltime(ctx)
 	case forecast.FieldIcon:
 		return m.OldIcon(ctx)
-	case forecast.FieldMaxTemp:
-		return m.OldMaxTemp(ctx)
-	case forecast.FieldMinTemp:
-		return m.OldMinTemp(ctx)
-	case forecast.FieldAvgTemp:
-		return m.OldAvgTemp(ctx)
+	case forecast.FieldTemp:
+		return m.OldTemp(ctx)
 	}
 	return nil, fmt.Errorf("unknown Forecast field %s", name)
 }
@@ -746,26 +616,12 @@ func (m *ForecastMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIcon(v)
 		return nil
-	case forecast.FieldMaxTemp:
+	case forecast.FieldTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetMaxTemp(v)
-		return nil
-	case forecast.FieldMinTemp:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetMinTemp(v)
-		return nil
-	case forecast.FieldAvgTemp:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAvgTemp(v)
+		m.SetTemp(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Forecast field %s", name)
@@ -775,14 +631,8 @@ func (m *ForecastMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *ForecastMutation) AddedFields() []string {
 	var fields []string
-	if m.addmax_temp != nil {
-		fields = append(fields, forecast.FieldMaxTemp)
-	}
-	if m.addmin_temp != nil {
-		fields = append(fields, forecast.FieldMinTemp)
-	}
-	if m.addavg_temp != nil {
-		fields = append(fields, forecast.FieldAvgTemp)
+	if m.addtemp != nil {
+		fields = append(fields, forecast.FieldTemp)
 	}
 	return fields
 }
@@ -792,12 +642,8 @@ func (m *ForecastMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *ForecastMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case forecast.FieldMaxTemp:
-		return m.AddedMaxTemp()
-	case forecast.FieldMinTemp:
-		return m.AddedMinTemp()
-	case forecast.FieldAvgTemp:
-		return m.AddedAvgTemp()
+	case forecast.FieldTemp:
+		return m.AddedTemp()
 	}
 	return nil, false
 }
@@ -807,26 +653,12 @@ func (m *ForecastMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *ForecastMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case forecast.FieldMaxTemp:
+	case forecast.FieldTemp:
 		v, ok := value.(float64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddMaxTemp(v)
-		return nil
-	case forecast.FieldMinTemp:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddMinTemp(v)
-		return nil
-	case forecast.FieldAvgTemp:
-		v, ok := value.(float64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddAvgTemp(v)
+		m.AddTemp(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Forecast numeric field %s", name)
@@ -891,14 +723,8 @@ func (m *ForecastMutation) ResetField(name string) error {
 	case forecast.FieldIcon:
 		m.ResetIcon()
 		return nil
-	case forecast.FieldMaxTemp:
-		m.ResetMaxTemp()
-		return nil
-	case forecast.FieldMinTemp:
-		m.ResetMinTemp()
-		return nil
-	case forecast.FieldAvgTemp:
-		m.ResetAvgTemp()
+	case forecast.FieldTemp:
+		m.ResetTemp()
 		return nil
 	}
 	return fmt.Errorf("unknown Forecast field %s", name)

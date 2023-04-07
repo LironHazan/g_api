@@ -17,16 +17,8 @@ func init() {
 	forecastDescCountry := forecastFields[0].Descriptor()
 	// forecast.CountryValidator is a validator for the "country" field. It is called by the builders before save.
 	forecast.CountryValidator = forecastDescCountry.Validators[0].(func(string) error)
-	// forecastDescMaxTemp is the schema descriptor for max_temp field.
-	forecastDescMaxTemp := forecastFields[5].Descriptor()
-	// forecast.DefaultMaxTemp holds the default value on creation for the max_temp field.
-	forecast.DefaultMaxTemp = forecastDescMaxTemp.Default.(float64)
-	// forecastDescMinTemp is the schema descriptor for min_temp field.
-	forecastDescMinTemp := forecastFields[6].Descriptor()
-	// forecast.DefaultMinTemp holds the default value on creation for the min_temp field.
-	forecast.DefaultMinTemp = forecastDescMinTemp.Default.(float64)
-	// forecastDescAvgTemp is the schema descriptor for avg_temp field.
-	forecastDescAvgTemp := forecastFields[7].Descriptor()
-	// forecast.DefaultAvgTemp holds the default value on creation for the avg_temp field.
-	forecast.DefaultAvgTemp = forecastDescAvgTemp.Default.(float64)
+	// forecastDescTemp is the schema descriptor for temp field.
+	forecastDescTemp := forecastFields[5].Descriptor()
+	// forecast.DefaultTemp holds the default value on creation for the temp field.
+	forecast.DefaultTemp = forecastDescTemp.Default.(float64)
 }
