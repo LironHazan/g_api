@@ -47,9 +47,7 @@ func populateDay(client *ent.Client, ctx context.Context) (*ent.Forecast, error)
 		SetDate(newDate).
 		SetCountry("Israel").
 		SetRegion("TelAviv").
-		SetAvgTemp(10.1).
-		SetMaxTemp(11.1).
-		SetMinTemp(8.1).
+		SetTemp(10.1).
 		Save(ctx)
 }
 

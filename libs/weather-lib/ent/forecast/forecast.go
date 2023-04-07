@@ -17,12 +17,8 @@ const (
 	FieldLocaltime = "localtime"
 	// FieldIcon holds the string denoting the icon field in the database.
 	FieldIcon = "icon"
-	// FieldMaxTemp holds the string denoting the max_temp field in the database.
-	FieldMaxTemp = "max_temp"
-	// FieldMinTemp holds the string denoting the min_temp field in the database.
-	FieldMinTemp = "min_temp"
-	// FieldAvgTemp holds the string denoting the avg_temp field in the database.
-	FieldAvgTemp = "avg_temp"
+	// FieldTemp holds the string denoting the temp field in the database.
+	FieldTemp = "temp"
 	// EdgeWeather holds the string denoting the weather edge name in mutations.
 	EdgeWeather = "weather"
 	// Table holds the table name of the forecast in the database.
@@ -44,9 +40,7 @@ var Columns = []string{
 	FieldDate,
 	FieldLocaltime,
 	FieldIcon,
-	FieldMaxTemp,
-	FieldMinTemp,
-	FieldAvgTemp,
+	FieldTemp,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -62,10 +56,6 @@ func ValidColumn(column string) bool {
 var (
 	// CountryValidator is a validator for the "country" field. It is called by the builders before save.
 	CountryValidator func(string) error
-	// DefaultMaxTemp holds the default value on creation for the "max_temp" field.
-	DefaultMaxTemp float64
-	// DefaultMinTemp holds the default value on creation for the "min_temp" field.
-	DefaultMinTemp float64
-	// DefaultAvgTemp holds the default value on creation for the "avg_temp" field.
-	DefaultAvgTemp float64
+	// DefaultTemp holds the default value on creation for the "temp" field.
+	DefaultTemp float64
 )

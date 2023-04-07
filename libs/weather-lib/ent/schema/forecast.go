@@ -24,11 +24,7 @@ func (Forecast) Fields() []ent.Field {
 		field.Time("localtime").Optional(),
 		field.Text("icon").
 			Optional(),
-		field.Float("max_temp").
-			Default(0.0),
-		field.Float("min_temp").
-			Default(0.0),
-		field.Float("avg_temp").
+		field.Float("temp").
 			Default(0.0),
 	}
 }

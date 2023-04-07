@@ -26,12 +26,8 @@ type Forecast struct {
 	Localtime time.Time `json:"localtime,omitempty"`
 	// Icon holds the value of the "icon" field.
 	Icon string `json:"icon,omitempty"`
-	// MaxTemp holds the value of the "max_temp" field.
-	MaxTemp float64 `json:"max_temp,omitempty"`
-	// MinTemp holds the value of the "min_temp" field.
-	MinTemp float64 `json:"min_temp,omitempty"`
-	// AvgTemp holds the value of the "avg_temp" field.
-	AvgTemp float64 `json:"avg_temp,omitempty"`
+	// Temp holds the value of the "temp" field.
+	Temp float64 `json:"temp,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ForecastQuery when eager-loading is set.
 	Edges ForecastEdges `json:"edges"`
@@ -60,7 +56,7 @@ func (*Forecast) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case forecast.FieldMaxTemp, forecast.FieldMinTemp, forecast.FieldAvgTemp:
+		case forecast.FieldTemp:
 			values[i] = new(sql.NullFloat64)
 		case forecast.FieldID:
 			values[i] = new(sql.NullInt64)
@@ -119,23 +115,11 @@ func (f *Forecast) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				f.Icon = value.String
 			}
-		case forecast.FieldMaxTemp:
+		case forecast.FieldTemp:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field max_temp", values[i])
+				return fmt.Errorf("unexpected type %T for field temp", values[i])
 			} else if value.Valid {
-				f.MaxTemp = value.Float64
-			}
-		case forecast.FieldMinTemp:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field min_temp", values[i])
-			} else if value.Valid {
-				f.MinTemp = value.Float64
-			}
-		case forecast.FieldAvgTemp:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field avg_temp", values[i])
-			} else if value.Valid {
-				f.AvgTemp = value.Float64
+				f.Temp = value.Float64
 			}
 		}
 	}
@@ -185,14 +169,8 @@ func (f *Forecast) String() string {
 	builder.WriteString("icon=")
 	builder.WriteString(f.Icon)
 	builder.WriteString(", ")
-	builder.WriteString("max_temp=")
-	builder.WriteString(fmt.Sprintf("%v", f.MaxTemp))
-	builder.WriteString(", ")
-	builder.WriteString("min_temp=")
-	builder.WriteString(fmt.Sprintf("%v", f.MinTemp))
-	builder.WriteString(", ")
-	builder.WriteString("avg_temp=")
-	builder.WriteString(fmt.Sprintf("%v", f.AvgTemp))
+	builder.WriteString("temp=")
+	builder.WriteString(fmt.Sprintf("%v", f.Temp))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -75,44 +75,16 @@ func (fc *ForecastCreate) SetNillableIcon(s *string) *ForecastCreate {
 	return fc
 }
 
-// SetMaxTemp sets the "max_temp" field.
-func (fc *ForecastCreate) SetMaxTemp(f float64) *ForecastCreate {
-	fc.mutation.SetMaxTemp(f)
+// SetTemp sets the "temp" field.
+func (fc *ForecastCreate) SetTemp(f float64) *ForecastCreate {
+	fc.mutation.SetTemp(f)
 	return fc
 }
 
-// SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fc *ForecastCreate) SetNillableMaxTemp(f *float64) *ForecastCreate {
+// SetNillableTemp sets the "temp" field if the given value is not nil.
+func (fc *ForecastCreate) SetNillableTemp(f *float64) *ForecastCreate {
 	if f != nil {
-		fc.SetMaxTemp(*f)
-	}
-	return fc
-}
-
-// SetMinTemp sets the "min_temp" field.
-func (fc *ForecastCreate) SetMinTemp(f float64) *ForecastCreate {
-	fc.mutation.SetMinTemp(f)
-	return fc
-}
-
-// SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fc *ForecastCreate) SetNillableMinTemp(f *float64) *ForecastCreate {
-	if f != nil {
-		fc.SetMinTemp(*f)
-	}
-	return fc
-}
-
-// SetAvgTemp sets the "avg_temp" field.
-func (fc *ForecastCreate) SetAvgTemp(f float64) *ForecastCreate {
-	fc.mutation.SetAvgTemp(f)
-	return fc
-}
-
-// SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fc *ForecastCreate) SetNillableAvgTemp(f *float64) *ForecastCreate {
-	if f != nil {
-		fc.SetAvgTemp(*f)
+		fc.SetTemp(*f)
 	}
 	return fc
 }
@@ -167,17 +139,9 @@ func (fc *ForecastCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (fc *ForecastCreate) defaults() {
-	if _, ok := fc.mutation.MaxTemp(); !ok {
-		v := forecast.DefaultMaxTemp
-		fc.mutation.SetMaxTemp(v)
-	}
-	if _, ok := fc.mutation.MinTemp(); !ok {
-		v := forecast.DefaultMinTemp
-		fc.mutation.SetMinTemp(v)
-	}
-	if _, ok := fc.mutation.AvgTemp(); !ok {
-		v := forecast.DefaultAvgTemp
-		fc.mutation.SetAvgTemp(v)
+	if _, ok := fc.mutation.Temp(); !ok {
+		v := forecast.DefaultTemp
+		fc.mutation.SetTemp(v)
 	}
 }
 
@@ -194,14 +158,8 @@ func (fc *ForecastCreate) check() error {
 	if _, ok := fc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "Forecast.date"`)}
 	}
-	if _, ok := fc.mutation.MaxTemp(); !ok {
-		return &ValidationError{Name: "max_temp", err: errors.New(`ent: missing required field "Forecast.max_temp"`)}
-	}
-	if _, ok := fc.mutation.MinTemp(); !ok {
-		return &ValidationError{Name: "min_temp", err: errors.New(`ent: missing required field "Forecast.min_temp"`)}
-	}
-	if _, ok := fc.mutation.AvgTemp(); !ok {
-		return &ValidationError{Name: "avg_temp", err: errors.New(`ent: missing required field "Forecast.avg_temp"`)}
+	if _, ok := fc.mutation.Temp(); !ok {
+		return &ValidationError{Name: "temp", err: errors.New(`ent: missing required field "Forecast.temp"`)}
 	}
 	return nil
 }
@@ -249,17 +207,9 @@ func (fc *ForecastCreate) createSpec() (*Forecast, *sqlgraph.CreateSpec) {
 		_spec.SetField(forecast.FieldIcon, field.TypeString, value)
 		_node.Icon = value
 	}
-	if value, ok := fc.mutation.MaxTemp(); ok {
-		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
-		_node.MaxTemp = value
-	}
-	if value, ok := fc.mutation.MinTemp(); ok {
-		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
-		_node.MinTemp = value
-	}
-	if value, ok := fc.mutation.AvgTemp(); ok {
-		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
-		_node.AvgTemp = value
+	if value, ok := fc.mutation.Temp(); ok {
+		_spec.SetField(forecast.FieldTemp, field.TypeFloat64, value)
+		_node.Temp = value
 	}
 	if nodes := fc.mutation.WeatherIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

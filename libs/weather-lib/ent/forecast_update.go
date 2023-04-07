@@ -101,66 +101,24 @@ func (fu *ForecastUpdate) ClearIcon() *ForecastUpdate {
 	return fu
 }
 
-// SetMaxTemp sets the "max_temp" field.
-func (fu *ForecastUpdate) SetMaxTemp(f float64) *ForecastUpdate {
-	fu.mutation.ResetMaxTemp()
-	fu.mutation.SetMaxTemp(f)
+// SetTemp sets the "temp" field.
+func (fu *ForecastUpdate) SetTemp(f float64) *ForecastUpdate {
+	fu.mutation.ResetTemp()
+	fu.mutation.SetTemp(f)
 	return fu
 }
 
-// SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fu *ForecastUpdate) SetNillableMaxTemp(f *float64) *ForecastUpdate {
+// SetNillableTemp sets the "temp" field if the given value is not nil.
+func (fu *ForecastUpdate) SetNillableTemp(f *float64) *ForecastUpdate {
 	if f != nil {
-		fu.SetMaxTemp(*f)
+		fu.SetTemp(*f)
 	}
 	return fu
 }
 
-// AddMaxTemp adds f to the "max_temp" field.
-func (fu *ForecastUpdate) AddMaxTemp(f float64) *ForecastUpdate {
-	fu.mutation.AddMaxTemp(f)
-	return fu
-}
-
-// SetMinTemp sets the "min_temp" field.
-func (fu *ForecastUpdate) SetMinTemp(f float64) *ForecastUpdate {
-	fu.mutation.ResetMinTemp()
-	fu.mutation.SetMinTemp(f)
-	return fu
-}
-
-// SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fu *ForecastUpdate) SetNillableMinTemp(f *float64) *ForecastUpdate {
-	if f != nil {
-		fu.SetMinTemp(*f)
-	}
-	return fu
-}
-
-// AddMinTemp adds f to the "min_temp" field.
-func (fu *ForecastUpdate) AddMinTemp(f float64) *ForecastUpdate {
-	fu.mutation.AddMinTemp(f)
-	return fu
-}
-
-// SetAvgTemp sets the "avg_temp" field.
-func (fu *ForecastUpdate) SetAvgTemp(f float64) *ForecastUpdate {
-	fu.mutation.ResetAvgTemp()
-	fu.mutation.SetAvgTemp(f)
-	return fu
-}
-
-// SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fu *ForecastUpdate) SetNillableAvgTemp(f *float64) *ForecastUpdate {
-	if f != nil {
-		fu.SetAvgTemp(*f)
-	}
-	return fu
-}
-
-// AddAvgTemp adds f to the "avg_temp" field.
-func (fu *ForecastUpdate) AddAvgTemp(f float64) *ForecastUpdate {
-	fu.mutation.AddAvgTemp(f)
+// AddTemp adds f to the "temp" field.
+func (fu *ForecastUpdate) AddTemp(f float64) *ForecastUpdate {
+	fu.mutation.AddTemp(f)
 	return fu
 }
 
@@ -278,23 +236,11 @@ func (fu *ForecastUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if fu.mutation.IconCleared() {
 		_spec.ClearField(forecast.FieldIcon, field.TypeString)
 	}
-	if value, ok := fu.mutation.MaxTemp(); ok {
-		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
+	if value, ok := fu.mutation.Temp(); ok {
+		_spec.SetField(forecast.FieldTemp, field.TypeFloat64, value)
 	}
-	if value, ok := fu.mutation.AddedMaxTemp(); ok {
-		_spec.AddField(forecast.FieldMaxTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fu.mutation.MinTemp(); ok {
-		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fu.mutation.AddedMinTemp(); ok {
-		_spec.AddField(forecast.FieldMinTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fu.mutation.AvgTemp(); ok {
-		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fu.mutation.AddedAvgTemp(); ok {
-		_spec.AddField(forecast.FieldAvgTemp, field.TypeFloat64, value)
+	if value, ok := fu.mutation.AddedTemp(); ok {
+		_spec.AddField(forecast.FieldTemp, field.TypeFloat64, value)
 	}
 	if fu.mutation.WeatherCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -433,66 +379,24 @@ func (fuo *ForecastUpdateOne) ClearIcon() *ForecastUpdateOne {
 	return fuo
 }
 
-// SetMaxTemp sets the "max_temp" field.
-func (fuo *ForecastUpdateOne) SetMaxTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.ResetMaxTemp()
-	fuo.mutation.SetMaxTemp(f)
+// SetTemp sets the "temp" field.
+func (fuo *ForecastUpdateOne) SetTemp(f float64) *ForecastUpdateOne {
+	fuo.mutation.ResetTemp()
+	fuo.mutation.SetTemp(f)
 	return fuo
 }
 
-// SetNillableMaxTemp sets the "max_temp" field if the given value is not nil.
-func (fuo *ForecastUpdateOne) SetNillableMaxTemp(f *float64) *ForecastUpdateOne {
+// SetNillableTemp sets the "temp" field if the given value is not nil.
+func (fuo *ForecastUpdateOne) SetNillableTemp(f *float64) *ForecastUpdateOne {
 	if f != nil {
-		fuo.SetMaxTemp(*f)
+		fuo.SetTemp(*f)
 	}
 	return fuo
 }
 
-// AddMaxTemp adds f to the "max_temp" field.
-func (fuo *ForecastUpdateOne) AddMaxTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.AddMaxTemp(f)
-	return fuo
-}
-
-// SetMinTemp sets the "min_temp" field.
-func (fuo *ForecastUpdateOne) SetMinTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.ResetMinTemp()
-	fuo.mutation.SetMinTemp(f)
-	return fuo
-}
-
-// SetNillableMinTemp sets the "min_temp" field if the given value is not nil.
-func (fuo *ForecastUpdateOne) SetNillableMinTemp(f *float64) *ForecastUpdateOne {
-	if f != nil {
-		fuo.SetMinTemp(*f)
-	}
-	return fuo
-}
-
-// AddMinTemp adds f to the "min_temp" field.
-func (fuo *ForecastUpdateOne) AddMinTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.AddMinTemp(f)
-	return fuo
-}
-
-// SetAvgTemp sets the "avg_temp" field.
-func (fuo *ForecastUpdateOne) SetAvgTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.ResetAvgTemp()
-	fuo.mutation.SetAvgTemp(f)
-	return fuo
-}
-
-// SetNillableAvgTemp sets the "avg_temp" field if the given value is not nil.
-func (fuo *ForecastUpdateOne) SetNillableAvgTemp(f *float64) *ForecastUpdateOne {
-	if f != nil {
-		fuo.SetAvgTemp(*f)
-	}
-	return fuo
-}
-
-// AddAvgTemp adds f to the "avg_temp" field.
-func (fuo *ForecastUpdateOne) AddAvgTemp(f float64) *ForecastUpdateOne {
-	fuo.mutation.AddAvgTemp(f)
+// AddTemp adds f to the "temp" field.
+func (fuo *ForecastUpdateOne) AddTemp(f float64) *ForecastUpdateOne {
+	fuo.mutation.AddTemp(f)
 	return fuo
 }
 
@@ -640,23 +544,11 @@ func (fuo *ForecastUpdateOne) sqlSave(ctx context.Context) (_node *Forecast, err
 	if fuo.mutation.IconCleared() {
 		_spec.ClearField(forecast.FieldIcon, field.TypeString)
 	}
-	if value, ok := fuo.mutation.MaxTemp(); ok {
-		_spec.SetField(forecast.FieldMaxTemp, field.TypeFloat64, value)
+	if value, ok := fuo.mutation.Temp(); ok {
+		_spec.SetField(forecast.FieldTemp, field.TypeFloat64, value)
 	}
-	if value, ok := fuo.mutation.AddedMaxTemp(); ok {
-		_spec.AddField(forecast.FieldMaxTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fuo.mutation.MinTemp(); ok {
-		_spec.SetField(forecast.FieldMinTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fuo.mutation.AddedMinTemp(); ok {
-		_spec.AddField(forecast.FieldMinTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fuo.mutation.AvgTemp(); ok {
-		_spec.SetField(forecast.FieldAvgTemp, field.TypeFloat64, value)
-	}
-	if value, ok := fuo.mutation.AddedAvgTemp(); ok {
-		_spec.AddField(forecast.FieldAvgTemp, field.TypeFloat64, value)
+	if value, ok := fuo.mutation.AddedTemp(); ok {
+		_spec.AddField(forecast.FieldTemp, field.TypeFloat64, value)
 	}
 	if fuo.mutation.WeatherCleared() {
 		edge := &sqlgraph.EdgeSpec{

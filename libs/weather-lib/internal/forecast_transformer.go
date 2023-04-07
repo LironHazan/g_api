@@ -13,9 +13,7 @@ type Forecast struct {
 	Region    string    `json:"region,omitempty"`
 	Localtime time.Time `json:"localtime,omitempty"`
 	Icon      string    `json:"icon,omitempty"`
-	MaxTemp   float64   `json:"max_temp,omitempty"`
-	MinTemp   float64   `json:"min_temp,omitempty"`
-	AvgTemp   float64   `json:"avg_temp,omitempty"`
+	Temp      float64   `json:"temp,omitempty"`
 }
 
 type Location struct {
@@ -25,10 +23,8 @@ type Location struct {
 }
 
 type Current struct {
-	Icon    string  `json:"icon,omitempty"`
-	MaxTemp float64 `json:"max_temp,omitempty"`
-	MinTemp float64 `json:"min_temp,omitempty"`
-	AvgTemp float64 `json:"avg_temp,omitempty"`
+	Icon string  `json:"icon,omitempty"`
+	Temp float64 `json:"temp,omitempty"`
 }
 
 func newForecast(location Location, current Current, day string) Forecast {
@@ -37,9 +33,7 @@ func newForecast(location Location, current Current, day string) Forecast {
 	forecast.Region = location.Region
 	forecast.Localtime = location.Localtime
 	forecast.Icon = current.Icon
-	forecast.MaxTemp = current.MaxTemp
-	forecast.AvgTemp = current.AvgTemp
-	forecast.MinTemp = current.MinTemp
+	forecast.Temp = current.Temp
 	forecast.Date, _ = time.Parse("2006-01-02 15:04", day)
 	return forecast
 }
@@ -59,15 +53,11 @@ func ParseLocationData(data map[string]interface{}) (Location, error) {
 func ParseCurrentData(data map[string]interface{}) Current {
 	currentData := data["current"].(map[string]interface{})
 	icon := currentData["condition"].(map[string]interface{})["icon"].(string)
-	maxTemp := currentData["maxtemp_c"].(float64)
-	minTemp := currentData["mintemp_c"].(float64)
-	avgTemp := currentData["temp_c"].(float64)
+	Temp := currentData["temp_c"].(float64)
 
 	return Current{
-		Icon:    icon,
-		MaxTemp: maxTemp,
-		MinTemp: minTemp,
-		AvgTemp: avgTemp,
+		Icon: icon,
+		Temp: Temp,
 	}
 }
 
