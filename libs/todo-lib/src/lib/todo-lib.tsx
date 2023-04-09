@@ -36,11 +36,11 @@ interface TodosResponse {
 export function TodoList() {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  useQuery(['posts'], async () => {
+  useQuery({ queryKey: ['posts'], queryFn: async () => {
     const { todos }: TodosResponse = await graphqlRequestClient.request(GET_TODOS)
     setTodos(todos)
     return todos
-  })
+  } })
 
   const { mutate }  = useMutation<any>({
     mutationFn: () => graphqlRequestClient.request(CREATE_TODO),
