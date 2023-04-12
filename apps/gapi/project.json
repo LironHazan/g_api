@@ -19,7 +19,8 @@
         "assets": ["apps/gapi/src/favicon.ico", "apps/gapi/src/assets"],
         "styles": [],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "@nrwl/react/plugins/webpack",
+        "statsJson": true
       },
       "configurations": {
         "development": {
@@ -74,6 +75,21 @@
       "options": {
         "jestConfig": "apps/gapi/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "size-limit": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "echo '[{\"path\": \"dist/apps/gapi/main*.js\",\"limit\": \"500 kB\"}]' > .size-limit.json\n",
+          "size-limit"
+        ]
+      }
+    },
+    "bundle-analyzer": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx -y webpack-bundle-analyzer dist/apps/gapi/stats.json"
       }
     }
   },
