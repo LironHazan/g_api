@@ -80,8 +80,8 @@
     "size-limit": {
       "executor": "nx:run-commands",
       "options": {
+        "cwd": "apps/gapi",
         "commands": [
-          "echo '[{\"path\": \"dist/apps/gapi/main*.js\",\"limit\": \"300 kB\"}]' > .size-limit.json\n",
           "size-limit"
         ]
       }

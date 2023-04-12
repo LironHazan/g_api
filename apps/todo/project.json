@@ -55,8 +55,8 @@
     "size-limit": {
       "executor": "nx:run-commands",
       "options": {
+        "cwd": "apps/todo",
         "commands": [
-          "echo '[{\"path\": \"dist/apps/todo/assets/index*.js\",\"limit\": \"500 kB\"}]' > .size-limit.json\n",
           "size-limit"
         ]
       }
