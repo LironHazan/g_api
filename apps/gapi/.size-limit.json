@@ -1,1 +1,1 @@
-[{"path": ["../../dist/apps/gapi/main*.js"],"limit": "300 kB"}]
+[{ "path": ["../../dist/apps/gapi/main*.js"], "limit": "300 kB" }]
