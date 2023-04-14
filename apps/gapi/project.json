@@ -77,20 +77,14 @@
         "passWithNoTests": true
       }
     },
-    "size-limit": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "apps/gapi",
-        "commands": [
-          "size-limit"
-        ]
-      }
-    },
     "bundle-analyzer": {
       "executor": "nx:run-commands",
       "options": {
         "command": "npx -y webpack-bundle-analyzer dist/apps/gapi/stats.json"
       }
+    },
+    "size-limit": {
+      "executor": "nx-size-limit:size-limit"
     }
   },
   "tags": ["scope:gapi", "type:app"]
